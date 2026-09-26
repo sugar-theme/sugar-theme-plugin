@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "sugar": {
-      "type": "http",
-      "url": "https://app.sugarthe.me/api/mcp"
-    },
     "playwright": {
       "command": "npx",
       "args": [

@@ -64,7 +64,7 @@ Check first whether a connector called Sugar Theme is already connected: if the 
 2. Choose **Add custom connector**. Name it **Sugar Theme** and paste this address: `https://app.sugarthe.me/api/mcp`.
 3. Click **Connect** and sign in with the Sugar account they bought the theme with. A browser window opens for that; nothing else to type.
 
-The tools become available in the same conversation a few seconds after they sign in; check, then continue. When a Sugar Theme connector exists but shows **Reconnect**, they click that instead. If the user is in a terminal rather than the app, the plugin already registers the MCP; they run `/mcp`, choose `sugar` and sign in.
+The tools become available in the same conversation a few seconds after they sign in; check, then continue. When a Sugar Theme connector exists but shows **Reconnect**, they click that instead. The connector is the only route: the plugin does not register the MCP itself, and a terminal session without the connector works from the catalog index alone.
 
 Then auto-update, so the skills stay current: in the same **+** menu, **Plugins**, find the **Sugar** marketplace and turn on auto-update. It is off by default for marketplaces that aren't Anthropic's. In a terminal it is `/plugin`, Marketplaces, Sugar.
 

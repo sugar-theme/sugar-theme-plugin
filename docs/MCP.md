@@ -4,7 +4,7 @@ The MCP server bundled with the plugin. This page is the contract the skills are
 
 ## Where it runs
 
-`POST https://app.sugarthe.me/api/mcp`, an HTTP action on the Sugar app's Convex backend, next to the license verify and download routes; there is no separate MCP host. Sign-in is the app's own Clerk OAuth. The plugin's `.mcp.json` points at that address; in the Claude desktop app the same address is added once as a custom connector named Sugar Theme.
+`POST https://app.sugarthe.me/api/mcp`, an HTTP action on the Sugar app's Convex backend, next to the license verify and download routes; there is no separate MCP host. Sign-in is the app's own Clerk OAuth. It is added once as a custom connector named Sugar Theme in the Claude desktop app. The plugin deliberately does not register it in its own `.mcp.json`: Claude Code's built-in MCP sign-in needs dynamic client registration, which is off on the sign-in service by design, so a bundled entry would only show a connection error at every session start.
 
 ## Access
 
