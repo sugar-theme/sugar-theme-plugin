@@ -2,16 +2,27 @@
 
 Skills and references that teach an AI agent to edit a Shopify store built on the [Sugar Theme](https://sugarthe.me).
 
-Install in Claude Code:
+## Install
+
+Open the Claude desktop app, start a new conversation in an empty folder for your store, and paste this:
 
 ```
-/plugin marketplace add jacobo-uribe/sugar-theme-plugin
-/plugin install sugar-theme@sugar
+Set up the Sugar Theme plugin for me so I can edit my Shopify store from here.
+
+1. Install the plugin by running these two commands yourself:
+   claude plugin marketplace add jacobo-uribe/sugar-theme-plugin
+   claude plugin install sugar-theme@sugar
+   If `claude` is not found, use the copy bundled with this app: the newest folder under
+   ~/Library/Application Support/Claude/claude-code/, file claude.app/Contents/MacOS/claude.
+2. Then run the plugin's setup skill: /sugar-theme:setup. If it isn't available in this
+   conversation yet, tell me to start a new conversation and type /sugar-theme:setup there.
+3. Do everything you can yourself and never tell me to open a terminal. When you need
+   something from me, ask one clear question at a time.
 ```
 
-Then, in a fresh project folder for your store, run `/sugar-theme:setup`.
+Setup checks the tools, connects your store and the Sugar Theme MCP, and writes the project's `AGENTS.md`. Auto-update for the `sugar` marketplace is part of setup, so the skills stay current.
 
-Enable auto-update for the `sugar` marketplace (`/plugin` → Marketplaces) so the skills stay current.
+In a terminal, the same two lines work as slash commands: `/plugin marketplace add jacobo-uribe/sugar-theme-plugin` and `/plugin install sugar-theme@sugar`, then `/sugar-theme:setup`.
 
 ## Other agents
 
