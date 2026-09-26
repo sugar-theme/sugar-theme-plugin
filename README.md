@@ -7,7 +7,7 @@ Skills and references that teach an AI agent to edit a Shopify store built on th
 **Claude desktop app** (the recommended path):
 
 1. Click the **+** button at the bottom of the chat, then **Plugins**, then **Add marketplace**.
-2. Paste `sugar-theme/sugar-theme-plugin` and click **Sync**.
+2. Paste `https://github.com/sugar-theme/sugar-theme-plugin.git` and click **Sync**.
 3. Find **sugar-theme** in the plugin list and click **Install**.
 4. Start a new conversation in an empty folder for your store and type `/sugar-theme:setup`.
 
