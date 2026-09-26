@@ -10,7 +10,7 @@ Open the Claude desktop app, start a new conversation in an empty folder for you
 Set up the Sugar Theme plugin for me so I can edit my Shopify store from here.
 
 1. Install the plugin by running these two commands yourself:
-   claude plugin marketplace add jacobo-uribe/sugar-theme-plugin
+   claude plugin marketplace add sugar-theme/sugar-theme-plugin
    claude plugin install sugar-theme@sugar
    If `claude` is not found, use the copy bundled with this app: the newest folder under
    ~/Library/Application Support/Claude/claude-code/, file claude.app/Contents/MacOS/claude.
@@ -22,14 +22,14 @@ Set up the Sugar Theme plugin for me so I can edit my Shopify store from here.
 
 Setup checks the tools, connects your store and the Sugar Theme MCP, and writes the project's `AGENTS.md`. Auto-update for the `sugar` marketplace is part of setup, so the skills stay current.
 
-In a terminal, the same two lines work as slash commands: `/plugin marketplace add jacobo-uribe/sugar-theme-plugin` and `/plugin install sugar-theme@sugar`, then `/sugar-theme:setup`.
+In a terminal, the same two lines work as slash commands: `/plugin marketplace add sugar-theme/sugar-theme-plugin` and `/plugin install sugar-theme@sugar`, then `/sugar-theme:setup`.
 
 ## Other agents
 
 Claude Code is the recommended and tested path. The skills use the open `SKILL.md` format, so agents that read it can use the same repo. For Codex, Cursor or Gemini CLI, install the skills with the community installer:
 
 ```
-npx skills add jacobo-uribe/sugar-theme-plugin
+npx skills add sugar-theme/sugar-theme-plugin
 ```
 
 Then connect the Sugar Theme MCP by hand in your agent's MCP settings, and run the `setup` skill in a fresh project folder. The setup skill writes `AGENTS.md`, which those agents read natively. Marketplace auto-update is a Claude Code feature; other agents re-run the installer to update.

@@ -3,6 +3,6 @@
   "description": "Skills and references for editing a Shopify store built on the Sugar Theme with AI agents: setup, build, clone, freestyle, enhance, variations, ask, speed optimization, update checks and bug reports.",
   "version": "0.1.0",
   "author": { "name": "Sugar Theme", "url": "https://sugarthe.me" },
-  "repository": "https://github.com/jacobo-uribe/sugar-theme-plugin",
+  "repository": "https://github.com/sugar-theme/sugar-theme-plugin",
   "keywords": ["shopify", "theme", "sugar", "ecommerce", "cro"]
 }
