@@ -4,35 +4,35 @@ Skills and references that teach an AI agent to edit a Shopify store built on th
 
 ## Install
 
-Open the Claude desktop app, start a new conversation in an empty folder for your store, and paste this:
+**Claude desktop app** (the recommended path):
+
+1. Click the **+** button at the bottom of the chat, then **Plugins**, then **Add marketplace**.
+2. Paste `sugar-theme/sugar-theme-plugin` and click **Sync**.
+3. Find **sugar-theme** in the plugin list and click **Install**.
+4. Start a new conversation in an empty folder for your store and type `/sugar-theme:setup`.
+
+Setup checks the tools, connects your store and the Sugar Theme MCP, and writes the project's `AGENTS.md`. Plugins load when a conversation starts, so the skill is available from the next conversation, not the one the install happened in.
+
+**Claude Code in a terminal:**
 
 ```
-Set up the Sugar Theme plugin for me so I can edit my Shopify store from here.
-
-1. Install the plugin by running these two commands yourself:
-   claude plugin marketplace add sugar-theme/sugar-theme-plugin
-   claude plugin install sugar-theme@sugar
-   If `claude` is not found, use the copy bundled with this app: the newest folder under
-   ~/Library/Application Support/Claude/claude-code/, file claude.app/Contents/MacOS/claude.
-2. Then run the plugin's setup skill: /sugar-theme:setup. If it isn't available in this
-   conversation yet, tell me to start a new conversation and type /sugar-theme:setup there.
-3. Do everything you can yourself and never tell me to open a terminal. When you need
-   something from me, ask one clear question at a time.
+/plugin marketplace add sugar-theme/sugar-theme-plugin
+/plugin install sugar-theme@sugar
 ```
 
-Setup checks the tools, connects your store and the Sugar Theme MCP, and writes the project's `AGENTS.md`. Auto-update for the `sugar` marketplace is part of setup, so the skills stay current.
-
-In a terminal, the same two lines work as slash commands: `/plugin marketplace add sugar-theme/sugar-theme-plugin` and `/plugin install sugar-theme@sugar`, then `/sugar-theme:setup`.
+Then restart and run `/sugar-theme:setup` in an empty folder.
 
 ## Other agents
 
-Claude Code is the recommended and tested path. The skills use the open `SKILL.md` format, so agents that read it can use the same repo. For Codex, Cursor or Gemini CLI, install the skills with the community installer:
+Claude is the recommended and tested path. The skills use the open `SKILL.md` format, so agents that read it can use the same repo. Codex reads skills from `~/.codex/skills/`, one folder per skill; the shared `references/` folder has to stay next to the skills, so clone the whole repo and link the skill folders in. Paste this into Codex and let it do the work:
 
 ```
-npx skills add sugar-theme/sugar-theme-plugin
+Install the Sugar Theme skills for me: clone https://github.com/sugar-theme/sugar-theme-plugin
+into ~/.sugar-theme-plugin, then create a symbolic link in ~/.codex/skills/ for each folder
+inside ~/.sugar-theme-plugin/skills/. Tell me when to restart you.
 ```
 
-Then connect the Sugar Theme MCP by hand in your agent's MCP settings, and run the `setup` skill in a fresh project folder. The setup skill writes `AGENTS.md`, which those agents read natively. Marketplace auto-update is a Claude Code feature; other agents re-run the installer to update.
+Then connect the Sugar Theme MCP in Codex's MCP settings with the address in `docs/MCP.md`, restart, and run the `setup` skill in a fresh project folder. Setup writes `AGENTS.md`, which Codex reads natively. To update, pull the clone. This path is not yet tested end to end.
 
 ## Layout
 
