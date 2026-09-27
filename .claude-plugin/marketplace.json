@@ -1,15 +1,21 @@
 {
   "name": "sugar",
   "owner": {
-    "name": "Sugar Theme",
-    "url": "https://sugarthe.me"
+    "name": "Sugar Theme"
+  },
+  "metadata": {
+    "description": "The Sugar Theme plugin: skills and references for editing a Shopify store built on the Sugar Theme with AI agents.",
+    "version": "0.3.0"
   },
   "plugins": [
     {
       "name": "sugar-theme",
-      "source": "./",
-      "description": "Edit a Shopify store built on the Sugar Theme with AI agents."
+      "description": "Edit a Shopify store built on the Sugar Theme with AI agents.",
+      "version": "0.3.0",
+      "author": {
+        "name": "Sugar Theme"
+      },
+      "source": "./plugins/sugar-theme"
     }
-  ],
-  "description": "The Sugar Theme plugin: skills and references for editing a Shopify store built on the Sugar Theme with AI agents."
+  ]
 }

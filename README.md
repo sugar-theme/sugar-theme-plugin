@@ -29,15 +29,15 @@ Claude is the recommended and tested path. The skills use the open `SKILL.md` fo
 ```
 Install the Sugar Theme skills for me: clone https://github.com/sugar-theme/sugar-theme-plugin
 into ~/.sugar-theme-plugin, then create a symbolic link in ~/.codex/skills/ for each folder
-inside ~/.sugar-theme-plugin/skills/. Tell me when to restart you.
+inside ~/.sugar-theme-plugin/plugins/sugar-theme/skills/. Tell me when to restart you.
 ```
 
 Then connect the Sugar Theme MCP in Codex's MCP settings with the address in `docs/MCP.md`, restart, and run the `setup` skill in a fresh project folder. Setup writes `AGENTS.md`, which Codex reads natively. To update, pull the clone. This path is not yet tested end to end.
 
 ## Layout
 
-- `skills/` — one folder per skill (`setup`, `clone`, `build`, `freestyle`, `ask`, `enhance`, `variations`, `speed-optimization`, `update-check`, `feedback`)
-- `references/` — shared documents the skills read: `store-editing`, `creation-methods`, `new-file-creation`, `variations`, `custom-sections-blocks` (log template), `catalog-index` (generated)
+- `plugins/sugar-theme/skills/` — one folder per skill (`setup`, `clone`, `build`, `freestyle`, `ask`, `enhance`, `variations`, `speed-optimization`, `update-check`, `feedback`)
+- `plugins/sugar-theme/references/` — shared documents the skills read: `store-editing`, `creation-methods`, `new-file-creation`, `variations`, `custom-sections-blocks` (log template), `catalog-index` (generated)
 - `docs/MCP.md` — the contract for the Sugar Theme MCP the skills call
 
 Only content a merchant can see in the theme editor lives here. Liquid internals and gated material are served by the MCP behind a license.
