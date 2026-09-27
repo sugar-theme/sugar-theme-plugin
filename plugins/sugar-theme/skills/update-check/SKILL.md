@@ -13,6 +13,8 @@ Sugar ships fixes and improvements as changes, not as whole-theme reinstalls. A 
 - **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first.
 - **The Sugar Theme MCP**, connected during setup. It provides the updates index, each change's page and diff, the original of any shipped file at any release, and a classifier that tells whether a file is untouched or customized.
 
+**Not live yet.** If the MCP has no `sugar_updates_since` tool, update checks have not been switched on. Tell the user in one sentence that update checks are coming in a later release and nothing is needed from them, and stop here. Never compare their theme against a copy you downloaded or guessed at instead.
+
 Files are read from and written to the store as described in `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md`. This skill is the one case that pulls the whole theme, because every code file has to be classified. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 
 # Step 1: Pull

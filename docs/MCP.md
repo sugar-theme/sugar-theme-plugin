@@ -1,14 +1,14 @@
 # Sugar Theme MCP
 
-The MCP server bundled with the plugin. This page is the contract the skills are written against: what the server must provide, by tool name, and which skill uses what. Build the server to this; if a tool changes shape, the skill that names it changes with it.
+The Sugar Theme MCP server, registered by the plugin's `.mcp.json` and signed in to once. This page is the contract the skills are written against: what the server must provide, by tool name, and which skill uses what. Build the server to this; if a tool changes shape, the skill that names it changes with it.
 
 ## Where it runs
 
-`POST https://app.sugarthe.me/api/mcp`, an HTTP action on the Sugar app's Convex backend, next to the license verify and download routes; there is no separate MCP host. Sign-in is the app's own Clerk OAuth. It is added once as a custom connector named Sugar Theme in the Claude desktop app. The plugin deliberately does not register it in its own `.mcp.json`: Claude Code's built-in MCP sign-in needs dynamic client registration, which is off on the sign-in service by design, so a bundled entry would only show a connection error at every session start.
+`POST https://app.sugarthe.me/api/mcp`, an HTTP action on the Sugar app's Convex backend, next to the license verify and download routes; there is no separate MCP host. Sign-in is the app's own Clerk OAuth. The plugin registers it in its `.mcp.json` with a pre-registered OAuth client (`Sugar Theme plugin`, a public PKCE client in the production Clerk instance, redirect `http://localhost:47219/callback`), so Claude Code signs in without dynamic client registration, which stays off on the sign-in service by design. Until the user signs in, Claude Code shows the server as needing authentication and gives the agent an `authenticate` tool that returns the sign-in link; setup's last step uses it. The client ID is public by nature; the fixed localhost redirect is what keeps a stranger from using it to collect someone else's sign-in. A user can also add the same URL as a custom connector in the Claude app; either route works.
 
 ## Access
 
-- **Remote MCP at `https://app.sugarthe.me/api/mcp`** (bundled in the plugin's `.mcp.json`; stateless Streamable HTTP), connected once during setup through a browser sign-in with the user's Sugar license. The license identifies the user for every call, so no skill asks for an email, license key or store, and every report and update check is attributed automatically.
+- **Remote MCP at `https://app.sugarthe.me/api/mcp`** (stateless Streamable HTTP), signed in to once during setup through a browser sign-in with the user's Sugar license. The license identifies the user for every call, so no skill asks for an email, license key or store, and every report and update check is attributed automatically.
 - Also usable without the plugin: paste the URL into claude.ai, Cowork or any MCP client. The connect instructions (below) are the whole "how to use Sugar" primer for that audience.
 - License-gated. Anything below the theme-editor line (Liquid internals, booster-pack files, full templates, the theme zip) is served only to a valid license, so it can't be pirated by reading the plugin's public repo.
 
@@ -18,6 +18,8 @@ The short text every session receives on connect. Two jobs: say what the tools a
 
 ## Tools
 
+**Live today:** `list_catalog`, `get_component`, `get_concept`, `get_learnings`, `report_issue`, `share_session`. The Updates and Theme files tables below are the contract for tools not built yet; a skill that needs one says so to the user and stops or skips that step, rather than guessing.
+
 ### Docs
 
 | Tool | Returns | Used by |
@@ -26,7 +28,7 @@ The short text every session receives on connect. Two jobs: say what the tools a
 | `get_component(slug)` | The component's full docs: what it does, how to set it up, every setting, and its **approved learnings and open bugs**, so an agent that fetches a component's docs gets its gotchas without a second call. | ask, build, clone, enhance |
 | `get_concept(slug)` | A mechanism that isn't one component: colors, typography, corners, the landing layout, and the branding read. | build, freestyle, enhance |
 
-### Updates
+### Updates (not built yet)
 
 | Tool | Returns | Used by |
 |---|---|---|
@@ -46,7 +48,7 @@ The short text every session receives on connect. Two jobs: say what the tools a
 
 Bugs carry a status: open, fixed in a release, or won't fix. Open bugs distribute exactly like learnings, scoped to their files, with the workaround and the expected fix. A fixed bug drops out of distribution and becomes an available update, which is the update-check skill's job, so a solved problem never costs context.
 
-### Theme files and templates
+### Theme files and templates (not built yet)
 
 | Tool | Returns | Used by |
 |---|---|---|

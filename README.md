@@ -4,14 +4,24 @@ Skills and references that teach an AI agent to edit a Shopify store built on th
 
 ## Install
 
-**Claude desktop app** (the recommended path):
+**Claude desktop app, one paste** (the recommended path). Make an empty folder for your store, start a new conversation in it, and paste:
+
+```
+Set up the Sugar Theme for me in this folder.
+
+1. Download the Sugar Theme plugin (no git needed):
+   rm -rf ~/.sugar-theme-setup && mkdir -p ~/.sugar-theme-setup && curl -fsSL https://github.com/sugar-theme/sugar-theme-plugin/archive/refs/heads/main.tar.gz | tar -xz -C ~/.sugar-theme-setup --strip-components=1
+2. Read ~/.sugar-theme-setup/plugins/sugar-theme/skills/setup/SKILL.md in full and follow it from start to finish. Wherever it says ${CLAUDE_PLUGIN_ROOT}, use ~/.sugar-theme-setup/plugins/sugar-theme.
+```
+
+The agent installs the tools, connects your store, writes the project's `AGENTS.md` and adds the plugin to the folder. Plugins, their skills and their browsers only load when a conversation starts, so it then asks you to open one new conversation in the same folder. That one installs the plugin, has you sign in to Sugar once, checks the browsers, and you're ready.
+
+**Claude desktop app, by hand:**
 
 1. Click the **+** button at the bottom of the chat, then **Plugins**, then **Add marketplace**.
 2. Paste `sugar-theme/sugar-theme-plugin` and click **Sync**. If the app says it failed, the marketplace may already be added; check the plugin list before retrying.
 3. Find **sugar-theme** in the plugin list and click **Install**.
-4. Start a new conversation in an empty folder for your store and type `/sugar-theme:setup`.
-
-Setup checks the tools, connects your store and the Sugar Theme MCP, and writes the project's `AGENTS.md`. Plugins load when a conversation starts, so the skill is available from the next conversation, not the one the install happened in.
+4. Start a new conversation in an empty folder for your store and type `/sugar-theme:setup`. On a computer without Node.js, the agent's browsers switch on one conversation later.
 
 **Claude Code in a terminal:**
 

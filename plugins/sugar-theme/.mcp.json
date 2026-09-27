@@ -1,20 +1,28 @@
 {
   "mcpServers": {
+    "sugar-theme": {
+      "type": "http",
+      "url": "https://app.sugarthe.me/api/mcp",
+      "oauth": {
+        "clientId": "TW7DqLOYRnvp3U6n",
+        "callbackPort": 47219
+      }
+    },
     "playwright": {
-      "command": "npx",
+      "command": "bash",
       "args": [
-        "-y",
-        "@playwright/mcp@latest",
+        "${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh",
         "--headless",
+        "--browser",
+        "chromium",
         "--output-dir",
         "/tmp/playwright-mcp"
       ]
     },
     "playwright-safari": {
-      "command": "npx",
+      "command": "bash",
       "args": [
-        "-y",
-        "@playwright/mcp@latest",
+        "${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh",
         "--headless",
         "--browser",
         "webkit",

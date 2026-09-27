@@ -17,7 +17,7 @@ The user never leaves the conversation and never fills in a form. The MCP knows 
 
 # Step 1: Check before you send
 
-1. **Is it already fixed?** For a bug, search the updates index by symptom through the update-check skill. If a change matches, apply it instead of reporting it.
+1. **Is it already fixed?** For a bug, search the updates index by symptom through the update-check skill. If a change matches, apply it instead of reporting it. If the MCP has no update tools yet, skip this check and go on.
 2. **Is it already known?** The report tool checks for duplicates itself and answers with the existing entry when it finds one. Read it: it may carry a workaround, and you are done.
 3. **Is it a bug at all?** A file you or another agent edited is not a Sugar bug; check the project's `custom-sections-blocks.md` before blaming the shipped file. A setting that does nothing is a bug, not a quirk.
 

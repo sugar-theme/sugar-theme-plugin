@@ -19,12 +19,13 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 Measure the page two ways:
 
-- **Lighthouse, run locally** through the headless Chrome that setup installed. It needs no key, works on any theme including unpublished ones through the storefront preview link, and is what you use to compare before and after.
+- **Lighthouse, run locally** through Google Chrome, or the headless Chromium setup installed when Chrome isn't on the computer (the first line of the command below picks it). It needs no key, works on any theme including unpublished ones through the storefront preview link, and is what you use to compare before and after.
 - **Google PageSpeed Insights** as the second opinion, since it is what the user and their competitors look at. It only reaches the live theme, and it can't get past a storefront password.
 
 Run Lighthouse in mobile mode with real throttling:
 
 ```bash
+[ -d "/Applications/Google Chrome.app" ] || export CHROME_PATH="$(ls -d "$HOME"/Library/Caches/ms-playwright/chromium-*/chrome-mac*/"Google Chrome for Testing.app"/Contents/MacOS/"Google Chrome for Testing" | tail -1)"
 npx lighthouse "URL" --preset=perf --form-factor=mobile --throttling-method=devtools --output=json --output-path=./lighthouse-1.json --chrome-flags="--headless=new"
 ```
 
