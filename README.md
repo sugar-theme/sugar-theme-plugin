@@ -9,9 +9,8 @@ Skills and references that teach an AI agent to edit a Shopify store built on th
 ```
 Set up the Sugar Theme for me in this folder.
 
-1. Download the Sugar Theme plugin (no git needed):
-   rm -rf ~/.sugar-theme-setup && mkdir -p ~/.sugar-theme-setup && curl -fsSL https://github.com/sugar-theme/sugar-theme-plugin/archive/refs/heads/main.tar.gz | tar -xz -C ~/.sugar-theme-setup --strip-components=1
-2. Read ~/.sugar-theme-setup/plugins/sugar-theme/skills/setup/SKILL.md in full and follow it from start to finish. Wherever it says ${CLAUDE_PLUGIN_ROOT}, use ~/.sugar-theme-setup/plugins/sugar-theme.
+1. Download the setup files: run `mkdir -p ~/.sugar-theme-setup && curl -fsSL https://github.com/sugar-theme/sugar-theme-plugin/archive/refs/heads/main.tar.gz | tar -xz -C ~/.sugar-theme-setup --strip-components=1`
+2. Open ~/.sugar-theme-setup/plugins/sugar-theme/skills/setup/SKILL.md and follow it from start to finish.
 ```
 
 The agent installs the tools, connects your store, writes the project's `AGENTS.md` and adds the plugin to the folder. Plugins, their skills and their browsers only load when a conversation starts, so it then asks you to open one new conversation in the same folder. That one installs the plugin, has you sign in to Sugar once, checks the browsers, and you're ready.
