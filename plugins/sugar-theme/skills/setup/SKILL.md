@@ -1,20 +1,20 @@
 ---
 name: setup
-description: Sets up a project for editing a Sugar Theme with AI agents. Installs the tools, connects the store, writes AGENTS.md, installs the plugin and signs the user in to the Sugar Theme MCP. Use when working on a Sugar Theme inside a project that has no AGENTS.md or an empty one, when the Setup line in AGENTS.md is not complete, or when the user asks to run setup.
+description: Sets up a project for editing a Sugar Theme with AI agents. Installs the tools, connects the store and the Sugar Theme MCP, turns on plugin updates and writes AGENTS.md. Use when working on a Sugar Theme inside a project that has no AGENTS.md or an empty one, when the Setup line in AGENTS.md is not complete, or when the user asks to run setup.
 disable-model-invocation: false
 ---
 
 # Overview
 
-This skill installs and checks every tool the user needs on their device to edit their Sugar Theme and Shopify storefront with AI agents, connects them to their store, writes the project's system prompt into AGENTS.md, installs the Sugar Theme plugin into the project and signs the user in to the Sugar Theme MCP.
+This skill installs and checks every tool the user needs on their device to edit their Sugar Theme and Shopify storefront with AI agents, connects them to their store and to the Sugar Theme MCP, and writes the project's system prompt into AGENTS.md.
 
 The user's project folder is not their theme. It holds AGENTS.md, the custom-files log and the agent's screenshots. Theme files are edited on the user's store and never kept in this folder. Read `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md` before Step 2 so the rules you write into AGENTS.md match how the other skills work. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 
-**Two ways in.** Most users arrive through the setup prompt they copied from the Sugar app, which downloaded this plugin to `~/.sugar-theme-setup` and pointed you at this file. The plugin is not installed yet in that case: its skills, browsers and Sugar connection only switch on in a new conversation, so this conversation does Steps 1 to 5, and the next conversation does Step 6. Everything the user has to do in between is open one new conversation. Others run `/sugar-theme:setup` with the plugin already installed; then skip Step 5 and do Step 6 right away. **If AGENTS.md already says `Setup: finish pending`, go straight to Step 6.**
+The user has installed the plugin from the Claude app and typed `/sugar-theme:setup` in a new conversation. **If AGENTS.md already says `Setup: finish pending`, go straight to Step 6.**
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
-**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates. Near the end they open one new conversation in the same folder, which switches everything on. If their storefront is password-protected there is one more step: the store password, typed once into each of the agent's two browsers.
+**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected there is one more step: the store password, typed once into each of the agent's two browsers.
 
 # Step 1: Tools
 
@@ -61,9 +61,34 @@ Ask which theme to work on, with the AskUserQuestion tool (or your agent's equiv
 
 Nobody duplicates per task. Every later session edits the same working theme, which is what keeps two sessions from ending up on three themes. The theme is recorded by ID, never by name, and the store-editing reference tells every skill to check that ID's role at the start of each task: if the draft has since been published, the agent makes a fresh draft once and updates the line, without asking.
 
-# Step 3: Sharing
+# Step 3: Connect to the Sugar Theme MCP
 
-Ask one question, in plain words: whether the user wants to help improve Sugar by sharing how they work with their agent. Three answers:
+The Sugar Theme MCP is the connection to Sugar's component docs, known issues, update checks and feedback. The plugin brings the connection with it; the user only signs in, once, with the Sugar account they bought the theme with. That identifies them for all of it; nothing about their license or store is typed into a file. This is the second and last sign-in.
+
+If the Sugar tools (`list_catalog`, `get_learnings`) answer, it is done. Otherwise call the plugin's Sugar Theme `authenticate` tool: it returns a sign-in link. Give it to the user as a link, say it opens the Sugar sign-in, and ask them to sign in and click **Allow**. The tools appear by themselves a few seconds later; check, then continue. If the sign-in page ends on a page that can't load, ask them to paste its full address back to you and hand it to the `complete_authentication` tool. A user who also added Sugar Theme as a connector in the app is connected either way; one is enough.
+
+If signing in fails, say so and carry on: the catalog index in the plugin covers the build skills; only component docs, learnings, update checks and feedback need the MCP. Write `Setup: incomplete, Sugar sign-in` in Step 5 so the next conversation offers it again.
+
+# Step 4: Two questions
+
+Ask both at once, with the AskUserQuestion tool (or your agent's equivalent), in plain words.
+
+**Plugin updates.** Whether to keep the Sugar Theme plugin up to date automatically, so every conversation gets the latest skills and fixes. Options: **Yes, keep it updated (recommended)** and **No, I'll update it myself**. Auto-update is off by default for plugins that don't come from Anthropic, and the switch is buried deep in the app, which is why you offer it here. On a yes, add this to the user's Claude settings at `~/.claude/settings.json`, merging into what is there and never replacing the file:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "sugar": {
+      "source": { "source": "github", "repo": "sugar-theme/sugar-theme-plugin" },
+      "autoUpdate": true
+    }
+  }
+}
+```
+
+Read the file back to confirm it is valid JSON. Tell the user it takes effect from their next conversation. On a no, write nothing.
+
+**Sharing.** Whether the user wants to help improve Sugar by sharing how they work with their agent. Three answers:
 
 - **Nothing.** The default. Only reports the user's agent sends on purpose reach the Sugar team.
 - **Task summaries.** After each task the agent sends a structured recap of the whole task, a few short paragraphs, not a sentence: what the user set out to do, what was built and where (sections and blocks by their display names, new files by name), which method and why, what went wrong and how it was fixed, what was left for later, and how the user reacted. Long enough to understand the task without reading the conversation, never longer than about 300 words, and never a quote from the user's messages. A long session produces one recap per task, not one for the session. Recommend this one; it is what lets Sugar see how people build with the theme without reading anyone's conversation.
@@ -71,9 +96,9 @@ Ask one question, in plain words: whether the user wants to help improve Sugar b
 
 Say that the choice is theirs, that it is one line in AGENTS.md they can change any time, and that the agent will always say when it sends something.
 
-# Step 4: Project files
+# Step 5: Project files
 
-Write the files now, once, with every value known. Never write AGENTS.md with placeholders: if a value is missing because a step was skipped, leave that line out and write `Setup: incomplete, <what is missing>` in the Working Theme block so any skill that reads it sends the user back here. Otherwise write `Setup: finish pending`; Step 6 sets it to `complete`.
+Write the files now, once, with every value known. Never write AGENTS.md with placeholders: if a value is missing because a step was skipped, leave that line out and write `Setup: incomplete, <what is missing>` in the Working Theme block so any skill that reads it sends the user back here. If the browsers still have to be checked in the next conversation (Step 6), write `Setup: finish pending`; otherwise `Setup: complete`.
 
 Create `custom-sections-blocks.md` in the project folder from `${CLAUDE_PLUGIN_ROOT}/references/custom-sections-blocks.md`: copy the file as it is; its instructions and examples are inside comments. It is the log where every agent records the files it creates and the shipped Sugar files it changes. Creating it here means every other skill can assume it exists and just append.
 
@@ -83,36 +108,11 @@ Then the system prompt. Check the project folder for AGENTS.md and CLAUDE.md, an
 - **AGENTS.md exists:** add to it intelligently, making sure the new content neither repeats nor contradicts what is there. If it conflicts, show the user the conflict and offer to amend it or to start a fresh project.
 - **A CLAUDE.md exists here or above:** write AGENTS.md as usual, then add one line to the CLAUDE.md, `@AGENTS.md`, so it imports the new file. This is also the fallback for a terminal Claude Code older than 2.1.277, the first version that reads AGENTS.md on its own; the desktop app keeps itself current.
 
-# Step 5: Install the plugin
+# Step 6: Browsers
 
-Only when you came in through the setup prompt (the plugin is not installed yet). Write `.claude/settings.json` in the project folder, merging into it if it exists:
+When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store each browser keeps its own login, so the user enters the storefront password once per browser here and never again. Then set `Setup: complete` in AGENTS.md.
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "sugar": { "source": { "source": "github", "repo": "sugar-theme/sugar-theme-plugin" } }
-  },
-  "enabledPlugins": { "sugar-theme@sugar": true }
-}
-```
-
-This tells Claude that the project uses the Sugar Theme plugin; the next conversation opened in this folder offers to install it. Then tell the user, in these words or close: "Setup is almost done. Open a new conversation in this same folder. If Claude asks whether to trust the folder or install the Sugar Theme plugin, say yes. It will finish connecting everything on its own."
-
-If the new conversation shows no Sugar Theme skills (typing `/sugar` suggests nothing), the app did not pick up the file. The fallback is the manual install, which is clicks: **+** at the bottom of the chat → **Plugins** → **Add marketplace** → paste `sugar-theme/sugar-theme-plugin` → **Sync** → **Install** on sugar-theme, then one more new conversation.
-
-# Step 6: Finish
-
-In the conversation where the plugin is installed. Check each of these, fix what is missing, then set `Setup: complete` in AGENTS.md.
-
-**Sugar sign-in.** The plugin brings its own connection to the Sugar Theme MCP; the user only signs in, once. If the Sugar tools (`list_catalog`, `get_learnings`) answer, it is done. Otherwise call the plugin's Sugar Theme `authenticate` tool: it returns a sign-in link. Give it to the user as a link, say it opens the Sugar sign-in, and ask them to sign in with the account they bought the theme with and click **Allow**. The tools appear by themselves a few seconds later; check, then continue. If the sign-in page ends on a page that can't load, ask them to paste its full address back to you and hand it to the `complete_authentication` tool. A user who already added Sugar Theme as a connector in the app is connected either way; one is enough.
-
-If signing in fails, say so and carry on: the catalog index in the plugin covers the build skills; only component docs, learnings, update checks and feedback need the MCP. Leave `Setup: incomplete, Sugar sign-in` so the next conversation offers it again.
-
-**Browsers.** Open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store each browser keeps its own login, so the user enters the storefront password once per browser here and never again. If a browser still answers with `browser_setup_needed`, Node.js did not install; go back to Step 1.
-
-**Auto-update**, so the skills stay current: **+** at the bottom of the chat → **Plugins**, find the **Sugar** marketplace and turn on auto-update. It is off by default for marketplaces that aren't Anthropic's. In a terminal it is `/plugin`, Marketplaces, Sugar. If the Sugar marketplace isn't listed there, skip this and say that updates come when they reinstall.
-
-**Clean up** the downloaded copy with `rm -rf ~/.sugar-theme-setup` if it exists; the installed plugin replaces it.
+When they answer with `browser_setup_needed` because Node.js was installed during this conversation, leave `Setup: finish pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
 
 Then tell the user setup is done and what they can ask for now, in two or three examples in their words ("build me a comparison table on my product page", "clone this section from a competitor's site", "make my page faster").
 
