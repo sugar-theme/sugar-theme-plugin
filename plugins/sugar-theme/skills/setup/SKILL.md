@@ -10,7 +10,7 @@ This skill installs and checks every tool the user needs on their device to edit
 
 The user's project folder is not their theme. It holds AGENTS.md, the custom-files log and the agent's screenshots. Theme files are edited on the user's store and never kept in this folder. Read `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md` before Step 2 so the rules you write into AGENTS.md match how the other skills work. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 
-The user has installed the plugin from the Claude app and typed `/sugar-theme:setup` in a new conversation. **If AGENTS.md already says `Setup: finish pending`, go straight to Step 6.**
+The user has installed the plugin from the Claude app and typed `/sugar-theme:setup` in a new conversation. **If AGENTS.md already says `Setup: browsers pending`, go straight to Step 6.**
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
@@ -34,18 +34,17 @@ Nothing here needs an administrator password, so you do all of it. Check what ex
   Your shell does not pick up the new install on its own for the rest of this conversation. Start every command that needs `node`, `npm` or `npx` from here on with `. ~/.nvm/nvm.sh &&`, beginning with `. ~/.nvm/nvm.sh && nvm install --lts`. From the next conversation on it is on the path by itself.
 - **Shopify CLI**: `npm install -g @shopify/cli@latest`. Run it again to update. npm prints a warning that it blocked an install script belonging to `esbuild`; that is expected and harmless, say so if the user sees it.
 - **sharp**, the image library behind the plugin's `scripts/zoom.js`, which crops and enlarges screenshots and puts a reference and a clone side by side: `npm install -g sharp`. No compiler, no Python.
-- **Two headless browsers**, Chromium (Chrome's engine) and WebKit (Safari's). The plugin registers both itself, so there is nothing to add or configure; fetch the engines once, through the plugin's launcher so they match the version it runs:
+- **Two headless browsers**, Chromium (Chrome's engine) and WebKit (Safari's). The plugin registers both itself, so there is nothing to add or configure. One command installs the browser server at the version the plugin pins, so every conversation starts it from disk with no download, and fetches both browser engines:
 
   ```bash
-  bash ${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh install-browser chromium
-  bash ${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh install-browser webkit
+  bash ${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh setup
   ```
 
   Neither needs Google Chrome or Safari installed. Both run headless: no window opens and nothing steals focus while the agent checks its own work. Explain what headless means and offer the visible version after setup if they want to watch the agent work.
 
 If a tool is already installed and current, say so and move on; do not reinstall.
 
-**The browsers start with the conversation.** The app launches them when a conversation opens, so they are not available in a conversation that started before the plugin or Node.js was there: their only tool then says so (`browser_setup_needed`), or they are absent. That is expected, not a fault. They are checked in Step 6.
+**The browsers start with the conversation.** The app launches them when a conversation opens, so they are not available in a conversation that started before Node.js was there: their only tool then says so (`browser_setup_needed`). That is expected, not a fault. They are checked in Step 6.
 
 After installation, tell the user what each tool does, specifically how it helps them edit their Sugar Theme.
 
@@ -98,7 +97,7 @@ Say that the choice is theirs, that it is one line in AGENTS.md they can change 
 
 # Step 5: Project files
 
-Write the files now, once, with every value known. Never write AGENTS.md with placeholders: if a value is missing because a step was skipped, leave that line out and write `Setup: incomplete, <what is missing>` in the Working Theme block so any skill that reads it sends the user back here. If the browsers still have to be checked in the next conversation (Step 6), write `Setup: finish pending`; otherwise `Setup: complete`.
+Write the files now, once, with every value known. Never write AGENTS.md with placeholders: if a value is missing because a step was skipped, leave that line out and write `Setup: incomplete, <what is missing>` in the Working Theme block so any skill that reads it sends the user back here. If the browsers still have to be checked in the next conversation (Step 6), write `Setup: browsers pending`; otherwise `Setup: complete`.
 
 Create `custom-sections-blocks.md` in the project folder from `${CLAUDE_PLUGIN_ROOT}/references/custom-sections-blocks.md`: copy the file as it is; its instructions and examples are inside comments. It is the log where every agent records the files it creates and the shipped Sugar files it changes. Creating it here means every other skill can assume it exists and just append.
 
@@ -110,9 +109,11 @@ Then the system prompt. Check the project folder for AGENTS.md and CLAUDE.md, an
 
 # Step 6: Browsers
 
+The browsers start in the background as a conversation opens and can take a few seconds. If their tools are not there yet, wait and look again (in Claude Code, search your tools for "playwright", which waits for servers that are still starting). Never decide they are missing from a first look.
+
 When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store each browser keeps its own login, so the user enters the storefront password once per browser here and never again. Then set `Setup: complete` in AGENTS.md.
 
-When they answer with `browser_setup_needed` because Node.js was installed during this conversation, leave `Setup: finish pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
+Only when they answer with `browser_setup_needed`, because Node.js was installed during this conversation, leave `Setup: browsers pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
 
 Then tell the user setup is done and what they can ask for now, in two or three examples in their words ("build me a comparison table on my product page", "clone this section from a competitor's site", "make my page faster").
 
@@ -139,9 +140,9 @@ When a task needs a file on disk, use a scratch folder in the system temp direct
 - **Store:** [store].myshopify.com
 - **Working theme:** [name] (ID [id])
 - **Live edits:** no | yes
-- **Setup:** complete | finish pending | incomplete, <what is missing>
+- **Setup:** complete | browsers pending | incomplete, <what is missing>
 
-If Setup is not `complete`, run the `/sugar-theme:setup` skill before anything else in the conversation, even if the user's first message is about something else: it finishes what is missing and sets this line to `complete`. Every read and write goes to the working theme unless the user names another one in the conversation. Publishing is a separate act the user does from their admin, or asks for. At the start of every task, check the working theme's role by its ID (the store-editing reference says how): if it has been published and live edits are `no`, make a fresh draft copy once, update this line, and tell the user in one sentence; if it no longer exists, ask which theme to work on. When live edits are `yes`, say "this is your live theme" before each change, since customers will see it.
+If Setup says `incomplete`, run the `/sugar-theme:setup` skill before anything else: a store, theme or sign-in is missing and no task can work without it. `browsers pending` never holds up the user's request: do the task they asked for, and run setup's browser check (its Step 6) the first time the task needs the browsers, then set this line to `complete`. If the browsers can't be reached, finish the task anyway, say which checks you couldn't run in them, and leave the line as it is. Every read and write goes to the working theme unless the user names another one in the conversation. Publishing is a separate act the user does from their admin, or asks for. At the start of every task, check the working theme's role by its ID (the store-editing reference says how): if it has been published and live edits are `no`, make a fresh draft copy once, update this line, and tell the user in one sentence; if it no longer exists, ask which theme to work on. When live edits are `yes`, say "this is your live theme" before each change, since customers will see it.
 
 ## Sharing
 
@@ -171,7 +172,7 @@ Every file you create in the theme, and every shipped Sugar file you change, get
 
 ## Thorough Agent Testing & Verification
 
-The user should never have to do extensive quality or functional testing after a change. They should be able to trust you with their theme and storefront. That means testing every change you make yourself, in both viewports and both browsers, thinking about how one of the user's real customers would interact with it, and making sure it works without bugs, quirks or regressions.
+The user should never have to do extensive quality or functional testing after a change. They should be able to trust you with their theme and storefront. That means testing every change you make yourself, in both viewports and both browsers (they start in the background with each conversation; if their tools aren't there yet, wait a few seconds and look again), thinking about how one of the user's real customers would interact with it, and making sure it works without bugs, quirks or regressions.
 
 ## Feedback
 

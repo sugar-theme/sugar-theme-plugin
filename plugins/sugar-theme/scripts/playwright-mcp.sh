@@ -3,7 +3,7 @@
 # runs its browser installs for the setup skill:
 #
 #   playwright-mcp.sh --headless --browser chromium ...   (from .mcp.json)
-#   playwright-mcp.sh install-browser chromium            (from setup)
+#   playwright-mcp.sh setup                               (from setup: server + both browsers)
 #
 # The version is pinned here, in one place: an unpinned server moves ahead of
 # the browsers setup downloaded and then refuses to open them. Raise it together
@@ -25,6 +25,19 @@ if ! command -v npx >/dev/null 2>&1; then
 fi
 
 if command -v npx >/dev/null 2>&1; then
+  # Setup installs the pinned server once (`playwright-mcp.sh setup`), so a
+  # conversation starts it from disk with no network. Anything else falls back
+  # to npx, which fetches the same pinned version.
+  if [ "$1" = "setup" ]; then
+    npm install -g "@playwright/mcp@$PLAYWRIGHT_MCP_VERSION" &&
+      bash "$0" install-browser chromium &&
+      bash "$0" install-browser webkit
+    exit $?
+  fi
+  INSTALLED="$(npm root -g 2>/dev/null)/@playwright/mcp"
+  if [ -f "$INSTALLED/cli.js" ] && grep -q "\"version\": \"$PLAYWRIGHT_MCP_VERSION\"" "$INSTALLED/package.json" 2>/dev/null; then
+    exec node "$INSTALLED/cli.js" "$@"
+  fi
   exec npx -y "@playwright/mcp@$PLAYWRIGHT_MCP_VERSION" "$@"
 fi
 
@@ -32,7 +45,7 @@ fi
 # placeholder with one tool that says what to do, so a fresh install does not
 # greet the user with a connection error before setup has run.
 case "$1" in
-  install*)
+  install*|setup)
     echo "Node.js is not installed yet. Install it first (see the setup skill)." >&2
     exit 1
     ;;
