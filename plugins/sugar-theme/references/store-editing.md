@@ -110,11 +110,11 @@ For your own checks in the headless browsers, and for anything the editor cannot
 https://STORE.myshopify.com/products/HANDLE?preview_theme_id=THEME_ID
 ```
 
-On a password-protected store each headless browser keeps its own login; the user entered the password once per browser during setup.
+On a password-protected store, a browser that lands on the password page takes the storefront password from the Working Theme block in AGENTS.md.
 
 ## When a full local copy is needed
 
-Some work wants the CLI's local preview server, which reloads as you edit and needs no storefront password:
+Some work wants the CLI's local preview server, which reloads as you edit. On a password-protected store, add `--store-password` with the storefront password from AGENTS.md:
 
 ```bash
 shopify theme dev --store STORE.myshopify.com --theme THEME_ID --path "$TMPDIR/sugar-theme/STORE/THEME_ID"

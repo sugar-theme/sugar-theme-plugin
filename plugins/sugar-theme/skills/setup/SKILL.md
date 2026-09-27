@@ -14,7 +14,7 @@ The user has installed the plugin from the Claude app and typed `/sugar-theme:se
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
-**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected there is one more step: the store password, typed once into each of the agent's two browsers.
+**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
 
 # Step 1: Tools
 
@@ -55,6 +55,8 @@ The store first. Don't ask for a "myshopify address"; most users don't know it. 
 Then run the theme list command yourself (see the store-editing reference). The first Shopify command opens a browser window where they click **Log in** once, and that is the whole Shopify login; say so before you run it.
 
 Ask which theme to work on, with the AskUserQuestion tool (or your agent's equivalent): one button per theme on the store, the live one marked as what customers see.
+
+**Storefront password.** Check it yourself; don't ask whether there is one. Request the store's home page without following redirects (`curl -s -o /dev/null -w "%{redirect_url}" https://NAME.myshopify.com/`): an address ending in `/password` means the storefront is password-protected. Development stores and stores on a free trial usually are, and the agent's browsers need that password to see the store. Only then ask for it: say it is the storefront password from **Online Store → Preferences → Password protection**, the code Shopify has them share with anyone previewing the store, and **not** the password they sign in to Shopify with. It goes in the Working Theme block of AGENTS.md (Step 5). Don't suggest turning the password off; it is theirs to decide, and it costs nothing to leave it on until they start driving traffic.
 
 **The working theme is always a draft.** If the user picked a draft, that is the working theme and nothing more is asked. If they picked the live theme, ask one more question: make a copy and work on that (recommended; they publish it when happy), or edit the live theme directly (customers see every change as it happens). On the first, duplicate the live theme now, name the copy clearly (their theme's name plus "agent draft"), and remember the copy as the working theme. On the second, remember the live theme and **Live edits: yes**; every skill then says "this is your live theme" before each change.
 
@@ -111,7 +113,7 @@ Then the system prompt. Check the project folder for AGENTS.md and CLAUDE.md, an
 
 The browsers start in the background as a conversation opens and can take a few seconds. If their tools are not there yet, wait and look again (in Claude Code, search your tools for "playwright", which waits for servers that are still starting). Never decide they are missing from a first look.
 
-When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store each browser keeps its own login, so the user enters the storefront password once per browser here and never again. Then set `Setup: complete` in AGENTS.md.
+When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store, enter the storefront password from AGENTS.md on each browser's password page; each browser remembers it after that. Then set `Setup: complete` in AGENTS.md.
 
 Only when they answer with `browser_setup_needed`, because Node.js was installed during this conversation, leave `Setup: browsers pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
 
@@ -140,9 +142,12 @@ When a task needs a file on disk, use a scratch folder in the system temp direct
 - **Store:** [store].myshopify.com
 - **Working theme:** [name] (ID [id])
 - **Live edits:** no | yes
+- **Storefront password:** [the storefront password] (leave this line out when the storefront is open)
 - **Setup:** complete | browsers pending | incomplete, <what is missing>
 
 If Setup says `incomplete`, run the `/sugar-theme:setup` skill before anything else: a store, theme or sign-in is missing and no task can work without it. `browsers pending` never holds up the user's request: do the task they asked for, and run setup's browser check (its Step 6) the first time the task needs the browsers, then set this line to `complete`. If the browsers can't be reached, finish the task anyway, say which checks you couldn't run in them, and leave the line as it is. Every read and write goes to the working theme unless the user names another one in the conversation. Publishing is a separate act the user does from their admin, or asks for. At the start of every task, check the working theme's role by its ID (the store-editing reference says how): if it has been published and live edits are `no`, make a fresh draft copy once, update this line, and tell the user in one sentence; if it no longer exists, ask which theme to work on. When live edits are `yes`, say "this is your live theme" before each change, since customers will see it.
+
+When a browser lands on the store's password page, enter the storefront password above and carry on; each browser remembers it after that. If Shopify rejects it, ask the user for the current one (Online Store → Preferences), update the line, and never ask for or use their Shopify login instead. Never include this password in anything sent through the Sugar Theme MCP.
 
 ## Sharing
 
