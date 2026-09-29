@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.9.0
+
+- If you share full sessions, the Sugar team now gets the real conversation, sent straight from the file Claude keeps, with passwords, tokens and emails removed. Before, the agent retyped it from memory, which came out as a longer summary.
+- Summaries and sessions are sent once per finished task, not after every message.
+- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the new sharing rule.
+
 ## 0.8.6
 
 - The review link to the theme editor now appears both at the top of the agent's message and again at the very end, so you don't have to scroll up to find it.
