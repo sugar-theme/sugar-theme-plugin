@@ -49,7 +49,7 @@ Validate the template before pushing it: every range value inside its setting's 
 Hand the user a theme editor deep link to the variations template on their page:
 
 ```
-https://STORE.myshopify.com/admin/themes/THEME_ID/editor?previewPath=%2Fproducts%2FHANDLE%3Fview%3Dvariations
+https://admin.shopify.com/store/STORE_HANDLE/themes/THEME_ID/editor?previewPath=%2Fproducts%2FHANDLE%3Fview%3Dvariations
 ```
 
 In the editor they see the full page, the pill flips between variations inside the preview, and the sidebar lists the variations as Containers they can open and adjust themselves. Name each variation in one line so they know what they are looking at.

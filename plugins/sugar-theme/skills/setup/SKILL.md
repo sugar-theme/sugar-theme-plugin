@@ -34,6 +34,23 @@ Nothing here needs an administrator password, so you do all of it. Check what ex
   Your shell does not pick up the new install on its own for the rest of this conversation. Start every command that needs `node`, `npm` or `npx` from here on with `. ~/.nvm/nvm.sh &&`, beginning with `. ~/.nvm/nvm.sh && nvm install --lts`. From the next conversation on it is on the path by itself.
 - **Shopify CLI**: `npm install -g @shopify/cli@latest`. Run it again to update. npm prints a warning that it blocked an install script belonging to `esbuild`; that is expected and harmless, say so if the user sees it.
 - **sharp**, the image library behind the plugin's `scripts/zoom.js`, which crops and enlarges screenshots and puts a reference and a clone side by side: `npm install -g sharp`. No compiler, no Python.
+- **Google Chrome, the user's own browser.** Check for it (`/Applications/Google Chrome.app` or `~/Applications/Google Chrome.app`). If it is missing, strongly recommend it, in plain words:
+  - Shopify's theme editor works noticeably better in Chrome than in Safari: smoother dragging and editing, fewer freezes.
+  - Claude in Chrome, the extension that lets an agent work in their real, signed-in browser, only runs in Chrome.
+  - Most desktop shoppers browse in Chrome, so it is the browser worth checking the store in.
+  - Google's speed tests (Lighthouse, PageSpeed) are built on it, so results match what they will see there.
+
+  Ask whether to install it now (recommended). On a yes, install it from Google's own address; nothing here needs a password:
+
+  ```bash
+  curl -fL -o "$TMPDIR/googlechrome.dmg" https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg
+  hdiutil attach -nobrowse -quiet "$TMPDIR/googlechrome.dmg" -mountpoint "$TMPDIR/chrome-dmg"
+  dest=/Applications; [ -w "$dest" ] || { dest="$HOME/Applications"; mkdir -p "$dest"; }
+  cp -R "$TMPDIR/chrome-dmg/Google Chrome.app" "$dest/"
+  hdiutil detach -quiet "$TMPDIR/chrome-dmg"; rm -f "$TMPDIR/googlechrome.dmg"
+  ```
+
+  Then ask them to open Chrome, sign in to their Shopify admin there, and accept when Chrome offers to become the default browser. The review links you hand them open in the default browser, and one that isn't signed in to Shopify shows a login page instead of the editor. If Chrome is already installed, check whether it is the default (`defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers | grep -B3 'LSHandlerURLScheme = https;'` names `com.google.chrome` when it is) and, if not, make the same suggestion once. If they decline either, carry on.
 - **Two headless browsers**, Chromium (Chrome's engine) and WebKit (Safari's). The plugin registers both itself, so there is nothing to add or configure. One command installs the browser server at the version the plugin pins, so every conversation starts it from disk with no download, and fetches both browser engines:
 
   ```bash
@@ -175,7 +192,7 @@ Do not snapshot these values into this project; they drift the moment the user t
 
 ## Review Links
 
-The link you hand the user to review your work is a theme editor deep link to the exact theme and page (`/admin/themes/[id]/editor?previewPath=...`). In the editor they get the full-page preview and can add or remove things themselves. A storefront preview link is the fallback for what the editor cannot show, such as checkout.
+The link you hand the user to review your work is a theme editor deep link to the exact theme and page, on Shopify's admin address: `https://admin.shopify.com/store/[handle]/themes/[id]/editor?previewPath=...`, where the handle is the part of the store address before `.myshopify.com`. Never the store's own address plus `/admin`. It opens in their default browser, which has to be signed in to Shopify; if they report a login or password page instead of the editor, that is the reason. In the editor they get the full-page preview and can add or remove things themselves. A storefront preview link is the fallback for what the editor cannot show, such as checkout.
 
 ## Editing Constraints
 

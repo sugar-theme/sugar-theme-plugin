@@ -99,8 +99,10 @@ Record the new theme's ID in AGENTS.md as the working theme. The user publishes 
 Hand the user a **theme editor deep link** to the exact theme and page. They see the full page and can add or remove things themselves:
 
 ```
-https://STORE.myshopify.com/admin/themes/THEME_ID/editor?previewPath=%2Fproducts%2FHANDLE
+https://admin.shopify.com/store/STORE_HANDLE/themes/THEME_ID/editor?previewPath=%2Fproducts%2FHANDLE
 ```
+
+`STORE_HANDLE` is the store address without `.myshopify.com`. Always this admin address, never `STORE.myshopify.com/admin/...`: that one detours through the storefront's own address first. The link opens in the user's default browser, which must be signed in to Shopify.
 
 Encode the path. To open an alternate template, include its `view` query in the path: `%2Fproducts%2FHANDLE%3Fview%3Dvariations`.
 

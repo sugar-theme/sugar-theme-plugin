@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.8.3
+
+- Setup checks for Google Chrome and strongly recommends it: Shopify's editor runs better there than in Safari, and Claude in Chrome needs it. It can install Chrome for you and suggests making it your default browser.
+- Review links now use Shopify's admin address (admin.shopify.com/store/…), the same one you'd copy from your own admin.
+- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the new review-link rule.
+
 ## 0.8.2
 
 - Small wording fixes: the enhance skill checks whether your working theme is the live one, setup names the Shopify app exactly as the approval page shows it, and orders or customers can be added to the store permission when a task needs them, after asking you.
