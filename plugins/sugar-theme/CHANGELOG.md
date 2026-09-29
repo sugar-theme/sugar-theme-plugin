@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.8.6
+
+- The review link to the theme editor now appears both at the top of the agent's message and again at the very end, so you don't have to scroll up to find it.
+- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the rule.
+
 ## 0.8.5
 
 - Build and freestyle read the page you're adding to before suggesting anything, so they no longer propose something it already has.

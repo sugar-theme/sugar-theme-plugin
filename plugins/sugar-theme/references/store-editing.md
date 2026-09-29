@@ -96,7 +96,7 @@ https://admin.shopify.com/store/STORE_HANDLE/themes/THEME_ID/editor?previewPath=
 
 `STORE_HANDLE` is the store address without `.myshopify.com`. Always this admin address, never `STORE.myshopify.com/admin/...`: that one detours through the storefront's own address first. The link opens in the user's default browser, which must be signed in to Shopify.
 
-Encode the path. To open an alternate template, include its `view` query in the path: `%2Fproducts%2FHANDLE%3Fview%3Dvariations`.
+Give the link near the top of the delivery message and again as its last line; a long reply shouldn't make the user scroll back up for it. Encode the path. To open an alternate template, include its `view` query in the path: `%2Fproducts%2FHANDLE%3Fview%3Dvariations`.
 
 For your own checks in the headless browsers, and for anything the editor cannot show (checkout, an app block that needs a real session), use the storefront preview link:
 

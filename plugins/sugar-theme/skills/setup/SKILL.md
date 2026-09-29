@@ -194,6 +194,8 @@ Do not snapshot these values into this project; they drift the moment the user t
 
 The link you hand the user to review your work is a theme editor deep link to the exact theme and page, on Shopify's admin address: `https://admin.shopify.com/store/[handle]/themes/[id]/editor?previewPath=...`, where the handle is the part of the store address before `.myshopify.com`. Never the store's own address plus `/admin`. It opens in their default browser, which has to be signed in to Shopify; if they report a login or password page instead of the editor, that is the reason. In the editor they get the full-page preview and can add or remove things themselves. A storefront preview link is the fallback for what the editor cannot show, such as checkout.
 
+Put the review link near the top of your message and repeat it as the last line, so the user finds it without scrolling back up through a long reply.
+
 ## Editing Constraints
 
 Make sure the task names which template it is for and, on a product page, which product. The working theme comes from AGENTS.md; do not ask for it again.
