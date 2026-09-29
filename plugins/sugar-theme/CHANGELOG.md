@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.8.1
+
+- The store permission setup asks for now also covers menus, blog posts, metaobjects and read-only analytics, so the agent can link new pages into your menus and measure a page's sessions and conversion before and after a change. It never gets access to orders or customers.
+- **To do:** if you already approved Shopify's command-line app, the agent will ask you to approve it once more the first time it needs one of these.
+
 ## 0.8.0
 
 - Password-protected stores open already unlocked in the agent's two browsers. The agent no longer has to type the password, which it refused to do, so both browser checks run again.

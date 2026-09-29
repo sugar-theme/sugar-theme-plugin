@@ -112,7 +112,7 @@ https://STORE.myshopify.com/products/HANDLE?preview_theme_id=THEME_ID
 
 On a password-protected store the browsers open the store already unlocked, from the storefront password in AGENTS.md. Never type the password into the store's password page; if one appears, follow the rule in AGENTS.md.
 
-## Store data: products, discounts, pages and Files
+## Store data: products, discounts, pages, menus, blog posts, Files and analytics
 
 Theme commands can't touch store data. The Admin API can, through the Shopify CLI, once the user has approved Shopify's command-line app (setup asks for it):
 
@@ -125,9 +125,10 @@ shopify store execute --store STORE.myshopify.com --query-file mutation.graphql 
 - "Not authorised", an expired token or a missing permission all mean the same fix: run the approval again, and tell the user a Shopify page will ask them to approve.
 
   ```bash
-  shopify store auth --store STORE.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages
+  shopify store auth --store STORE.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages,read_online_store_navigation,write_online_store_navigation,read_content,write_content,read_metaobjects,write_metaobjects,read_metaobject_definitions,write_metaobject_definitions,read_reports
   ```
 - Uploading an image to Files: `stagedUploadsCreate` returns an upload URL and form fields; POST the file there with `curl`; then `fileCreate` with the returned resource URL and alt text. A template references it as `shopify://shop_images/<filename>`. If any step fails, hand the user the file instead.
+- Analytics are read-only: `shopifyqlQuery` answers questions like a page's sessions and conversion rate, so a change can be measured before and after. Totals only; the approval gives no access to orders or customers.
 - A product's template is its `templateSuffix` (`productUpdate`); a page's is the page's `templateSuffix` (`pageCreate` / `pageUpdate`).
 
 ## When a full local copy is needed

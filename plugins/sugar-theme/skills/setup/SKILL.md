@@ -14,7 +14,7 @@ The user has installed the plugin from the Claude app and typed `/sugar-theme:se
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
-**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates, and approve Shopify's command-line app once so the agent can create products, discounts and pages for them. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
+**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates, and approve Shopify's command-line app once so the agent can create products, discounts, pages and menus for them and read their store's analytics. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
 
 # Step 1: Tools
 
@@ -60,10 +60,10 @@ Ask which theme to work on, with the AskUserQuestion tool (or your agent's equiv
 
 **The working theme is always a draft.** If the user picked a draft, that is the working theme and nothing more is asked. If they picked the live theme, ask one more question: make a copy and work on that (recommended; they publish it when happy), or edit the live theme directly (customers see every change as it happens). On the first, duplicate the live theme now, name the copy clearly (their theme's name plus "agent draft"), and remember the copy as the working theme. On the second, remember the live theme and **Live edits: yes**; every skill then says "this is your live theme" before each change.
 
-**Store data.** The theme sign-in above reaches theme files only. Creating products, variants and discounts, publishing to sales channels, making pages and uploading images to the store's Files need a second, one-time approval of Shopify's own command-line app. Ask for it now, so it never interrupts a task. Say what is about to happen (a Shopify page opens asking them to approve **Shopify CLI**; it appears afterwards under Settings → Apps, and it is Shopify's app, not Sugar's), then run:
+**Store data.** The theme sign-in above reaches theme files only. Creating products, variants and discounts, publishing to sales channels, making pages, menus and blog posts, uploading images to the store's Files and reading the store's analytics need a second, one-time approval of Shopify's own command-line app. Ask for it now, so it never interrupts a task. Say what is about to happen (a Shopify page opens asking them to approve **Shopify CLI**; it appears afterwards under Settings → Apps, and it is Shopify's app, not Sugar's), then run:
 
 ```bash
-shopify store auth --store NAME.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages
+shopify store auth --store NAME.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages,read_online_store_navigation,write_online_store_navigation,read_content,write_content,read_metaobjects,write_metaobjects,read_metaobject_definitions,write_metaobject_definitions,read_reports
 ```
 
 If the command isn't recognised, the Shopify CLI is too old: update it (Step 1) and run it again. If they'd rather not approve it, carry on; the theme work doesn't need it, and a task that does will say so.
@@ -159,7 +159,7 @@ The agent's browsers read the storefront password from this line when a conversa
 
 ## Store Data
 
-Products, discounts, sales channels, pages and the store's Files are changed through the Admin API, as the store-editing reference describes. These changes are live the moment they run: a product or discount is not part of the draft theme, so customers can see it. Before any change to them, say exactly what you are about to create or change and get a yes. If the Admin API answers that you are not authorised, the approval has expired or lacks a permission: re-run the approval (the store-editing reference has the command) and tell the user a Shopify page will ask them to approve again.
+Products, discounts, sales channels, pages, menus, blog posts, metaobjects and the store's Files are changed through the Admin API, as the store-editing reference describes. These changes are live the moment they run: a product, discount or menu is not part of the draft theme, so customers can see it. Reading the store's analytics changes nothing and needs no yes. Before any change to them, say exactly what you are about to create or change and get a yes. If the Admin API answers that you are not authorised, the approval has expired or lacks a permission: re-run the approval (the store-editing reference has the command) and tell the user a Shopify page will ask them to approve again.
 
 ## Sharing
 
