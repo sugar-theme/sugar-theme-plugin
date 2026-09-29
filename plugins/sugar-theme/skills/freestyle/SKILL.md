@@ -37,7 +37,7 @@ The user may like more than one suggestion and ask to see them all built before 
 
 **Before starting, make sure you know exactly which template and, where relevant, which product you are building on.** The theme itself comes from AGENTS.md. If the user has not named the template or product, and nothing in the project says which to use, ask. Do not assume. If the working theme is the live theme, say so before you change it.
 
-Once the user has decided on a concept, build the new files on their theme. Name every section and block you place, as described in the store-editing reference, so the editor's sidebar says what it is and where it sits. Read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md` first and follow it: it covers choosing between section and theme blocks, the settings the user expects to find, the theme features to reuse, performance, and the design habits that make a file look generated rather than designed.
+Once the user has decided on a concept, build the new files on their theme. Read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md` first and follow it: it covers choosing between section and theme blocks, the settings the user expects to find, the theme features to reuse, performance, and the design habits that make a file look generated rather than designed.
 
 Ask the user for the name and category the new section or block should show in the theme editor, since those are what they will see. When the build is done, log every new section, block or snippet in the project's `custom-sections-blocks.md` with what it does, what it depends on and when to use it, so future agents find it instead of building it again.
 

@@ -2,6 +2,10 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.8.4
+
+- The agent no longer renames the sections and blocks it places on your pages. They keep their normal names in the editor, which keeps the sidebar uncluttered. New sections and blocks it creates still get a clear name.
+
 ## 0.8.3
 
 - Setup checks for Google Chrome and strongly recommends it: Shopify's editor runs better there than in Safari, and Claude in Chrome needs it. It can install Chrome for you and suggests making it your default browser.
