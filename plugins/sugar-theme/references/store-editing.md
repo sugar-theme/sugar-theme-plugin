@@ -128,7 +128,7 @@ shopify store execute --store STORE.myshopify.com --query-file mutation.graphql 
   shopify store auth --store STORE.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages,read_online_store_navigation,write_online_store_navigation,read_content,write_content,read_metaobjects,write_metaobjects,read_metaobject_definitions,write_metaobject_definitions,read_reports
   ```
 - Uploading an image to Files: `stagedUploadsCreate` returns an upload URL and form fields; POST the file there with `curl`; then `fileCreate` with the returned resource URL and alt text. A template references it as `shopify://shop_images/<filename>`. If any step fails, hand the user the file instead.
-- Analytics are read-only: `shopifyqlQuery` answers questions like a page's sessions and conversion rate, so a change can be measured before and after. Totals only; the approval gives no access to orders or customers.
+- Analytics are read-only: `shopifyqlQuery` answers questions like a page's sessions and conversion rate, so a change can be measured before and after. Totals only: setup's approval leaves out orders and customers. If a task needs them, ask the user and re-run the approval with those permissions added.
 - A product's template is its `templateSuffix` (`productUpdate`); a page's is the page's `templateSuffix` (`pageCreate` / `pageUpdate`).
 
 ## When a full local copy is needed
