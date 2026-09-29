@@ -23,6 +23,8 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 # Step 1: Brainstorm
 
+**When the work goes on a page that already exists, read that template from the working theme before suggesting anything** (the store-editing reference says how). Know what is already on it, so you don't propose something it has, such as a second comparison table, and so your options fit around what is there. If the user hasn't said which page yet, ask first. This doesn't apply when the task is creating a new template.
+
 Thoroughly analyze the user's request, their existing design components, their styling, their brand, their target audience and, most importantly, their product. Think about the different ways their goal, idea or concept can be materialized.
 
 Read the working theme's brand settings before proposing anything: the new file will bind to the theme's typography, color schemes, corners and buttons, so every option should be imagined in the user's type and colors, not generic ones. Read the project's `custom-sections-blocks.md` too, in case an earlier agent already built something close.
