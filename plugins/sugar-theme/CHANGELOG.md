@@ -2,6 +2,14 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 0.8.0
+
+- Password-protected stores open already unlocked in the agent's two browsers. The agent no longer has to type the password, which it refused to do, so both browser checks run again.
+- Setup asks once for Shopify's permission to create products, discounts and pages and to upload images to your Files, instead of stopping a task to ask.
+- Before any change to products, discounts or pages, the agent tells you exactly what it will change and waits for your yes. Those changes are live immediately, even while you work on a draft theme.
+- The custom files log only lists reusable sections, blocks and snippets, not page templates.
+- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up these rules and approve the store permission.
+
 ## 0.7.0
 
 - The agent now checks for a newer Sugar plugin when you start a task, and offers to update it for you. It always asks first.

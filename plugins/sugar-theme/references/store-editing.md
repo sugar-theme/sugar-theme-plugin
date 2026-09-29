@@ -110,7 +110,25 @@ For your own checks in the headless browsers, and for anything the editor cannot
 https://STORE.myshopify.com/products/HANDLE?preview_theme_id=THEME_ID
 ```
 
-On a password-protected store, a browser that lands on the password page takes the storefront password from the Working Theme block in AGENTS.md.
+On a password-protected store the browsers open the store already unlocked, from the storefront password in AGENTS.md. Never type the password into the store's password page; if one appears, follow the rule in AGENTS.md.
+
+## Store data: products, discounts, pages and Files
+
+Theme commands can't touch store data. The Admin API can, through the Shopify CLI, once the user has approved Shopify's command-line app (setup asks for it):
+
+```bash
+shopify store execute --store STORE.myshopify.com --query 'query { shop { name } }'
+shopify store execute --store STORE.myshopify.com --query-file mutation.graphql --variable-file vars.json --allow-mutations
+```
+
+- Reads run as they are. A write only runs with `--allow-mutations`, and every write is live on the store the moment it runs, draft theme or not. Say what it will create or change and get a yes first.
+- "Not authorised", an expired token or a missing permission all mean the same fix: run the approval again, and tell the user a Shopify page will ask them to approve.
+
+  ```bash
+  shopify store auth --store STORE.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages
+  ```
+- Uploading an image to Files: `stagedUploadsCreate` returns an upload URL and form fields; POST the file there with `curl`; then `fileCreate` with the returned resource URL and alt text. A template references it as `shopify://shop_images/<filename>`. If any step fails, hand the user the file instead.
+- A product's template is its `templateSuffix` (`productUpdate`); a page's is the page's `templateSuffix` (`pageCreate` / `pageUpdate`).
 
 ## When a full local copy is needed
 

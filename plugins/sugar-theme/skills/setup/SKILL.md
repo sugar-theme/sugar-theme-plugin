@@ -14,7 +14,7 @@ The user has installed the plugin from the Claude app and typed `/sugar-theme:se
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
-**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
+**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates, and approve Shopify's command-line app once so the agent can create products, discounts and pages for them. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
 
 # Step 1: Tools
 
@@ -56,9 +56,17 @@ Then run the theme list command yourself (see the store-editing reference). The 
 
 Ask which theme to work on, with the AskUserQuestion tool (or your agent's equivalent): one button per theme on the store, the live one marked as what customers see.
 
-**Storefront password.** Check it yourself; don't ask whether there is one. Request the store's home page without following redirects (`curl -s -o /dev/null -w "%{redirect_url}" https://NAME.myshopify.com/`): an address ending in `/password` means the storefront is password-protected. Development stores and stores on a free trial usually are, and the agent's browsers need that password to see the store. Only then ask for it: say it is the storefront password from **Online Store → Preferences → Password protection**, the code Shopify has them share with anyone previewing the store, and **not** the password they sign in to Shopify with. It goes in the Working Theme block of AGENTS.md (Step 5). Don't suggest turning the password off; it is theirs to decide, and it costs nothing to leave it on until they start driving traffic.
+**Storefront password.** Check it yourself; don't ask whether there is one. Request the store's home page without following redirects (`curl -s -o /dev/null -w "%{redirect_url}" https://NAME.myshopify.com/`): an address ending in `/password` means the storefront is password-protected. Development stores and stores on a free trial usually are, and the agent's browsers need that password to see the store. Only then ask for it: say it is the storefront password from **Online Store → Preferences → Password protection**, the code Shopify has them share with anyone previewing the store, and **not** the password they sign in to Shopify with. It goes in the Working Theme block of AGENTS.md (Step 5), where the agent's browsers read it each time a conversation starts and open the store already unlocked; never type it into the password page yourself. Don't suggest turning the password off; it is theirs to decide, and it costs nothing to leave it on until they start driving traffic.
 
 **The working theme is always a draft.** If the user picked a draft, that is the working theme and nothing more is asked. If they picked the live theme, ask one more question: make a copy and work on that (recommended; they publish it when happy), or edit the live theme directly (customers see every change as it happens). On the first, duplicate the live theme now, name the copy clearly (their theme's name plus "agent draft"), and remember the copy as the working theme. On the second, remember the live theme and **Live edits: yes**; every skill then says "this is your live theme" before each change.
+
+**Store data.** The theme sign-in above reaches theme files only. Creating products, variants and discounts, publishing to sales channels, making pages and uploading images to the store's Files need a second, one-time approval of Shopify's own command-line app. Ask for it now, so it never interrupts a task. Say what is about to happen (a Shopify page opens asking them to approve **Shopify CLI**; it appears afterwards under Settings → Apps, and it is Shopify's app, not Sugar's), then run:
+
+```bash
+shopify store auth --store NAME.myshopify.com --scopes read_products,write_products,read_discounts,write_discounts,read_publications,write_publications,read_inventory,write_inventory,read_locations,read_files,write_files,read_online_store_pages,write_online_store_pages
+```
+
+If the command isn't recognised, the Shopify CLI is too old: update it (Step 1) and run it again. If they'd rather not approve it, carry on; the theme work doesn't need it, and a task that does will say so.
 
 Nobody duplicates per task. Every later session edits the same working theme, which is what keeps two sessions from ending up on three themes. The theme is recorded by ID, never by name, and the store-editing reference tells every skill to check that ID's role at the start of each task: if the draft has since been published, the agent makes a fresh draft once and updates the line, without asking.
 
@@ -113,7 +121,7 @@ Then the system prompt. Check the project folder for AGENTS.md and CLAUDE.md, an
 
 The browsers start in the background as a conversation opens and can take a few seconds. If their tools are not there yet, wait and look again (in Claude Code, search your tools for "playwright", which waits for servers that are still starting). Never decide they are missing from a first look.
 
-When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store, enter the storefront password from AGENTS.md on each browser's password page; each browser remembers it after that. Then set `Setup: complete` in AGENTS.md.
+When the browsers answer: open a page of the user's store in each browser and take a screenshot. Open the cart drawer and confirm it moves across several frames. Confirm the app in front of the user did not change. On a password-protected store the browsers open the store already unlocked: they read the storefront password from AGENTS.md when the conversation starts. In the conversation that wrote AGENTS.md they started before the password was there, so leave `Setup: browsers pending` and let the next task run this check. A password page in a later conversation means the saved password is wrong; see AGENTS.md. Then set `Setup: complete` in AGENTS.md.
 
 Only when they answer with `browser_setup_needed`, because Node.js was installed during this conversation, leave `Setup: browsers pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
 
@@ -147,7 +155,11 @@ When a task needs a file on disk, use a scratch folder in the system temp direct
 
 If Setup says `incomplete`, run the `/sugar-theme:setup` skill before anything else: a store, theme or sign-in is missing and no task can work without it. `browsers pending` never holds up the user's request: do the task they asked for, and run setup's browser check (its Step 6) the first time the task needs the browsers, then set this line to `complete`. If the browsers can't be reached, finish the task anyway, say which checks you couldn't run in them, and leave the line as it is. Every read and write goes to the working theme unless the user names another one in the conversation. Publishing is a separate act the user does from their admin, or asks for. At the start of every task, check the working theme's role by its ID (the store-editing reference says how): if it has been published and live edits are `no`, make a fresh draft copy once, update this line, and tell the user in one sentence; if it no longer exists, ask which theme to work on. When live edits are `yes`, say "this is your live theme" before each change, since customers will see it.
 
-When a browser lands on the store's password page, enter the storefront password above and carry on; each browser remembers it after that. If Shopify rejects it, ask the user for the current one (Online Store → Preferences), update the line, and never ask for or use their Shopify login instead. Never include this password in anything sent through the Sugar Theme MCP.
+The agent's browsers read the storefront password from this line when a conversation starts and open the store already unlocked. Never type it into the store's password page. If a browser still lands on the password page, the password has changed: ask the user for the current one (Online Store → Preferences), update the line, and tell them the browsers pick it up in their next conversation. Never ask for or use their Shopify login instead, and never include this password in anything sent through the Sugar Theme MCP.
+
+## Store Data
+
+Products, discounts, sales channels, pages and the store's Files are changed through the Admin API, as the store-editing reference describes. These changes are live the moment they run: a product or discount is not part of the draft theme, so customers can see it. Before any change to them, say exactly what you are about to create or change and get a yes. If the Admin API answers that you are not authorised, the approval has expired or lacks a permission: re-run the approval (the store-editing reference has the command) and tell the user a Shopify page will ask them to approve again.
 
 ## Sharing
 
@@ -173,7 +185,7 @@ You may edit any theme on the user's store, including the live one, within the W
 
 ## Logging
 
-Every file you create in the theme, and every shipped Sugar file you change, gets an entry in `custom-sections-blocks.md` at the end of the task. Append; never rewrite earlier entries. Future agents read this log to learn what exists in this theme beyond the Sugar catalog, and the update-check skill reads the changes table to know what a theme update would overwrite.
+Every new section, block or snippet you create (with the stylesheet or script it brings), and every shipped Sugar file you change, gets an entry in `custom-sections-blocks.md` at the end of the task. Append; never rewrite earlier entries. The log is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it, and the update-check skill reads its changes table to know what a theme update would overwrite. Don't log templates, `config/` or `locales/` files, or store changes (products, discounts, pages): those are page content and store data, not components. Name the templates a component is used on in its entry instead.
 
 ## Thorough Agent Testing & Verification
 
@@ -199,4 +211,4 @@ Many sections, blocks and components look good because of the visuals that accom
 
 Before or after building, say which images the section or block needs and why, the way a CRO agency would brief a shoot: a cut-out product on transparent background, a lifestyle shot with the product in use, a founder portrait, an ingredient flat-lay. A reference or a clone target shows exactly which ones are needed. Then offer two routes: create them with an image tool the user has connected, such as the Higgsfield MCP or a similar image generator, or use images already in their store's Files or on their computer. Never leave a placeholder box where an image should be unless the user wants to defer the creation of the image until later.
 
-An image you create lands in the project folder first. Image settings in the theme editor pick from the store's Files, which the CLI cannot upload to, so hand the user the file and the exact setting to drop it into, or upload it to Files yourself when you have a route that can.
+An image you create lands in the project folder first. Image settings in the theme editor pick from the store's Files. With the store data approval from setup, upload it to Files yourself (the store-editing reference says how) and put it in the setting. Without it, or if the upload fails, hand the user the file and the exact setting to drop it into.

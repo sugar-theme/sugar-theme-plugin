@@ -86,7 +86,7 @@ Decide which method, or methods, you will use to build the clone. Read `${CLAUDE
 
 **Before starting, make sure you know exactly which template and, where relevant, which product the clone is for.** The theme itself comes from AGENTS.md. If the user has not named the template or product, and nothing in the project says which to use, ask. Do not assume. If the working theme is the live theme, say so before you change it.
 
-Once the user has picked a method from your suggestions, build the clone in the target theme and template. Name every section and block you place, as described in the store-editing reference, so the editor's sidebar says what the clone is and where it sits. If the method creates new files or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done.
+Once the user has picked a method from your suggestions, build the clone in the target theme and template. Name every section and block you place, as described in the store-editing reference, so the editor's sidebar says what the clone is and where it sits. If the method creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done.
 
 # Step 4: Verification
 

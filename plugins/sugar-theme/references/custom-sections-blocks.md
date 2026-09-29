@@ -1,10 +1,10 @@
 <!--
 Custom sections & blocks log. Copy this file into the project folder as custom-sections-blocks.md.
-Every skill that creates a file in the theme, or changes a shipped Sugar file, appends here at the end of the task.
+Every skill that creates a section, block or snippet (with the stylesheet or script it brings), or changes a shipped Sugar file, appends here at the end of the task. This is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it. Templates, config/ and locales/ files and store changes (products, discounts, pages) are page content and store data, not components: don't log them; name the templates a component is used on in its entry.
 
 How to use it:
 - Append; never rewrite or delete earlier entries. An entry that is no longer true gets a line under it saying so, or a row in Removed.
-- One record per new file, under New files, using the fields shown in the example comment. `summary` is one merchant-facing line in the same voice as the Sugar docs: this log is how the next agent learns what exists in this theme beyond the Sugar catalog.
+- One record per new section, block or snippet, under New files, using the fields shown in the example comment. `summary` is one merchant-facing line in the same voice as the Sugar docs: this log is how the next agent learns what exists in this theme beyond the Sugar catalog.
 - One row per change to a shipped Sugar file, under Changes to shipped Sugar files. Put the actual lines you added or replaced in the Change column, not a description: there is no version control on the store, so the row is the only record. The update-check skill reads this table to know what a theme update must preserve.
 - Read the log before building. A component an earlier agent built may already do the job, and a shipped file may already carry an edit for the same reason.
 The examples below are inside comments and are not history. Do not copy them out.

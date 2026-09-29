@@ -68,7 +68,7 @@ After analyzing the request and deciding which enhancements would make the bigge
 
 # Step 3: Build & Verify
 
-Once the user has chosen an enhancement or several, build them. Name every section and block you place, as described in the store-editing reference, so the editor's sidebar says what it is and where it sits. If the method is the live theme, say so before you change it. If it creates new files or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done.
+Once the user has chosen an enhancement or several, build them. Name every section and block you place, as described in the store-editing reference, so the editor's sidebar says what it is and where it sits. If the method is the live theme, say so before you change it. If it creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done.
 
 Then verify that the enhancements look and work properly. Open the page's preview so you see it the way a live customer would. Click around to test the functionality. Check both viewports, in both Chrome and Safari using the two headless browsers installed by setup; desktop may look right while mobile has bugs. Compare against how the component looked before, so the improvement is real and nothing around it regressed.
 

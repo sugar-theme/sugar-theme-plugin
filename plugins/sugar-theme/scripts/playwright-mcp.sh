@@ -24,6 +24,32 @@ if ! command -v npx >/dev/null 2>&1; then
   fi
 fi
 
+# A password-protected storefront: the project's AGENTS.md names the store and its
+# storefront password. Unlock it here with one request and start the browser already
+# holding Shopify's unlock cookie, so the agent never has to type into the password
+# page. Every conversation starts from a fresh profile (--isolated) with a fresh cookie.
+unlock_args() {
+  local agents="${CLAUDE_PROJECT_DIR:-$PWD}/AGENTS.md" store pw host code jar value state
+  [ -f "$agents" ] || return 0
+  store="$(sed -n 's/.*\*\*Store:\*\*[[:space:]]*\([A-Za-z0-9.-]*\.myshopify\.com\).*/\1/p' "$agents" | head -1)"
+  pw="$(sed -n 's/.*\*\*Storefront password:\*\*[[:space:]]*//p' "$agents" | head -1 | sed 's/[[:space:]]*$//')"
+  [ -n "$store" ] && [ -n "$pw" ] && [ "${pw#[}" = "$pw" ] || return 0
+  # The store may answer on its own domain; unlock whichever host it lands on.
+  host="$(curl -sL -o /dev/null --max-time 8 -w '%{url_effective}' "https://$store/" | sed -E 's#^https?://([^/]+).*#\1#')"
+  [ -n "$host" ] || return 0
+  jar="$(mktemp)"
+  code="$(curl -s -o /dev/null --max-time 8 -w '%{http_code}' -c "$jar" \
+    --data-urlencode "form_type=storefront_password" --data-urlencode "password=$pw" "https://$host/password")"
+  value="$(awk '$6 == "_shopify_essential" { print $7 }' "$jar")"
+  rm -f "$jar"
+  # 302 means Shopify accepted the password; a 200 re-renders the page, so it was wrong.
+  [ "$code" = "302" ] && [ -n "$value" ] || return 0
+  state="${TMPDIR:-/tmp}/sugar-storefront-$(id -u)-$host.json"
+  ( umask 077
+    printf '{"cookies":[{"name":"_shopify_essential","value":"%s","domain":"%s","path":"/","expires":-1,"httpOnly":true,"secure":true,"sameSite":"Lax"}],"origins":[]}\n' "$value" "$host" > "$state" )
+  printf '%s\n' "--storage-state=$state"
+}
+
 if command -v npx >/dev/null 2>&1; then
   # Setup installs the pinned server once (`playwright-mcp.sh setup`), so a
   # conversation starts it from disk with no network. Anything else falls back
@@ -34,6 +60,10 @@ if command -v npx >/dev/null 2>&1; then
       bash "$0" install-browser webkit
     exit $?
   fi
+  case "$1" in
+    install*) ;;
+    *) set -- "$@" --isolated $(unlock_args) ;;
+  esac
   INSTALLED="$(npm root -g 2>/dev/null)/@playwright/mcp"
   if [ -f "$INSTALLED/cli.js" ] && grep -q "\"version\": \"$PLAYWRIGHT_MCP_VERSION\"" "$INSTALLED/package.json" 2>/dev/null; then
     exec node "$INSTALLED/cli.js" "$@"
