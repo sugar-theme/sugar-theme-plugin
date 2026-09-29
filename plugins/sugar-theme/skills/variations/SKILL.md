@@ -8,6 +8,10 @@ disable-model-invocation: false
 
 Variations are built on the theme, in context, in one file, so the user judges them where they will live and the winner is already built. Read `${CLAUDE_PLUGIN_ROOT}/references/variations.md` for exactly how to plan, scaffold, deliver and clean up variations. This skill adds nothing to that reference; it exists so a user can ask for variations directly. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 
+# Plugin version
+
+Once per conversation, before the first step: run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. If it prints `status=current` or `status=unknown`, say nothing and go on. If it prints `status=behind`, tell the user in a sentence or two what the newer Sugar plugin changes, from the changelog lines it prints (point out any **To do**), and ask whether to update now. Never update without that yes. On a yes, run the same script with `apply`, tell them the new version takes effect in their next conversation, and carry on with their request in this one.
+
 # Steps
 
 1. Establish the task the variations serve, and its template and product, the way the build, freestyle or enhance skill would. The working theme comes from the project's AGENTS.md.

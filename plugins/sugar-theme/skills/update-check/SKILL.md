@@ -1,6 +1,6 @@
 ---
 name: update-check
-description: Check the user's Sugar Theme for available updates, report which fixes and improvements apply to their copy, and merge the ones they choose while keeping their customizations. Use when the user asks to check for Sugar updates, when a bug in a shipped Sugar file surfaces since a fix may already exist, or when the feedback skill sends you here first.
+description: Check the Sugar plugin and the user's Sugar Theme for available updates, update the plugin when the user agrees, report which theme fixes and improvements apply to their copy, and merge the ones they choose while keeping their customizations. Use when the user asks to check for Sugar updates or to update the plugin, when a bug in a shipped Sugar file surfaces since a fix may already exist, or when the feedback skill sends you here first.
 disable-model-invocation: false
 ---
 
@@ -8,12 +8,22 @@ disable-model-invocation: false
 
 Sugar ships fixes and improvements as changes, not as whole-theme reinstalls. A change usually touches several files and comes with a title, the symptoms it fixes, and the exact diff. This skill finds out which changes the user's copy is missing, tells them in plain words, and applies the ones they pick. It never touches their content: templates, settings and anything the theme editor writes are the user's data and are left alone.
 
+# Step 0: The plugin
+
+Check the plugin first; it is quick and needs nothing from the store. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. It compares the installed plugin with the latest release on GitHub and, when this copy is behind, prints the changelog entries it is missing.
+
+- `status=current`: say in one line that the plugin is up to date.
+- `status=behind`: tell the user what the newer version changes, from those entries, in plain words, and point out any **To do**. Ask whether to update now; never update without that yes. On a yes, run it with `apply`. It replaces only the plugin's own files, so the app's Update button isn't needed. Tell them the new version takes effect in their next conversation.
+- `status=unknown`: GitHub couldn't be reached; say so and move on to the theme.
+
+The Claude app's own plugin menu may keep showing the older number after this. That is expected: the files are current, and a later update from the menu simply installs the same release again.
+
 # Prerequisites
 
 - **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first.
 - **The Sugar Theme MCP**, connected during setup. It provides the updates index, each change's page and diff, the original of any shipped file at any release, and a classifier that tells whether a file is untouched or customized.
 
-**Not live yet.** If the MCP has no `sugar_updates_since` tool, update checks have not been switched on. Tell the user in one sentence that update checks are coming in a later release and nothing is needed from them, and stop here. Never compare their theme against a copy you downloaded or guessed at instead.
+**Not live yet.** If the MCP has no `sugar_updates_since` tool, update checks have not been switched on. Tell the user in one sentence that theme update checks are coming in a later release and nothing is needed from them, and stop here. Never compare their theme against a copy you downloaded or guessed at instead.
 
 Files are read from and written to the store as described in `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md`. This skill is the one case that pulls the whole theme, because every code file has to be classified. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 

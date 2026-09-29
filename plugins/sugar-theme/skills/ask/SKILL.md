@@ -8,6 +8,10 @@ disable-model-invocation: false
 
 Answer questions about the Sugar Theme and about the other files and features in the user's theme.
 
+# Plugin version
+
+Once per conversation, before the first step: run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. If it prints `status=current` or `status=unknown`, say nothing and go on. If it prints `status=behind`, tell the user in a sentence or two what the newer Sugar plugin changes, from the changelog lines it prints (point out any **To do**), and ask whether to update now. Never update without that yes. On a yes, run the same script with `apply`, tell them the new version takes effect in their next conversation, and carry on with their request in this one.
+
 # Step 1: Review
 
 Analyze the user's request thoroughly. Read between the lines, especially when the prompt is brief, so you can infer the overall goal behind the question.

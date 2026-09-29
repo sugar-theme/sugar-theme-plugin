@@ -8,6 +8,10 @@ disable-model-invocation: false
 
 Analyze an existing section, block or page on the user's theme and improve it, either by reworking it or by adding the smaller enhancements that make it feel more premium and high quality.
 
+# Plugin version
+
+Once per conversation, before the first step: run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. If it prints `status=current` or `status=unknown`, say nothing and go on. If it prints `status=behind`, tell the user in a sentence or two what the newer Sugar plugin changes, from the changelog lines it prints (point out any **To do**), and ask whether to update now. Never update without that yes. On a yes, run the same script with `apply`, tell them the new version takes effect in their next conversation, and carry on with their request in this one.
+
 # Prerequisites
 
 - **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first.

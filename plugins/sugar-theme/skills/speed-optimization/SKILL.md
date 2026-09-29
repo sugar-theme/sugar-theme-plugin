@@ -8,6 +8,10 @@ disable-model-invocation: false
 
 Analyze a template on the user's theme, relentlessly and aggressively looking for optimization opportunities: starting with basic, low-risk tactics like compressing images and videos, then moving on to more drastic changes to the underlying files and code that make the page faster without breaking anything.
 
+# Plugin version
+
+Once per conversation, before the first step: run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. If it prints `status=current` or `status=unknown`, say nothing and go on. If it prints `status=behind`, tell the user in a sentence or two what the newer Sugar plugin changes, from the changelog lines it prints (point out any **To do**), and ask whether to update now. Never update without that yes. On a yes, run the same script with `apply`, tell them the new version takes effect in their next conversation, and carry on with their request in this one.
+
 # Prerequisites
 
 - **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first.

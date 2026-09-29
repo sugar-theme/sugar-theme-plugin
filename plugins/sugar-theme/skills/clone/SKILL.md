@@ -8,6 +8,10 @@ disable-model-invocation: false
 
 Create blocks and sections inside the user's Sugar Theme that match a reference: a URL, a screenshot, or an element the user tagged in the built-in browser.
 
+# Plugin version
+
+Once per conversation, before the first step: run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/plugin-update.sh check`. If it prints `status=current` or `status=unknown`, say nothing and go on. If it prints `status=behind`, tell the user in a sentence or two what the newer Sugar plugin changes, from the changelog lines it prints (point out any **To do**), and ask whether to update now. Never update without that yes. On a yes, run the same script with `apply`, tell them the new version takes effect in their next conversation, and carry on with their request in this one.
+
 # Prerequisites
 
 - **Sugar Theme** installed on the user's Shopify store.
