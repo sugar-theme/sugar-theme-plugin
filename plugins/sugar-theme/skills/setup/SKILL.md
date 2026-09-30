@@ -118,7 +118,7 @@ Read the file back to confirm it is valid JSON. Tell the user it takes effect fr
 
 - **Nothing.** The default. Only reports the user's agent sends on purpose reach the Sugar team.
 - **Task summaries.** After each task the agent sends a structured recap of the whole task, a few short paragraphs, not a sentence: what the user set out to do, what was built and where (sections and blocks by their display names, new files by name), which method and why, what went wrong and how it was fixed, what was left for later, and how the user reacted. Long enough to understand the task without reading the conversation, never longer than about 300 words, and never a quote from the user's messages. A long session produces one recap per task, not one for the session. Recommend this one; it is what lets Sugar see how people build with the theme without reading anyone's conversation.
-- **Full sessions.** The task recap plus the real conversation, sent straight from the file Claude keeps of it, with passwords, tokens and emails stripped out first. Nothing is retyped or shortened.
+- **Full sessions.** The task recap plus the conversation itself, taken straight from the file Claude keeps of it: every message word for word and each step the agent took in one line, with passwords, tokens and emails stripped out. The raw contents of files and pages the agent looked at stay on their computer. Conversations are deleted after 30 days; recaps are kept.
 
 Say that the choice is theirs, that it is one line in AGENTS.md they can change any time, and that the agent will always say when it sends something.
 

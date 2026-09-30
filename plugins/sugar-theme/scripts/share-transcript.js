@@ -7,8 +7,8 @@
 //
 // The agent never retypes the conversation. Claude Code already saves every conversation as a
 // JSON Lines file under ~/.claude/projects/; this finds the one that contains UPLOAD_URL (the
-// share_session result just landed in it), keeps the part since the previous share, turns it
-// into plain text, strips secrets and uploads it once.
+// share_session result just landed in it), keeps the part since the previous share, trims it to
+// the dialogue, a one-line trace of each step and any errors, strips secrets and uploads it once.
 
 const fs = require("fs");
 const os = require("os");
@@ -64,11 +64,13 @@ for (let i = 0; i < lines.length; i++) {
   if (found.length) start = i + 1;
 }
 
-/* ── Plain text ─────────────────────────────────────────────────────── */
+/* ── Plain text, trimmed ────────────────────────────────────────────── */
+// What people said, word for word; every step the agent took as one short line; and any step
+// that failed, with its error. The raw output of steps that worked (file contents, page data)
+// stays on this computer: it is most of the bulk and almost none of the story.
 
-const RESULT_MAX = 3000;
-const INPUT_MAX = 1500;
-const clip = (s, n) => (s.length > n ? `${s.slice(0, n)}\n… [${s.length - n} more characters]` : s);
+const ERROR_MAX = 600;
+const STEP_MAX = 110;
 const textOf = (content) =>
   typeof content === "string"
     ? content
@@ -79,8 +81,23 @@ const textOf = (content) =>
 // Claude's own system notes ride along inside messages; they are not the conversation.
 const NOTES = /<(system-reminder|command-name|command-message|command-args|local-command-stdout|local-command-caveat)>[\s\S]*?<\/\1>/g;
 const human = (t) => (t || "").replace(NOTES, "").trim();
+const oneLine = (t, n) => {
+  const s = String(t ?? "").split("\n").map((l) => l.trim()).find(Boolean) || "";
+  return s.length > n ? `${s.slice(0, n)}…` : s;
+};
+const toolName = (name) => {
+  const m = /^mcp__(?:plugin_[a-z0-9-]+_)?([a-z0-9-]+)__(.+)$/i.exec(name);
+  return m ? `${m[1]} · ${m[2]}` : name;
+};
+const stepDetail = (input) => {
+  if (!input || typeof input !== "object") return "";
+  for (const k of ["description", "url", "file_path", "path", "query", "pattern", "command", "function", "code", "prompt"]) {
+    if (typeof input[k] === "string" && input[k].trim()) return oneLine(input[k], STEP_MAX);
+  }
+  return oneLine(JSON.stringify(input), STEP_MAX);
+};
 
-const out = [];
+const out = []; // { say: "USER"|"ASSISTANT", text } or { step: text }
 for (const line of lines.slice(start, end)) {
   let d;
   try {
@@ -92,21 +109,30 @@ for (const line of lines.slice(start, end)) {
   const content = d.message.content;
   if (d.type === "user") {
     if (typeof content === "string") {
-      if (human(content)) out.push(`USER:\n${human(content)}`);
+      if (human(content)) out.push({ say: "USER", text: human(content) });
       continue;
     }
     for (const b of content || []) {
-      if (b.type === "text" && human(b.text)) out.push(`USER:\n${human(b.text)}`);
-      if (b.type === "tool_result") out.push(`RESULT${b.is_error ? " (error)" : ""}:\n${clip(human(textOf(b.content)), RESULT_MAX)}`);
+      if (b.type === "text" && human(b.text)) out.push({ say: "USER", text: human(b.text) });
+      if (b.type === "tool_result" && b.is_error) {
+        const err = human(textOf(b.content));
+        out.push({ step: `    ✗ ${err.length > ERROR_MAX ? `${err.slice(0, ERROR_MAX)}…` : err}`.replace(/\n/g, "\n      ") });
+      }
     }
   } else if (d.type === "assistant") {
     for (const b of content || []) {
-      if (b.type === "text" && b.text.trim()) out.push(`ASSISTANT:\n${b.text.trim()}`);
-      if (b.type === "tool_use") out.push(`TOOL ${b.name}:\n${clip(JSON.stringify(b.input), INPUT_MAX)}`);
+      if (b.type === "text" && b.text.trim()) out.push({ say: "ASSISTANT", text: b.text.trim() });
+      if (b.type === "tool_use") {
+        const detail = stepDetail(b.input);
+        out.push({ step: `  · ${toolName(b.name)}${detail ? ` — ${detail}` : ""}` });
+      }
     }
   }
 }
-let transcript = out.join("\n\n");
+let transcript = out
+  .map((e, i) => (e.say ? `${i ? "\n" : ""}${e.say}:\n${e.text}\n` : e.step))
+  .join("\n")
+  .trim();
 
 /* ── Redact ─────────────────────────────────────────────────────────── */
 
