@@ -23,6 +23,8 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 # Step 1: Analysis
 
+**A new page?** When the clone goes on a new page the shopper reads and then clicks through from, rather than buying on it (a listicle, an advertorial, a pre-sell, lead or ad landing page), read `${CLAUDE_PLUGIN_ROOT}/references/landing-layout.md` and lead with the landing layout, its limits included. Recommend the default layout only when the page itself has to sell.
+
 Look at the screenshot and/or reference URL the user provided and analyze them thoroughly. On the reference page, locate the element the user asked for if they have not tagged it already. Extract its HTML and CSS in full, including the computed styles at both viewports, since a stylesheet rarely tells the whole story. If the component does not fully expose its code, reverse-engineer its design and functionality.
 
 ## Cloning Best Practices

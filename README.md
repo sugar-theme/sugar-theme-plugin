@@ -39,7 +39,7 @@ Then connect the Sugar Theme MCP in Codex's MCP settings with the address in `do
 ## Layout
 
 - `plugins/sugar-theme/skills/` — one folder per skill (`setup`, `clone`, `build`, `freestyle`, `ask`, `enhance`, `variations`, `speed-optimization`, `update-check`, `feedback`)
-- `plugins/sugar-theme/references/` — shared documents the skills read: `store-editing`, `creation-methods`, `new-file-creation`, `variations`, `custom-sections-blocks` (log template), `catalog-index` (generated)
+- `plugins/sugar-theme/references/` — shared documents the skills read: `store-editing`, `creation-methods`, `new-file-creation`, `variations`, `landing-layout`, `custom-sections-blocks` (log template), `catalog-index` (generated)
 - `docs/MCP.md` — the contract for the Sugar Theme MCP the skills call
 
 Only content a merchant can see in the theme editor lives here. Liquid internals and gated material are served by the MCP behind a license.

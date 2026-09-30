@@ -1,6 +1,6 @@
 # Sugar Theme catalog index
 
-Sugar 2.0.0-dev · catalog `0ac87f54fe17` · generated, do not edit.
+Sugar 2.0.0-dev · catalog `29f4d9fd77cd` · generated, do not edit.
 
 One line per section and block, grouped the way the theme editor's add menu groups them. This answers whether something exists, roughly what it does, and where it sits in a page. For how a component works, its settings, its full list of allowed children and its known issues, fetch its docs from the Sugar Theme MCP by slug (`get_component`). The MCP's `list_catalog` is the live version of this list.
 
@@ -51,10 +51,6 @@ Contents: 206 blocks, 45 sections.
 
 - **Page Background End** `page-background-end` — Stop a Page Background at this point, so the sections below return to their normal width and edges. · content
 - **Section Divider** `section-divider` — Shape the seam between two sections with a wave, angle or curve, optionally animated. · content
-
-### Footer
-
-- **Footer** `footer` — Build the site footer from columns on a 12-column grid, with its own width, color scheme, and optional gradient. · holding · holds content blocks
 
 ### Forms
 
@@ -119,6 +115,7 @@ Contents: 206 blocks, 45 sections.
 
 ### Utility
 
+- **Footer** `footer` — Build the site footer from columns on a 12-column grid, with its own width, color scheme, and optional gradient or background image. · holding + content · holds content blocks
 - **Hide Header & Footer** `hide-header-footer` — Strip the site chrome off one page, for a landing page or a checkout-style flow. · content
 - **Page A/B Test** `page-ab-test` — Split visitors between two templates of the same page, at the same URL, and measure which layout sells better. · content
 - **Page Redirect** `page-redirect` — Send visitors on to another page after an optional delay, such as from a retired landing page. · content
@@ -446,3 +443,16 @@ Contents: 206 blocks, 45 sections.
 ### Utility
 
 - **Country & Language** `localization` — Let shoppers switch country and language from a labelled dropdown. · content
+
+## Concepts
+
+How the theme works beyond any one component. Fetch the full guide from the Sugar Theme MCP by slug (`get_concept`).
+
+- **Buttons** `buttons` — Give every button one of three theme-wide styles, each with its own colors, optional gradient, and border.
+- **Colors** `colors` — Set colors through three mechanisms — a brand palette, color schemes, and per-element override pickers.
+- **Comparison tables** `comparison-tables` — Choose between seven ready-made comparison tables and the build-anything custom table.
+- **Conditional cart content** `conditional-cart-content` — Show or hide blocks in the cart drawer based on what the shopper has already added.
+- **Corners** `corners` — Round media, containers, badges, and buttons from four theme values that any component can override.
+- **Landing layout** `landing-layout` — Build ad and campaign pages on a stripped-down layout that skips the header, footer, cart and product engines.
+- **Quizzes** `quizzes` — Build a multi-step quiz from a shell section, one section per step, and the blocks inside them.
+- **Typography** `typography` — Give the theme a heading font, a body font, and an optional accent font that every block reads.

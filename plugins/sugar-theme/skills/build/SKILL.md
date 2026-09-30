@@ -25,6 +25,8 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 **When the work goes on a page that already exists, read that template from the working theme before suggesting anything** (the store-editing reference says how). Know what is already on it, so you don't propose something it has, such as a second comparison table, and so your options fit around what is there. If the user hasn't said which page yet, ask first. This doesn't apply when the task is creating a new template.
 
+**A new page?** When the request is a new page the shopper reads and then clicks through from, rather than buying on it (a listicle, an advertorial, a pre-sell, lead or ad landing page), read `${CLAUDE_PLUGIN_ROOT}/references/landing-layout.md` and lead with the landing layout, its limits included. Recommend the default layout only when the page itself has to sell.
+
 Thoroughly analyze the user's request, their existing design components, their styling, their brand, their target audience and, most importantly, their product. Think about the different ways their goal, idea or concept can be materialized.
 
 Ground the options in what the theme can do. Read the plugin's catalog index to see which Sugar sections and blocks exist, and the project's `custom-sections-blocks.md` for files other agents have built in this theme. Read the working theme's brand settings so every option is proposed in the user's typography and colors, not generic ones.

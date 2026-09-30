@@ -184,6 +184,10 @@ Products, discounts, sales channels, pages, menus, blog posts, metaobjects and t
 
 Honour this exactly. `none` sends nothing beyond reports made on purpose. `summaries` sends a structured recap after each task through the Sugar Theme MCP: a few short paragraphs covering the goal, what was built and where, the method, what went wrong and how it was fixed, what was left for later, and how the user reacted, with no quotes from the conversation. `sessions` sends the recap plus the real conversation, uploaded by the feedback skill's script, never retyped. Send once per finished task, not after every message. Never send from a sub-agent, never send when the line is missing, and say in one line whenever something is sent.
 
+## Landing Pages
+
+The theme has a second page layout, `landing`: no header, footer, cart drawer or popups, and a fraction of the scripts, for pages the shopper reads and then clicks through from (ad, listicle, advertorial, pre-sell and lead pages). It can't hold anything that needs the cart: buy buttons, variant pickers, prices that change with quantity or variant, offers, subscriptions, upsells, bundle builders, gift pickers, sticky add-to-cart. Recommend it for every new page of that kind, with those limits spelled out; most users only learn it exists from you. Before adding anything to an existing page, check its template's `"layout"`: if it is `landing` and the request needs a cart feature, say so before building and offer the options in the plugin's landing-layout reference.
+
 ## Brand Settings
 
 Before building anything new, read the working theme's settings: color palette, color schemes, typography, corner rounding and buttons. New files bind to the theme's variables for these rather than copying their values, so a rebrand carries through and the new component follows whatever scheme it sits in. Choose a scheme by what its values do (light or dark, neutral or brand-tinted), never by its number, since users rearrange them.
@@ -204,7 +208,7 @@ You may edit any theme on the user's store, including the live one, within the W
 
 ## Logging
 
-Every new section, block or snippet you create (with the stylesheet or script it brings), and every shipped Sugar file you change, gets an entry in `custom-sections-blocks.md` at the end of the task. Append; never rewrite earlier entries. The log is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it, and the update-check skill reads its changes table to know what a theme update would overwrite. Don't log templates, `config/` or `locales/` files, or store changes (products, discounts, pages): those are page content and store data, not components. Name the templates a component is used on in its entry instead.
+Every new section, block, snippet or layout you create (with the stylesheet or script it brings), and every shipped Sugar file you change, gets an entry in `custom-sections-blocks.md` at the end of the task. Append; never rewrite earlier entries. The log is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it, and the update-check skill reads its changes table to know what a theme update would overwrite. Don't log templates, `config/` or `locales/` files, or store changes (products, discounts, pages): those are page content and store data, not components. Name the templates a component is used on in its entry instead.
 
 ## Thorough Agent Testing & Verification
 
