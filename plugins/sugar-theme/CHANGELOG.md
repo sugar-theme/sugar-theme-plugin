@@ -2,18 +2,14 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
-## 0.10.0
-
-- The agent now knows the theme's landing layout and recommends it for new listicle, advertorial, pre-sell, lead and ad pages: faster pages with no header, footer, cart drawer or popups. It tells you up front what those pages can't hold (buy buttons, variant pickers, prices that change with quantity, offers, upsells).
-- Before adding something to an existing page, the agent checks whether it's a landing page, and if the request needs the cart, it says so and offers options: link out, switch the page back, or a custom layout with just that one feature.
-- The catalog the agent reads first now lists the theme's concepts too (landing layout, colors, typography and more).
-- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the landing-page rule.
-
 ## 0.9.0
 
 - If you share full sessions, the Sugar team now gets the real conversation, sent straight from the file Claude keeps, with passwords, tokens and emails removed. Before, the agent retyped it from memory, which came out as a longer summary.
 - Summaries and sessions are sent once per finished task, not after every message.
-- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the new sharing rule.
+- The agent now knows the theme's landing layout and recommends it for new listicle, advertorial, pre-sell, lead and ad pages: faster pages with no header, footer, cart drawer or popups. It tells you up front what those pages can't hold (buy buttons, variant pickers, prices that change with quantity, offers, upsells).
+- Before adding something to an existing page, the agent checks whether it's a landing page, and if the request needs the cart, it says so and offers options: link out, switch the page back, or a custom layout with just that one feature.
+- The catalog the agent reads first now lists the theme's concepts too (landing layout, colors, typography and more).
+- **To do:** in a project set up before this version, run `/sugar-theme:setup` once to pick up the new sharing and landing-page rules.
 
 ## 0.8.6
 
