@@ -2,6 +2,18 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.0.0
+
+- Several conversations can now work on your store at the same time without tripping over each other. Each keeps its own temporary copy of the files it is editing; before, one could clear another's copy and have to fetch the files again.
+- The agent can now remove a variations template, and the losing variation's files, once you've picked a winner. It deletes exactly the files it names and checks they're gone; it can't touch your layouts, settings, main templates or your live theme. Before, those templates stayed behind in your editor.
+- Speed tests now work on a password-protected store: the agent measures your draft theme itself, not the password page, and without Shopify's preview bar inflating the numbers.
+- Uploads are steadier: new blocks go up before the page that uses them, and every upload is checked against what actually landed on the store.
+- The agent tests more reliably in its browsers: it hides the preview bar, scrolls like a shopper, and waits out the store's short delay after an upload instead of chasing problems that aren't there.
+- When cloning a page whose icons only roughly match Sugar's icon library, the agent asks whether to use the reference's own icons or the closest Sugar ones.
+- The agent can now read the docs of child blocks too, such as the cart's Progress Item, Offer and table cells, instead of reading the theme's code.
+- A shared conversation is shorter: an element you tag in the browser is sent as its text, not the other site's full page code.
+- **To do:** run `/sugar-theme:setup` once in each project to pick up the rule for working alongside other conversations.
+
 ## 0.9.1
 
 - A shared conversation is trimmed on your computer first: your messages and the agent's replies word for word, one line per step, and any errors. The raw contents of files and pages the agent looked at never leave your computer. Conversations are deleted after 30 days; summaries are kept.

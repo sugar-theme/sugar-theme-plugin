@@ -64,7 +64,7 @@ Once the user has chosen, move the winning block into the real template at the s
 
 # Step 6: Hygiene
 
-Delete the variations template from the theme. For freestyle variations, delete the losing files too, and log the winner in the project's `custom-sections-blocks.md`. In isolation mode, delete the page as well. A variations template left behind is clutter in the editor's template list and a stale copy waiting to confuse the next agent.
+Delete the variations template from the theme with the plugin's delete script (the store-editing reference has the command); a push can't delete a single file, and the Admin API refuses. For freestyle variations, delete the losing files in the same command, and log the winner in the project's `custom-sections-blocks.md`. In isolation mode, delete the page first (it uses the template, which can't go while it does), with the user's yes like any store change. Tell the user in one line what was removed. A variations template left behind is clutter in the editor's template list and a stale copy waiting to confuse the next agent.
 
 # Gotchas
 

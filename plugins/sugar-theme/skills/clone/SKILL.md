@@ -48,7 +48,7 @@ A reference tells you exactly which images the clone needs and how they are trea
 
 In some cases, downloading and using the same image from the reference is fine. For example when it comes to an icon or a guarantee badge, assuming it fits the user's product & brand. In other cases, it can be used as a reference for generating a new image, so that the AI image model has a better starting point.
 
-Icons follow a fixed order. First, match each icon in the reference to the Sugar icon library at https://sugarthe.me/icons (Material, Lucide, Phosphor, Heroicons, brand logos, emoji), which needs no file at all. If there is no match, download the reference's icon image. Only as a last resort draw it as SVG code and upload that as an image. Where the reference uses a short autoplay video, treat it like an image: reuse, recreate or defer.
+Icons follow a fixed order. First, match each icon in the reference to the Sugar icon library at https://sugarthe.me/icons (Material, Lucide, Phosphor, Heroicons, brand logos, emoji), which needs no file at all. When the match is exact, use it without asking. When it is only close (the reference's icon is multi-colored, filled or drawn in a style the library doesn't have, and the nearest library icon is a plain one-color outline), ask the user once for all such icons: their reference's own icons, which look identical, or the closest Sugar icons, which recolor with the theme and need no upload. If there is no match at all, download the reference's icon image. Only as a last resort draw it as SVG code and upload that as an image. Where the reference uses a short autoplay video, treat it like an image: reuse, recreate or defer.
 
 ## Reading a screenshot
 

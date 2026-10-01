@@ -41,7 +41,7 @@ Only existing files are used, as in Method 1, but the section's Custom Liquid in
 
 **Pros:** no new files, and existing files are unchanged, so their design and functionality elsewhere in the template and theme are unaffected.
 
-**Cons:** Custom Liquid that targets another file has to be executed immaculately and tested thoroughly before delivery. In a JSON template the Custom Liquid is stored inside the template itself, so it counts against the 512 KB limit, more so when the template already carries Custom Liquid or the snippet is long.
+**Cons:** Custom Liquid that targets another file has to be executed immaculately and tested thoroughly before delivery; the new-file reference's "Styling next to Sugar's own CSS" lists the traps. In a JSON template the Custom Liquid is stored inside the template itself, so it counts against the 512 KB limit, more so when the template already carries Custom Liquid or the snippet is long.
 
 **Limitations:** Custom Liquid isn't editable by a non-technical user in the theme editor; changing it means going back to their agent and understanding why a section or block behaves the way it does. A fine trade-off when it isn't a setting the user will need to change, and they know the customization's limits.
 

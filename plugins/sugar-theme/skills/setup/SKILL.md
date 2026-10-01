@@ -160,7 +160,7 @@ The Sugar Theme is a next-generation Shopify theme built on patterns and compone
 
 This folder hosts the project, not the theme's files. The theme lives on the user's Shopify store and that is where it is read and edited. Keeping theme files here would mean two copies of the store that drift apart, which confuses a user who is used to seeing and editing their store on Shopify.
 
-When a task needs a file on disk, use a scratch folder in the system temp directory, never this project. Pull only the files the task touches from the store, edit them, push only those files back, and delete the scratch folder when the task ends. A scratch copy is only valid for the task that pulled it: pull again at the start of every task, and delete any leftover scratch from an earlier task before starting.
+When a task needs a file on disk, use a scratch folder in the system temp directory, never this project. Pull only the files the task touches from the store, edit them, push only those files back, and delete the scratch folder when the task ends. A scratch copy is only valid for the task that pulled it: pull again at the start of every task. Each conversation makes its own scratch folder and deletes only that one, because other conversations may be working on this store at the same time.
 
 ## Working Theme
 

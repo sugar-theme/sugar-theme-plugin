@@ -25,7 +25,7 @@ The short text every session receives on connect. Two jobs: say what the tools a
 | Tool | Returns | Used by |
 |---|---|---|
 | `list_catalog` | Every section, block and feature: name, slug, one-liner, category, status. The live version of the index the plugin ships. | ask, build, freestyle |
-| `get_component(slug)` | The component's full docs: what it does, how to set it up, every setting, and its **approved learnings and open bugs**, so an agent that fetches a component's docs gets its gotchas without a second call. | ask, build, clone, enhance |
+| `get_component(slug)` | The component's full docs: what it does, how to set it up, every setting, and its **approved learnings and open bugs**, so an agent that fetches a component's docs gets its gotchas without a second call. Child blocks that only fit inside another (a cart Progress Item, a table cell) answer here too, by the slugs in their parent's accepts list, though `list_catalog` leaves them out. | ask, build, clone, enhance |
 | `get_concept(slug)` | A mechanism that isn't one component: colors, typography, corners, the landing layout, and the branding read. | build, freestyle, enhance |
 
 ### Updates (not built yet)

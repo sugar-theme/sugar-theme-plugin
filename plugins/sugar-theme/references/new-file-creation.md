@@ -111,11 +111,22 @@ Settings the user is used to from editing the rest of the theme.
 
 Organize the settings into headers so the user can find things. Beyond the patterns above, think about which other settings the context calls for. The file should be very editable on its own without feeling cluttered or complex.
 
-Three platform rules that fail silently or reject the upload:
+Platform rules that fail silently or reject the upload:
 
 - Conditional visibility (`visible_if`) supports `==`, `!=`, `and` and `or`. It does not support `>=`, `<=` or parentheses, and an expression over 250 characters is rejected. A bad expression rejects the whole schema with no clear error. Product, collection, page, blog and article pickers can't be conditional at all.
+- A range setting allows at most 101 steps: `(max - min) / step` must be 101 or less. A 0 to 200 slider needs a step of 2.
 - A range value in a template must sit inside its setting's min and max and on its step, and every nested block type must be in its parent's allowlist. An invalid value doesn't error; the template silently breaks.
-- The theme hides empty `div` elements globally. A decorative element with no content (a progress bar, a spacer) needs `display: block` set explicitly or it disappears.
+
+# Styling next to Sugar's own CSS
+
+New CSS, in a new file or in a section's Custom Liquid, meets the theme's rules on the same elements. Each of these cost an earlier agent a broken first push:
+
+- **Empty elements are hidden.** The theme hides every empty `div` with `div:empty { display: none }`, which outranks a single class. A decorative element with no content (an overlay, a progress bar, a spacer) needs `display: block` in a rule with two classes, or it never shows.
+- **Blocks are wrapped.** Shopify wraps each nested theme block in its own `div.shopify-block`. A layout that expects the blocks as direct children (a grid built with `display: contents` rows, a `> .child` selector) has to account for that wrapper.
+- **Target a block by the end of its id.** A block's root carries `data-_sf` with a longer id than its key in the template JSON. Match the end: `[data-_sf$="__KEY"]`, never `[data-_sf="KEY"]`.
+- **Settings arrive as inline custom properties** on the block's root (`style="--bd-pv: 8px"`), which beat any stylesheet rule setting the same property. Override one with `!important`, or better, set the setting's value in the template. Keep `!important` off anything an animation moves: an `!important` declaration freezes it.
+- **Specificity ties go to the later sheet.** The theme's rules are often two or three classes deep; a new rule on one class loses silently. Repeat the class (`.my-thing.my-thing`) rather than reaching for `!important`, then check the computed style in the browser.
+- **Moving focus scrolls the page.** Call `focus({ preventScroll: true })` in any script that moves focus while the shopper is somewhere else on the page (a drawer, a sticky bar).
 
 # Leveraging existing Sugar features
 

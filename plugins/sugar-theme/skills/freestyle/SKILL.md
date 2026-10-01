@@ -55,4 +55,4 @@ If the build has any bugs or visual quirks, diagnose the cause, fix it and test 
 
 After reviewing the build thoroughly, deliver it with clear, concise instructions on how and where to review it: a theme editor deep link to the exact theme and page, so the user can see the full page and adjust things themselves. Tell them the new file's name and where it appears in the editor's add menu. The user may request changes or improvements.
 
-If variations were built, the user may ask for elements of several to be merged, or have new ideas from seeing them. Once a winner is chosen, move it into the real template, delete the losing files from the theme, and clean up the variations scaffold.
+If variations were built, the user may ask for elements of several to be merged, or have new ideas from seeing them. Once a winner is chosen, move it into the real template, then delete the losing files and the variations template from the theme with the plugin's delete script (the store-editing reference has the command).

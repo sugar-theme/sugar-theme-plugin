@@ -80,7 +80,16 @@ const textOf = (content) =>
 
 // Claude's own system notes ride along inside messages; they are not the conversation.
 const NOTES = /<(system-reminder|command-name|command-message|command-args|local-command-stdout|local-command-caveat)>[\s\S]*?<\/\1>/g;
-const human = (t) => (t || "").replace(NOTES, "").trim();
+// An element the user tagged in the app's browser arrives as the other site's full HTML;
+// its tag and visible text say what was picked.
+const TAGGED = /<launch-selected-element>[\s\S]*?<\/launch-selected-element>/g;
+const tagged = (block) => {
+  const tag = (/<element tag="([^"]*)"/.exec(block) || [])[1] || "element";
+  let text = (/<text>([\s\S]*?)<\/text>/.exec(block) || [])[1] || "";
+  text = text.replace(/^"|"$/g, "").replace(/\\n/g, " ").replace(/\s+/g, " ").trim();
+  return `[tagged a ${tag} in the browser${text ? `: "${text.length > 200 ? `${text.slice(0, 200)}…` : text}"` : ""}]`;
+};
+const human = (t) => (t || "").replace(NOTES, "").replace(TAGGED, tagged).trim();
 const oneLine = (t, n) => {
   const s = String(t ?? "").split("\n").map((l) => l.trim()).find(Boolean) || "";
   return s.length > n ? `${s.slice(0, n)}…` : s;
