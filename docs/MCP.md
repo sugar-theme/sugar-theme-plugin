@@ -10,7 +10,7 @@ The Sugar Theme MCP server, registered by the plugin's `.mcp.json` and signed in
 
 - **Remote MCP at `https://app.sugarthe.me/api/mcp`** (stateless Streamable HTTP), signed in to once during setup through a browser sign-in with the user's Sugar license. The license identifies the user for every call, so no skill asks for an email, license key or store, and every report and update check is attributed automatically.
 - Also usable without the plugin: paste the URL into claude.ai, Cowork or any MCP client. The connect instructions (below) are the whole "how to use Sugar" primer for that audience.
-- License-gated. Anything below the theme-editor line (Liquid internals, booster-pack files, full templates, the theme zip) is served only to a valid license, so it can't be pirated by reading the plugin's public repo.
+- License-gated. Anything below the theme-editor line (Liquid internals, library pieces, full templates, the theme zip) is served only to a valid license, so it can't be pirated by reading the plugin's public repo.
 
 ## Connect instructions
 
@@ -18,7 +18,7 @@ The short text every session receives on connect. Two jobs: say what the tools a
 
 ## Tools
 
-**Live today:** `list_catalog`, `get_component`, `get_concept`, `get_learnings`, `report_issue`, `share_session`. The Updates and Theme files tables below are the contract for tools not built yet; a skill that needs one says so to the user and stops or skips that step, rather than guessing.
+**Live today:** `list_catalog`, `get_component`, `get_concept`, `get_learnings`, `report_issue`, `share_session`, `list_templates`, `get_template`, `list_section_packs`, `get_section_pack`. The Updates and Theme files tables below are the contract for tools not built yet; a skill that needs one says so to the user and stops or skips that step, rather than guessing.
 
 ### Docs
 
@@ -48,13 +48,20 @@ The short text every session receives on connect. Two jobs: say what the tools a
 
 Bugs carry a status: open, fixed in a release, or won't fix. Open bugs distribute exactly like learnings, scoped to their files, with the workaround and the expected fix. A fixed bug drops out of distribution and becomes an available update, which is the update-check skill's job, so a solved problem never costs context.
 
-### Theme files and templates (not built yet)
+### Templates and library pieces
+
+| Tool | Returns | Used by |
+|---|---|---|
+| `list_templates` | The web app's published page templates: slug, name, category, resource type, the file each becomes, the minimum theme version, the live showcase page. | build |
+| `get_template(slug)` | One template ready to install: a download URL for its JSON (saved unedited as the named file; `include_json` inlines it minified), the sections in page order, `notes` (what is customised and what the merchant fills in, passed on to the user), `requires`, and the CLI install steps through creating the page. | build |
+| `list_section_packs` | The Sections & Blocks library: ready-made sections and compositions of theme blocks, cut from the page templates. | build, freestyle |
+| `get_section_pack(slug)` | One library piece as a template fragment (`{ sections, order }`) with merge steps, `notes` and `requires`. | build, freestyle |
+
+### Theme files (not built yet)
 
 | Tool | Returns | Used by |
 |---|---|---|
 | `get_theme_bundle(release)` | The latest theme zip, for a fresh install or a local copy when an agent needs one. | setup (fresh install only) |
-| `list_templates` / `get_template(slug)` | The web app's page templates as JSON, browsable and installable. | build |
-| `list_booster_packs` / `get_booster_pack(slug)` | Sections and blocks shipped outside the theme, for tasks the catalog can't do. | build, freestyle |
 
 ## Where each learning is delivered
 
