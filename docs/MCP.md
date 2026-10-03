@@ -18,7 +18,7 @@ The short text every session receives on connect. Two jobs: say what the tools a
 
 ## Tools
 
-**Live today:** `list_catalog`, `get_component`, `get_concept`, `get_learnings`, `report_issue`, `share_session`, `list_templates`, `get_template`, `list_section_packs`, `get_section_pack`. The Updates and Theme files tables below are the contract for tools not built yet; a skill that needs one says so to the user and stops or skips that step, rather than guessing.
+**Live today:** `list_catalog`, `get_component`, `get_concept`, `get_learnings`, `report_issue`, `share_session`, `list_templates`, `get_template`, `list_section_packs`, `get_section_pack`, `search_icons`, `check_icons`. The Updates and Theme files tables below are the contract for tools not built yet; a skill that needs one says so to the user and stops or skips that step, rather than guessing.
 
 ### Docs
 
@@ -56,6 +56,13 @@ Bugs carry a status: open, fixed in a release, or won't fix. Open bugs distribut
 | `get_template(slug)` | One template ready to install: a download URL for its JSON (saved unedited as the named file; `include_json` inlines it minified), the sections in page order, `notes` (what is customised and what the merchant fills in, passed on to the user), `requires`, and the CLI install steps through creating the page. | build |
 | `list_section_packs` | The Sections & Blocks library: ready-made sections and compositions of theme blocks, cut from the page templates. | build, freestyle |
 | `get_section_pack(slug)` | One library piece as a template fragment (`{ sections, order }`) with merge steps, `notes` and `requires`. | build, freestyle |
+
+### Icons
+
+| Tool | Returns | Used by |
+|---|---|---|
+| `search_icons(query?, set?, intent?, limit?)` | Icons and emoji from the published library at app.sugarthe.me/icons, by plain words, set and commerce intent: a ready-to-paste `token`, the set's other `styles`, a `preview` URL and the `intents` that list it, plus a `browse_url` that opens the library filtered the same way for the user to pick from. No arguments: the sets and intents. | build, clone, enhance, freestyle |
+| `check_icons(tokens)` | For each token, whether it renders (judged the way the theme's icon snippet reads it, against the CDN), the file it loads, and close matches when it doesn't. | build, clone, enhance, freestyle |
 
 ### Theme files (not built yet)
 

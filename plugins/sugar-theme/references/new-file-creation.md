@@ -87,7 +87,7 @@ Settings the user is used to from editing the rest of the theme.
 
 **Media.** Where an image can go, a video usually can too. Provide both an image picker and a video picker; when both are set, the video wins. No "image or video" select. Videos autoplay muted. Some places only make sense for one: an icon input takes an image; a full player takes a video.
 
-**Icons.** One text input labelled "Icon", taking a token from https://sugarthe.me/icons (`check_circle`, `⭐️`, `1-circle`), rendered through the theme's icon snippet, plus an optional image picker that overrides it where uploads make sense. No icon-type selects and no "show icon" toggle; a blank token means no icon.
+**Icons.** One text input labelled "Icon", taking a token from the Sugar icon library at https://app.sugarthe.me/icons (`check_circle`, `⭐️`, `1-circle`; find defaults with the MCP's `search_icons` and confirm them with `check_icons`, never from memory), rendered through the theme's icon snippet, plus an optional image picker that overrides it where uploads make sense. No icon-type selects and no "show icon" toggle; a blank token means no icon.
 
 **Font options.** The user sets a Heading, a Body and an optional Accent font in theme settings. A font select on a new file offers all three roles or none; a select that offers Heading and Body without Accent is a bug. Many texts don't need a select at all (body copy is body), so add one only where the choice is real. A custom-font escape hatch forces an extra download on every page that uses it; avoid it unless the user asks, and point them at the Page Styles section, which can override fonts for one template more cheaply.
 

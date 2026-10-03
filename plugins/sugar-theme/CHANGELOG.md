@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.1.0
+
+- The agent now finds icons in Sugar's icon library instead of guessing their names. It searches the whole library (about 30,000 icons and emoji) by what the icon shows, the set your store already uses and the kind of message (shipping, trust, discounts and more), checks each name before using it, and can send you a link to the library already filtered so you can pick by eye. Before, a wrong guess showed no icon at all.
+- Links to the icon library point to its real address, app.sugarthe.me/icons.
+
 ## 1.0.0
 
 - Several conversations can now work on your store at the same time without tripping over each other. Each keeps its own temporary copy of the files it is editing; before, one could clear another's copy and have to fetch the files again.
