@@ -61,7 +61,7 @@ Bugs carry a status: open, fixed in a release, or won't fix. Open bugs distribut
 
 | Tool | Returns | Used by |
 |---|---|---|
-| `search_icons(query?, set?, intent?, limit?)` | Icons and emoji from the published library at app.sugarthe.me/icons, by plain words, set and commerce intent: a ready-to-paste `token`, the set's other `styles`, a `preview` URL and the `intents` that list it, plus a `browse_url` that opens the library filtered the same way for the user to pick from. No arguments: the sets and intents. | build, clone, enhance, freestyle |
+| `search_icons(query?, set?, intent?, vendor?, group?, limit?)` | Icons and emoji from the published library at app.sugarthe.me/icons, by plain words, set and commerce intent, and emoji by vendor (only what that vendor draws, as `⭐-telegram` tokens with its preview) and group: a ready-to-paste `token`, the set's other `styles`, a `preview` URL and the `intents` that list it, plus a `browse_url` that opens the library filtered the same way for the user to pick from. No arguments: the sets and intents; `set: emoji` alone: the emoji groups and vendors. | build, clone, enhance, freestyle |
 | `check_icons(tokens)` | For each token, whether it renders (judged the way the theme's icon snippet reads it, against the CDN), the file it loads, and close matches when it doesn't. | build, clone, enhance, freestyle |
 
 ### Theme files (not built yet)
