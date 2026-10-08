@@ -1,6 +1,6 @@
 # Sugar Theme catalog index
 
-Sugar 2.0.0-dev · catalog `29f4d9fd77cd` · generated, do not edit.
+Sugar 2.0.0 · catalog `ac28db2ba7c7` · generated, do not edit.
 
 One line per section and block, grouped the way the theme editor's add menu groups them. This answers whether something exists, roughly what it does, and where it sits in a page. For how a component works, its settings, its full list of allowed children and its known issues, fetch its docs from the Sugar Theme MCP by slug (`get_component`). The MCP's `list_catalog` is the live version of this list.
 
@@ -10,7 +10,7 @@ Each line ends with the component's place in a page's structure:
 - **Inside:** the only parents it can be added to, listed when there are a few. Without it, the block fits in most layout blocks.
 - **Holds:** what goes inside it, in brief. `content blocks` means the general set of headings, text, media, buttons and so on; `accents` means decorations such as a badge, an icon or a text highlight.
 
-Contents: 206 blocks, 45 sections.
+Contents: 208 blocks, 49 sections.
 
 ## Sections
 
@@ -21,7 +21,7 @@ Contents: 206 blocks, 45 sections.
 
 ### Advertorial
 
-- **Advertorial** `advertorial` — Lay out a long-form sales article beside a sidebar that stays in view, such as one holding the buy box. · holding · holds Content and Sidebar
+- **Advertorial** `advertorial` — Lay out a long-form sales article beside a sidebar that stays in view, such as a product teaser with a link to the offer. · holding · holds Content and Sidebar
 
 ### Animations
 
@@ -84,6 +84,8 @@ Contents: 206 blocks, 45 sections.
 ### Product
 
 - **Featured Product** `featured-product` — Show any product's gallery and buy box on a page other than its own, such as a hero offer on the homepage. · holding · holds Buy Box and Product Media
+- **Popup Cards** `popup-cards` — Show a row of picture cards, each with a name tab and a link that opens a detail popup, such as flavors with nutrition facts. · holding + content · holds Card
+- **Study Table** `study-table` — Show clinical results as a striped table, one row per benefit, with the study behind each one. · holding + content · holds 3 kinds of block
 
 ### Quiz
 
@@ -94,6 +96,8 @@ Contents: 206 blocks, 45 sections.
 ### Social Proof
 
 - **As Seen On** `as-seen-on` — Run a strip of press or partner logos, static or scrolling, with an optional header beside or behind them. · holding + content · holds Logo
+- **Okendo Style Reviews** `okendo-reviews` — Show a product's reviews with a rating breakdown, scales, a photo strip, filters, sorting, helpful votes and a review form. · holding + content · holds 3 kinds of block
+- **Yotpo-style Reviews** `yotpo-reviews` — Show editable Yotpo-style reviews with a customer summary, topic chips, search, rating and country filters, sorting and pagination. · holding + content · holds Review and Topic
 
 ### Sticky
 
@@ -128,7 +132,7 @@ Contents: 206 blocks, 45 sections.
 
 - **Content** `advertorial-content` — Hold the article in an advertorial's main column, from headings and images to reviews and buy buttons. · holding · inside Advertorial · holds content blocks
 - **Reviews Summary** `advertorial-reviews` — Show a typed-in average rating and star breakdown, with optional ratings by feature, in an advertorial's article or sidebar. · content · inside Content, Sidebar
-- **Sidebar** `advertorial-sidebar` — Hold an advertorial's sidebar, which stays in view as the article scrolls, such as a product card with a buy button. · holding · inside Advertorial · holds content blocks
+- **Sidebar** `advertorial-sidebar` — Hold an advertorial's sidebar, which stays in view as the article scrolls, such as a product teaser with a link to the offer. · holding · inside Advertorial · holds content blocks
 
 ### Animations
 
@@ -185,7 +189,7 @@ Contents: 206 blocks, 45 sections.
 - **Card Comparison** `table-comparison` — Compare in a flat table on desktop that restacks into one card per feature on mobile. · holding + content · holds Comparison Row
 - **Column Cards Comparison** `container-comparison` — Compare across separate cards per column, with the Us card standing taller than its neighbours. · holding + content · holds Comparison Row
 - **Comparison Table** `classic-comparison` — Pit your product against up to 3 competitors in a checkmark table with a raised, highlighted Us column. · holding + content · holds Comparison Row
-- **Custom Table** `custom-table` — Build any table from column and row blocks, one cell at a time. · holding · holds Table Column and Table Row
+- **Custom Table** `custom-table` — Build any table from column and row blocks, one cell at a time. · holding + content · holds Table Column and Table Row
 - **Heading + Text Comparison** `long-form-comparison` — Compare features that need explaining, with a heading and body text per row and verdicts per column. · holding + content · holds Comparison Row
 - **Pathway Comparison** `pathway-comparison` — Contrast two step-by-step journeys, each a column of pills ending in a summary card. · content
 - **Side-by-Side Comparison** `side-comparison` — Tell your story and the competitor's in two independent columns of icon, heading, and text rows. · holding + content · holds Side-by-Side Row
@@ -193,7 +197,7 @@ Contents: 206 blocks, 45 sections.
 
 ### Form
 
-- **Newsletter Signup** `newsletter-signup` — Collect email subscribers with a heading, a field, and a button, with an optional discount code shown after signing up. · content
+- **Newsletter Signup** `newsletter-signup` — Collect email subscribers with a heading, a field, and a button, with an optional discount code shown after signing up. · content · holds accents
 
 ### Forms
 
@@ -203,7 +207,7 @@ Contents: 206 blocks, 45 sections.
 - **Email Input** `email-input` — Collect a shopper's email address in a popup, with an optional inline submit arrow and customer tags for segmenting. · content
 - **Multiple Choice** `multiple-choice` — Ask shoppers a question in the email popup and tag them by their answer, as radios, pills, icons or a dropdown. · content · inside Opt-In Page, Pre-Opt-In Page
 - **Opt-In Button** `opt-in-button` — Submit the email popup's sign-up form with a button in a theme button style, with optional icons. · content · inside Opt-In Page
-- **Popup Button** `popup-button` — Move a shopper through an email popup with a button that either carries on or closes it. · content · inside Opt-In Page, Pre-Opt-In Page
+- **Popup Button** `popup-button` — Move a shopper through an email popup with a button that either carries on or closes it. · content
 
 ### Gifts
 
@@ -216,15 +220,15 @@ Contents: 206 blocks, 45 sections.
 ### Header
 
 - **Button** `drawer-button` — Add a button to the header drawer, such as Shop now, in a theme button style or as a text link. · content · inside Mobile Drawer
-- **Image** `drawer-image` — Add a linked image to the header drawer, with an optional caption, such as a featured collection or promo. · content · inside Mobile Drawer
-- **Link** `desktop-link` — Add one link to a hand-built desktop menu, used instead of a Shopify navigation menu. · content · inside Menu
-- **Link** `drawer-link` — Add one link to a hand-built drawer menu, with an optional icon, such as Track your order. · content · inside Menu
-- **Menu** `desktop-menu` — Show a Shopify navigation menu with dropdowns across the desktop header, or build one from Link blocks. · holding + content · inside Desktop Layout · holds Link
+- **Image** `drawer-image` — Add a linked image to the header drawer, with an optional caption, such as a featured collection or promo, or a card to a desktop mega menu. · content · inside Menu, Mobile Drawer
+- **Link** `desktop-link` — Add one link to a hand-built desktop menu, used instead of a Shopify navigation menu, with optional Links inside for a dropdown. · holding + content · inside Link, Menu · holds Link
+- **Link** `drawer-link` — Add one link to a hand-built drawer menu, with an optional icon, such as Track your order. · holding + content · inside Link, Menu · holds Link
+- **Menu** `desktop-menu` — Show a Shopify navigation menu across the desktop header, or build one from Link blocks, with list dropdowns or a full-width mega menu. · holding + content · inside Desktop Layout · holds Link and Image
 - **Menu** `drawer-menu` — Show a Shopify navigation menu as accordions in the header drawer, or build one from Link blocks with icons. · holding + content · inside Mobile Drawer · holds Link
 
 ### Headings
 
-- **Heading** `heading` — Add a heading with an SEO tag, sizes per device, and optional inline accents. · content · holds accents
+- **Heading** `heading` — Add a heading with an SEO tag, sizes per device, and optional inline accents. · holding + content · holds Highlight Emoji
 - **Heading + Text** `heading-text` — Stack a heading and a paragraph as one block, for pairs that sit side by side in a row. · content
 
 ### Icons
@@ -249,6 +253,7 @@ Contents: 206 blocks, 45 sections.
 - **Reveal Card** `reveal-card` — Hold one card's face and the blocks revealed when a shopper opens it. · holding + content · inside Reveal Cards · holds content blocks
 - **Reveal Cards** `reveal-cards` — Arrange cards in a grid that expand on click to show any blocks nested inside, such as benefits or feature details. · holding · holds Reveal Card
 - **Reveal Content** `milestone-reveal` — Hold content in a milestone that appears only once the timeline reaches it, such as a detail or a button. · holding · inside Milestone · holds content blocks
+- **Scratch Off** `scratch-off` — Hide a reward under foil for shoppers to scratch away, such as a mystery discount in the email popup or an offer on a page. · holding + content · holds content blocks
 - **Timeline** `timeline` — Walk shoppers through steps or a story as milestones that light up as they scroll, vertically or as a slider. · holding · holds Milestone
 
 ### Layout
@@ -283,14 +288,14 @@ Contents: 206 blocks, 45 sections.
 - **Content Card** `content-card` — Give a section's content column its own surface, and decide how far it overlaps the media. · content · inside Alternating Media + Text, Media with Text
 - **Custom Video Controls** `video-controls` — Give a video a play button plus optional replay, sound, fullscreen and timeline controls, each placed and styled separately. · content
 - **Gallery** `gallery` — Build a carousel from hand-picked images and videos, with no product behind it. · holding · holds Gallery Item and Gallery Container
-- **Logo** `logo` — Show the store's primary or secondary logo, or an uploaded one, anywhere on a page, with an optional link. · content
+- **Logo** `logo` — Show the store's primary or secondary logo, or an uploaded one, anywhere on a page, with an optional link. For the logo in the header, use the header's own Logo block. · content
 - **Media** `media` — Show an image or video in a frame of your choice, with optional overlays such as a badge or caption. · content · holds accents
 - **Media & Text Row** `media-text-row` — Add one row of media and blocks to an alternating media section. · holding + content · inside Alternating Media + Text · holds content blocks
 - **Media Text Overlay** `media-text-overlay` — Caption an image or video with a heading and supporting line over a fade that keeps them readable. · content · inside Media
 - **Simple Video Controls** `video-controls-simple` — Give a video a play button plus optional replay, sound, fullscreen and timeline controls in one shared style. · content
 - **Social Media Videos** `social-media-videos` — Show short vertical videos, such as customer clips, in a swipeable row that opens each one in a popup. · holding · holds Video Item
 - **Variable Media** `variable-media` — Sync a column of triggers to a media panel that swaps as each one becomes active, on a timer, on click, or as the page scrolls. · holding · holds Media Item
-- **Video Item** `social-media-video-item` — Add one video to a Social Media Videos row, with an optional thumbnail for when autoplay is off. · content · inside Social Media Videos
+- **Video Item** `social-media-video-item` — Add one video to a Social Media Videos row, with an optional thumbnail and an optional longer video for the popup. · content · inside Social Media Videos
 
 ### Navigation
 
@@ -299,9 +304,9 @@ Contents: 206 blocks, 45 sections.
 
 ### Popup
 
+- **Matching Cards** `matching-cards` — (summary pending) · holding + content · holds 6 kinds of block
 - **Opt-In Page** `email-popup-opt-in` — Hold an email popup's sign-up form and set when the popup opens, such as after a delay or on exit intent. · holding · inside Email Popup, Full Screen Email Popup · holds content blocks
 - **Pre-Opt-In Page** `email-popup-pre-opt-in` — Add an optional first step to an email popup, such as a question or a scratch-off, before the sign-up form. · holding · inside Email Popup, Full Screen Email Popup · holds content blocks
-- **Scratch Off** `scratch-off` — Hide a reward under foil shoppers scratch away on the email popup's first step, such as a mystery discount. · content · inside Pre-Opt-In Page
 - **Success Page** `email-popup-success` — Thank shoppers once they sign up to an email popup, with an optional coupon, confetti, auto-close or redirect. · holding · inside Email Popup, Full Screen Email Popup · holds content blocks
 
 ### Product
@@ -333,14 +338,14 @@ Contents: 206 blocks, 45 sections.
 ### Product Options
 
 - **Bundle Builder** `bundle-builder` — Let shoppers tap the variants they want, with a tier bar that reprices each unit as the count grows. · holding + content · holds Bundle Tier and Bundle Item
-- **Offer Cards** `offer-cards` — Sell a product in quantity tiers set side by side as cards, each with its own discount, badges, perks and gifts. · holding · holds Offer and Variant Picker
+- **Offer Cards** `offer-cards` — Sell a product in quantity tiers set side by side as cards, each with its own discount, badges, perks and gifts. · holding + content · holds Offer and Variant Picker
 - **Offer List** `offer-list` — Sell a product in quantity tiers stacked as rows, each with its own discount, badges, perks and gifts. · holding · holds Offer and Variant Picker
 - **Product Upsells** `product-upsells` — Offer add-on products beside the buy button that a shopper selects and adds with the main product in one click. · holding + content · holds Upsell Item
 - **Quantity Selector** `product-quantity-selector` — Let shoppers pick a quantity with plus and minus buttons or a dropdown before adding to cart. · content
 - **Silent Subscription** `silent-subscription` — Put a subscription plan on the product form with nothing for the shopper to pick. · content
 - **Subscription Toggle** `subscription-toggle` — Turn a product's subscription on with one card and a checkbox, the plan's price always in view. · holding + content · holds content blocks
 - **Subscriptions** `subscriptions` — Sell a product on a subscription plan or as a one-time purchase, with two cards that reprice the page as the shopper picks. · holding + content · holds content blocks
-- **Variant Picker** `product-variant-picker` — Let shoppers pick a product's variant, one option at a time, as pills, swatches, images, cards or a dropdown. · holding + content · holds Option blocks
+- **Variant Picker** `product-variant-picker` — Hold multiple Variant Option blocks in one picker, styling each product option independently as pills, swatches, images, cards or a dropdown. · holding + content · holds Option blocks
 
 ### Quiz
 
@@ -364,6 +369,7 @@ Contents: 206 blocks, 45 sections.
 - **Avatar Orbit Circles** `avatar-orbit-circles` — Surround a large center photo with up to eight smaller avatars on dashed orbits, with optional rotation. · content
 - **Facebook Comment** `facebook-comment` — Add one comment to a Facebook Comments thread, with reactions, plus optional media and up to three replies. · content · inside Facebook Comments
 - **Facebook Comments** `facebook-comments` — Recreate a Facebook comment thread, with reactions, expandable replies and a comment box, for advertorial-style social proof. · holding · holds Facebook Comment
+- **Filter Tabs** `testimonial-filter` — (summary pending) · content · inside Testimonial Grid
 - **Review Avatars** `review-avatars` — Show a star rating and a line such as Rated 4.9/5 beside a row of overlapping customer photos. · content
 - **Review Stars** `review-stars` — Show a star rating with a line such as 1,200 reviews, optionally scrolling to the reviews when tapped. · content
 - **Testimonial Grid** `testimonial-grid` — Display customer reviews as a grid of cards, with optional sorting, filtering, and masonry packing. · holding · holds Testimonial blocks and their controls
@@ -377,9 +383,9 @@ Contents: 206 blocks, 45 sections.
 
 - **Bento Grid** `bento-grid` — Arrange image cards of mixed widths into a mosaic, with text below or over each image. · holding · holds Bento Item
 - **Bento Item** `bento-item` — Add one image card to a bento grid at its own width, with an optional badge and link. · content · inside Bento Grid
-- **Grid** `grid` — Arrange content in equal-width columns that wrap into rows, as separate cards or one joined panel. · holding · holds Grid Item
+- **Grid** `grid` — Lay out a set of equal cards, such as features, stats, or steps, in columns that wrap into rows. · holding · holds Grid Item
 - **Grid + Mobile Slider** `grid-mobile-slider` — Show items in a desktop grid that turns into a swipeable slider on mobile instead of a long stack. · holding · holds Grid Item
-- **Grid Item** `grid-item` — Hold the blocks for one cell of a grid, which sets the padding and colors for every cell. · holding · inside Grid, Grid + Mobile Slider · holds content blocks
+- **Grid Item** `grid-item` — Hold the blocks for one card of a grid, which sets the padding, colors, and border for every card. · holding · inside Grid, Grid + Mobile Slider · holds content blocks
 - **Slide** `slide` — Hold the blocks for one slide of a slider, which sets the padding and colors for every slide. · holding · inside Slider · holds content blocks
 - **Slide Image BG** `slide-image-bg` — Layer a background image behind one slide's content, with an optional overlay to keep text readable. · content · inside Slide
 - **Slider** `slider` — Show content in a swipeable carousel, one or several slides at a time, with optional autoplay. · holding · holds Slide
@@ -427,7 +433,7 @@ Contents: 206 blocks, 45 sections.
 - **Credits** `footer-credits` — Show the footer's copyright line with the store name, policy links and the payment methods the store accepts. · content
 - **Disclaimer** `footer-disclaimer` — Add fine print, such as an FDA supplement disclaimer, to the footer, a product page or a collapsible row. · content
 - **Link Menu** `link-menu` — Show a list of links under an optional heading, from a Shopify menu or built by hand. · holding + content · holds Link
-- **Text** `text` — Add paragraphs of rich text with sizes per device and inline accents. · content · holds accents
+- **Text** `text` — Add paragraphs of rich text with sizes per device and inline accents. · holding + content · holds Highlight Emoji
 - **Text Banner** `text-banner` — Set a line of text on its own colored strip, such as a shipping note, optionally flush to a card's top or bottom. · content
 
 ### Text Accents
@@ -437,7 +443,7 @@ Contents: 206 blocks, 45 sections.
 
 ### Urgency
 
-- **Countdown Timer** `countdown-timer` — Count down to a date, to midnight each day or from a set time, to add urgency to an offer. · content
+- **Countdown Timer** `countdown-timer` — Count down to a date, to midnight each day, from a set time or from each visitor's first visit, to add urgency to an offer. · content
 - **Inventory Pulse** `inventory-pulse` — Show a stock status beside a pulsing dot, optionally switching to a low-stock message from real inventory. · content
 
 ### Utility
@@ -448,11 +454,14 @@ Contents: 206 blocks, 45 sections.
 
 How the theme works beyond any one component. Fetch the full guide from the Sugar Theme MCP by slug (`get_concept`).
 
-- **Buttons** `buttons` — Give every button one of three theme-wide styles, each with its own colors, optional gradient, and border.
+- **Buttons** `buttons` — Style every button with one of four theme-wide choices, two filled and two outlines that follow the section.
 - **Colors** `colors` — Set colors through three mechanisms — a brand palette, color schemes, and per-element override pickers.
 - **Comparison tables** `comparison-tables` — Choose between seven ready-made comparison tables and the build-anything custom table.
 - **Conditional cart content** `conditional-cart-content` — Show or hide blocks in the cart drawer based on what the shopper has already added.
 - **Corners** `corners` — Round media, containers, badges, and buttons from four theme values that any component can override.
 - **Landing layout** `landing-layout` — Build ad and campaign pages on a stripped-down layout that skips the header, footer, cart and product engines.
+- **License** `license` — Learn where the license key lives, what the theme carries instead, and how to move the license to another store.
 - **Quizzes** `quizzes` — Build a multi-step quiz from a shell section, one section per step, and the blocks inside them.
+- **Right to left** `right-to-left` — Run the theme on a right-to-left storefront, such as Hebrew or Arabic, and know which part switches the direction.
+- **Template size limit** `template-size-limit` — Keep a page template under Shopify's 512 KB limit by deleting hidden blocks, old test versions and repeated content.
 - **Typography** `typography` — Give the theme a heading font, a body font, and an optional accent font that every block reads.

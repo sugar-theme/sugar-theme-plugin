@@ -27,6 +27,14 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 Look at the screenshot and/or reference URL the user provided and analyze them thoroughly. On the reference page, locate the element the user asked for if they have not tagged it already. Extract its HTML and CSS in full, including the computed styles at both viewports, since a stylesheet rarely tells the whole story. If the component does not fully expose its code, reverse-engineer its design and functionality.
 
+Before calling anything a capability gap, read the likely existing component's guide,
+settings and allowed children through `get_component` and its guide tool, or the
+corresponding local catalog guide when working in the theme repository. Inspect the
+child components too: a parent and its existing children may already compose the
+reference. Record the exact missing behavior rather than inferring it from the
+parent's settings alone. If the hosted tools are unavailable, use the documented
+machine-readable docs endpoint or local guides; do not skip this check.
+
 ## Cloning Best Practices
 
 To clone accurately, analyze the following aspects of the reference:
