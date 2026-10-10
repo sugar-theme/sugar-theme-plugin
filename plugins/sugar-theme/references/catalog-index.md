@@ -1,6 +1,6 @@
 # Sugar Theme catalog index
 
-Sugar 2.0.0 · catalog `ac28db2ba7c7` · generated, do not edit.
+Sugar 2.0.0 · catalog `a8353697c05e` · generated, do not edit.
 
 One line per section and block, grouped the way the theme editor's add menu groups them. This answers whether something exists, roughly what it does, and where it sits in a page. For how a component works, its settings, its full list of allowed children and its known issues, fetch its docs from the Sugar Theme MCP by slug (`get_component`). The MCP's `list_catalog` is the live version of this list.
 
@@ -10,7 +10,7 @@ Each line ends with the component's place in a page's structure:
 - **Inside:** the only parents it can be added to, listed when there are a few. Without it, the block fits in most layout blocks.
 - **Holds:** what goes inside it, in brief. `content blocks` means the general set of headings, text, media, buttons and so on; `accents` means decorations such as a badge, an icon or a text highlight.
 
-Contents: 208 blocks, 49 sections.
+Contents: 208 blocks, 52 sections.
 
 ## Sections
 
@@ -56,10 +56,6 @@ Contents: 208 blocks, 49 sections.
 
 - **Email Signup** `email-signup` — Give a newsletter form its own band across the page, with an optional gradient and its own width. · holding · holds content blocks
 
-### Header
-
-- **Header** `header` — Run the store's navigation, logo, and utility icons across the top of every page, with a shared drawer for mobile and desktop. · holding · holds logo, menus, icons and drawer
-
 ### Hero
 
 - **Full Width Hero** `full-width-hero` — Fill the top of a page with one edge-to-edge image or video and place content anywhere over it. · holding + content · holds Section Content
@@ -96,6 +92,8 @@ Contents: 208 blocks, 49 sections.
 ### Social Proof
 
 - **As Seen On** `as-seen-on` — Run a strip of press or partner logos, static or scrolling, with an optional header beside or behind them. · holding + content · holds Logo
+- **Judge.me Reviews** `judgeme-reviews` — Display editable reviews with a rating summary, filters, sorting, helpful votes and merchant replies in a Judge.me style layout. · holding + content · holds Review
+- **Junip Style Reviews** `junip-reviews` — Show native reviews with reviewer details, stars, dates, reviewed products and a See More button in a Junip style layout. · holding + content · holds Review
 - **Okendo Style Reviews** `okendo-reviews` — Show a product's reviews with a rating breakdown, scales, a photo strip, filters, sorting, helpful votes and a review form. · holding + content · holds 3 kinds of block
 - **Yotpo-style Reviews** `yotpo-reviews` — Show editable Yotpo-style reviews with a customer summary, topic chips, search, rating and country filters, sorting and pagination. · holding + content · holds Review and Topic
 
@@ -120,11 +118,13 @@ Contents: 208 blocks, 49 sections.
 ### Utility
 
 - **Footer** `footer` — Build the site footer from columns on a 12-column grid, with its own width, color scheme, and optional gradient or background image. · holding + content · holds content blocks
+- **Header** `header` — Run the store's navigation, logo, and utility icons across the top of every page, with a shared drawer for mobile and desktop. · holding · holds logo, menus, icons and drawer
 - **Hide Header & Footer** `hide-header-footer` — Strip the site chrome off one page, for a landing page or a checkout-style flow. · content
 - **Page A/B Test** `page-ab-test` — Split visitors between two templates of the same page, at the same URL, and measure which layout sells better. · content
 - **Page Redirect** `page-redirect` — Send visitors on to another page after an optional delay, such as from a retired landing page. · content
 - **Page Styles** `page-styles` — Override the colors, buttons and fonts of one page without changing the rest of the store. · holding · holds color scheme, button and font overrides
 - **Section A/B Test** `section-ab-test` — Split visitors between two sets of sections on a page, or test a section against not having it, and measure which sells better. · content
+- **Setup Guide** `setup-guide` — Walk a new store through its first theme settings, from the logo to fonts, corners, and buttons. · content
 
 ## Blocks
 
@@ -216,15 +216,6 @@ Contents: 208 blocks, 49 sections.
 - **Gift List** `gift-list` — Stack several free gifts as full-width rows, each with its value struck through. · holding + content · holds Gift Item
 - **Gift Picker** `product-gift-picker` — Let shoppers choose their free gift on the product page, added with the buy button. · holding + content · holds Gift Choice
 - **Gift Unlocks** `gift-unlocks` — Show a row of free gifts that unlock as the shopper raises quantity or picks a variant. · holding + content · holds Gift Unlock
-
-### Header
-
-- **Button** `drawer-button` — Add a button to the header drawer, such as Shop now, in a theme button style or as a text link. · content · inside Mobile Drawer
-- **Image** `drawer-image` — Add a linked image to the header drawer, with an optional caption, such as a featured collection or promo, or a card to a desktop mega menu. · content · inside Menu, Mobile Drawer
-- **Link** `desktop-link` — Add one link to a hand-built desktop menu, used instead of a Shopify navigation menu, with optional Links inside for a dropdown. · holding + content · inside Link, Menu · holds Link
-- **Link** `drawer-link` — Add one link to a hand-built drawer menu, with an optional icon, such as Track your order. · holding + content · inside Link, Menu · holds Link
-- **Menu** `desktop-menu` — Show a Shopify navigation menu across the desktop header, or build one from Link blocks, with list dropdowns or a full-width mega menu. · holding + content · inside Desktop Layout · holds Link and Image
-- **Menu** `drawer-menu` — Show a Shopify navigation menu as accordions in the header drawer, or build one from Link blocks with icons. · holding + content · inside Mobile Drawer · holds Link
 
 ### Headings
 
@@ -448,7 +439,13 @@ Contents: 208 blocks, 49 sections.
 
 ### Utility
 
+- **Button** `drawer-button` — Add a button to the header drawer, such as Shop now, in a theme button style or as a text link. · content · inside Mobile Drawer
 - **Country & Language** `localization` — Let shoppers switch country and language from a labelled dropdown. · content
+- **Image** `drawer-image` — Add a linked image to the header drawer, with an optional caption, such as a featured collection or promo, or a card to a desktop mega menu. · content · inside Menu, Mobile Drawer
+- **Link** `desktop-link` — Add one link to a hand-built desktop menu, used instead of a Shopify navigation menu, with optional Links inside for a dropdown. · holding + content · inside Link, Menu · holds Link
+- **Link** `drawer-link` — Add one link to a hand-built drawer menu, with an optional icon, such as Track your order. · holding + content · inside Link, Menu · holds Link
+- **Menu** `desktop-menu` — Show a Shopify navigation menu across the desktop header, or build one from Link blocks, with list dropdowns or a full-width mega menu. · holding + content · inside Desktop Layout · holds Link and Image
+- **Menu** `drawer-menu` — Show a Shopify navigation menu as accordions in the header drawer, or build one from Link blocks with icons. · holding + content · inside Mobile Drawer · holds Link
 
 ## Concepts
 

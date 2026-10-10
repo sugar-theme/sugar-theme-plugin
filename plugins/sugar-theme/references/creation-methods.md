@@ -29,7 +29,7 @@ Use one or more sections and blocks already on the theme, with only their availa
 
 **Pros:** no new files are created and existing ones stay untouched. The functionality is proven, the design is what the user is used to, and they can edit the result in the theme editor exactly as they always have.
 
-**Cons:** Sugar's files are versatile, and versatility has a cost: every setting a file declares is written into the template, default values included. A template with many sections built only from Sugar files is therefore more liable to hit Shopify's 512 KB template limit, especially with many nested blocks. The densest pages are still under 300 KB, but it is a real consideration.
+**Cons:** Sugar's files are versatile, and versatility has a cost: every setting a file declares is written into the template, default values included. A template with many sections built only from Sugar files is therefore more liable to hit Shopify's 512 KB template limit, especially with many nested blocks. The densest pages are usually under 300 KB, but it is a real consideration.
 
 **Limitations:** existing files may not completely match what the user wants, especially in a cloning request. Always check first; the files are extremely versatile. If existing files get most of the way there but not all of it, combine this method with one below.
 
@@ -59,11 +59,13 @@ The theme's Custom Liquid section or block holds the entire build. For a whole s
 
 ## Method 4: Completely New Files
 
-New files are created inside the theme: sections, blocks, assets and/or snippets.
+New files are created inside the theme: sections (either using theme blocks or section blocks), theme blocks, assets and/or snippets.
 
 **When to use:** an existing file's design or functionality differs too much from the request and the new file is likely to be used more than once, or the user specifically asks for a new file.
 
-**Pros:** complete freedom. You don't need to adhere to an existing file's design, functionality or settings; you can create anything to fulfil the request. The user can reuse the file anywhere in their theme, on their own in the editor or by asking their agent.
+**Pros:** complete freedom. You don't need to adhere to an existing file's design, functionality or settings; you can create anything to fulfil the request. The user can reuse the file anywhere in their theme, on their own in the editor or by asking their agent. 
+
+**Sections with section blocks:** Sections with section blocks are particularly useful and have the most pros & benefits within this method. There is no Shopify limit on how many sections with section blocks can be in a theme (only the 25 section per template limit applies). While you can only have 50 section blocks per section, that is more than enough for virtually every task. They are extremely versatile and provide you (the agent) with complete freedom as you are not constrained by existing theme blocks. At the same time, they provide the user with a pleasant theme editor experience. The only cons to this method is the fact that new sections will show up in the theme editor as addable in the template — this means dozens of available sections could add clutter or confusion to both agents and humans. Additionally, sections with section blocks cannot be nested like theme blocks can. Regardless, it is a fantastic option for a lot of tasks.
 
 **Cons:** possible clashes with existing functionality, especially when scripts are involved or the file touches pricing, quantity, variants, subscriptions or similar. The file shows in the theme editor, and at volume that becomes clutter, though some users want exactly that. Agents suffer the same clutter differently: a theme full of files that seem to do the same thing, or have no clear purpose, gives future agents too many options when composing templates. For these reasons, name new files clearly and document them in the project's `custom-sections-blocks.md`. Follow `new-file-creation.md` for the rest.
 

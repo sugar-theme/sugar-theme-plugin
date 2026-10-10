@@ -31,6 +31,7 @@ Below are some suggestions on what makes a section or block feel more premium. O
 - Text accents and/or animations (color highlights, underlines, typing animations, etc.)
 - Cutout images (images with transparent backgrounds go a long way). Offer to create the images an enhancement needs with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to cut out and reuse ones they already have; the user can also defer the images and take the enhancement without them for now
 - Subtle animations (tasteful hover, click or passive animations, color highlights, etc.)
+- Functional enhancements (pills that filter reviews, a segmented control for a comparison table on mobile)
 - Information display: tooltips, popups or brand new components that display more information about a particular claim or concept
 - Surrounding components: in some cases an enhancement depends on the surrounding components, or even the whole page's design and functionality. Consider them when deliberating.
 
@@ -57,6 +58,10 @@ Consider the other components on the page as well as the user's branding, produc
 ### Performance Considerations
 
 Because traffic is mostly mobile and the goal is direct response, consider the performance impact of every enhancement. Most Ecommerce stores rely on low bounce rates and fast pages for a healthy return on ad spend. Some improvements come with a speed trade-off the user should know about. Don't avoid an enhancement just because it carries a cost; be transparent about it, and deliver it as optimized as it can be.
+
+### Entire Page Enhancements
+
+The user may ask for enhancements to an entire page, not just a single section or block. This is a fantastic opportunity for you to provide holistic results that will give the entire page a unique personality and design direction that may not be possible when only touching one component.
 
 ### Existing Files vs New Files
 

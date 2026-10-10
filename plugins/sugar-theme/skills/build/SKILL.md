@@ -33,7 +33,7 @@ Ground the options in what the theme can do. Read the plugin's catalog index to 
 
 Because this skill is usually invoked in an exploratory prompt or phase, offer the user multiple options for what can be created. Present them with the AskUserQuestion tool (or your agent's equivalent), saying clearly what each section or component would look like and why it is a good fit for the goal.
 
-Say which images the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use images already in their store or on their computer. Never ship a placeholder where an image should be unless the user wants to defer the creation of the image until later.
+Say which images or other assets the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use assets already in their store or on their device. The user may want to defer the creation of the image until later.
 
 # Step 2: Method Selection
 

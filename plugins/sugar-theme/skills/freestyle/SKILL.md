@@ -6,7 +6,7 @@ disable-model-invocation: false
 
 # Overview
 
-Create sections and blocks inside the user's theme with complete freedom. Instead of treating the existing files as a component library, you are free to create anything that fulfils the user's request, as new files on their theme.
+Create sections and blocks inside the user's theme with complete freedom. Instead of treating the existing theme files as a component library you must adhere to, you are free to create absolutely anything that fulfils the user's request.
 
 # Plugin version
 
@@ -31,11 +31,14 @@ Thoroughly analyze the user's request, their existing design components, their s
 
 Read the working theme's brand settings before proposing anything: the new file will bind to the theme's typography, color schemes, corners and buttons, so every option should be imagined in the user's type and colors, not generic ones. Read the project's `custom-sections-blocks.md` too, in case an earlier agent already built something close.
 
-Because this skill is usually invoked in an exploratory prompt or phase, offer the user multiple options for what can be created. Present them with the AskUserQuestion tool (or your agent's equivalent), saying clearly what each section or component would look like and why it is a good fit for the goal.
-
-Say which images the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use images already in their store or on their computer. Never ship a placeholder where an image should be unless the user wants to defer the creation of the image until later.
+**Variations & brand new design directions**
+Because this skill is usually invoked in an exploratory prompt or phase, offer the user multiple options for what can be created. Present them with the AskUserQuestion tool (or your agent's equivalent), saying clearly what each section or component would look like and why it is a good fit for the goal. Also, because this skill is usually invoked when the theme's existing files and features don't "scratch their itch" you must create something that is starkly different from what's available, that feels fresh, new, exciting and fits their request.
 
 The user may like more than one suggestion and ask to see them all built before picking a final version. Read `${CLAUDE_PLUGIN_ROOT}/references/variations.md` so you know exactly how to build and deliver variations in context on the theme.
+
+**Images, videos and other visuals**
+
+Say which images or other assets the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use assets already in their store or on their device. The user may want to defer the creation of the image until later.
 
 # Step 2: Build
 
