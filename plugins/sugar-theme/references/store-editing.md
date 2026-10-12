@@ -74,6 +74,7 @@ shopify theme push --store STORE.myshopify.com --theme THEME_ID \
 ```
 
 - **`--nodelete` is not optional.** Without it, the CLI deletes every remote file that is not in the scratch folder, and the scratch folder holds three files.
+- **Never push into a theme that is still being copied.** A pull that brings down none of the files you named is the sign: check `processing` (see Duplicate) and wait until it is false.
 - **Pushing to the live theme needs `--allow-live`.** Only when AGENTS.md says `Live edits: yes`, and say so to the user before the push.
 - **Pull each file again right before you push it.** Another conversation, or the user in the editor, may have changed it since your copy. If the fresh copy differs from what you pulled, re-apply your change onto the fresh copy and push that. This turns "last push wins" into "last push merges", and it is what lets two conversations share one draft.
 - **New files first, the template after.** A template that places a block, or uses a setting, the store doesn't have yet is refused, and the CLI only says "pushed with errors". When a task adds or changes a block, section or snippet that a template uses, push those files first and the template in a second push.
@@ -100,6 +101,8 @@ shopify theme duplicate --store STORE.myshopify.com --theme LIVE_THEME_ID --name
 ```
 
 Record the new theme's ID in AGENTS.md as the working theme. The user publishes it from the admin when they are happy.
+
+The copy takes a minute or more to finish. Until `shopify theme list --store STORE.myshopify.com --json` shows its `processing` as false, don't pull, push or run `theme dev` against it. A pull brings nothing down and says nothing. A push writes the CLI's blank placeholders over its layout and settings files, because it can't see them yet, and the finished copy keeps those placeholders: the storefront goes blank.
 
 ## Preview and review links
 
