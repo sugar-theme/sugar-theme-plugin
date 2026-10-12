@@ -3,6 +3,7 @@
     "sugar-theme": {
       "type": "http",
       "url": "https://app.sugarthe.me/api/mcp",
+      "scopes": ["openid", "profile", "email", "offline_access"],
       "oauth": {
         "clientId": "TW7DqLOYRnvp3U6n",
         "callbackPort": 47219
