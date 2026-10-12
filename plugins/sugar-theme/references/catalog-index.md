@@ -1,6 +1,6 @@
 # Sugar Theme catalog index
 
-Sugar 2.0.0 · catalog `a8353697c05e` · generated, do not edit.
+Sugar 2.0.0 · catalog `05af6830c782` · generated, do not edit.
 
 One line per section and block, grouped the way the theme editor's add menu groups them. This answers whether something exists, roughly what it does, and where it sits in a page. For how a component works, its settings, its full list of allowed children and its known issues, fetch its docs from the Sugar Theme MCP by slug (`get_component`). The MCP's `list_catalog` is the live version of this list.
 
@@ -10,7 +10,7 @@ Each line ends with the component's place in a page's structure:
 - **Inside:** the only parents it can be added to, listed when there are a few. Without it, the block fits in most layout blocks.
 - **Holds:** what goes inside it, in brief. `content blocks` means the general set of headings, text, media, buttons and so on; `accents` means decorations such as a badge, an icon or a text highlight.
 
-Contents: 208 blocks, 52 sections.
+Contents: 206 blocks, 54 sections.
 
 ## Sections
 
@@ -47,10 +47,14 @@ Contents: 208 blocks, 52 sections.
 - **Collections List** `collections-list` — Show collections as a grid or slider of cards, with an optional product count and per-collection overrides. · holding + content · holds Collection Item
 - **Featured Collection** `featured-collection` — Show products as a grid or slider of cards, with prices, optional ratings, swatches, benefits, quick add, and filters on collection pages. · holding + content · holds Product Item
 
+### Content
+
+- **Expert Videos** `expert-videos` — Present expert video answers in swipeable cards with expandable answers and biographies. · holding + content · holds Answer
+
 ### Decoration
 
 - **Page Background End** `page-background-end` — Stop a Page Background at this point, so the sections below return to their normal width and edges. · content
-- **Section Divider** `section-divider` — Shape the seam between two sections with a wave, angle or curve, optionally animated. · content
+- **Section Divider** `section-divider` — Shape the seam between two sections with a wave, angle, curve or dashed swirl, optionally animated. · content
 
 ### Forms
 
@@ -59,6 +63,7 @@ Contents: 208 blocks, 52 sections.
 ### Hero
 
 - **Full Width Hero** `full-width-hero` — Fill the top of a page with one edge-to-edge image or video and place content anywhere over it. · holding + content · holds Section Content
+- **Hero Carousel** `hero-carousel` — Fade between editable hero slides with individual background media, overlays and content. · holding + content · holds Hero Slide
 - **Split Hero** `split-hero` — Set an image or video beside a column of content at a ratio you choose, with an optional color scheme on the content half. · holding + content · holds Section Content
 
 ### Layouts
@@ -92,10 +97,10 @@ Contents: 208 blocks, 52 sections.
 ### Social Proof
 
 - **As Seen On** `as-seen-on` — Run a strip of press or partner logos, static or scrolling, with an optional header beside or behind them. · holding + content · holds Logo
-- **Judge.me Reviews** `judgeme-reviews` — Display editable reviews with a rating summary, filters, sorting, helpful votes and merchant replies in a Judge.me style layout. · holding + content · holds Review
+- **Judge.me Style Reviews** `judgeme-reviews` — Display editable reviews with a rating summary, star filters, sorting, helpful votes and merchant replies in a Judge.me style layout. · holding + content · holds Review
 - **Junip Style Reviews** `junip-reviews` — Show native reviews with reviewer details, stars, dates, reviewed products and a See More button in a Junip style layout. · holding + content · holds Review
 - **Okendo Style Reviews** `okendo-reviews` — Show a product's reviews with a rating breakdown, scales, a photo strip, filters, sorting, helpful votes and a review form. · holding + content · holds 3 kinds of block
-- **Yotpo-style Reviews** `yotpo-reviews` — Show editable Yotpo-style reviews with a customer summary, topic chips, search, rating and country filters, sorting and pagination. · holding + content · holds Review and Topic
+- **Yotpo Style Reviews** `yotpo-reviews` — Show editable Yotpo style reviews with optional rating bars, a customer summary, topic chips, search, filters, sorting and pagination. · holding + content · holds Review and Topic
 
 ### Sticky
 
@@ -141,7 +146,7 @@ Contents: 208 blocks, 52 sections.
 - **Marquee** `marquee` — Scroll rows of trust claims, logos, or reviews across the page on a continuous loop. · holding · holds Marquee Track
 - **Percentage Circle** `percentage-circle` — Show one statistic as a number counting up inside a ring that fills to match it. · content
 - **Percentage Circles** `percentage-circle-list` — Lay out several percentage rings in a grid, all sharing one look. · holding · holds Circle
-- **Progress Bar** `progress-bar` — Show stock, progress or a rating as a bar that fills as one length or as segments. · content
+- **Progress Bar** `progress-bar` — Show stock, progress or a rating as a bar that fills as one length, as segments or as dots. · content
 - **Rotating Text** `rotating-text` — Cycle a short line of text through several messages on a timer, with optional icons or star ratings. · holding · holds Text Item and Review Item
 
 ### Badges
@@ -151,9 +156,9 @@ Contents: 208 blocks, 52 sections.
 - **Badge** `badge` — Highlight a short claim in a compact pill with an optional icon, such as Free Shipping or Bestseller. · content
 - **Badge List** `badge-list` — Show a row of badges that share one style, such as trust claims under a buy button. · holding · holds Badge
 - **Chip Badge** `chip-badge` — Flag a status in a small pill with a leading dot, in a solid or glass style, such as Back in stock. · content
-- **Text Stamp** `text-stamp-list-item` — Add one stamp to a text stamp list, with up to three lines of its own text. · content · inside Text Stamp List
-- **Text Stamp** `text-stamp` — Stack up to three lines of text inside a circle, seal, starburst, or shield, such as a guarantee or a discount. · content
-- **Text Stamp List** `text-stamp-list` — Lay out a row of text stamps that share one shape, size, and text style, such as a set of trust marks. · holding · holds Text Stamp
+- **Stamp** `stamp-list-item` — Add one stamp to a stamp list, with its own ring text and an icon or stacked lines. · content · inside Stamp List
+- **Stamp** `stamp` — Print a seal with curved ring text and an icon or stacked lines at its center, such as a guarantee or a discount. · content
+- **Stamp List** `stamp-list` — Lay out a row of stamps that share one shape, size, and text style, such as a set of trust marks. · holding · holds Stamp
 
 ### Blog
 
@@ -228,12 +233,9 @@ Contents: 208 blocks, 52 sections.
 - **Icon + Heading + Text** `icon-text` — Pair an icon with a heading and optional supporting text, placing the icon above or beside them. · content · holds accents
 - **Icon + Heading List** `icon-heading-list` — List points with a heading and supporting line each, beside a shared icon or a number that counts up. · holding · holds List Item
 - **Icon + Text List** `icon-text-list` — List short points with an icon beside each one, stacked or in columns. · holding · holds List Item
-- **Icon Stamp** `icon-stamp` — Print a circular seal with an icon at its centre and text curved around the rim, such as a guarantee or an award. · content
-- **Icon Stamp List** `icon-stamp-list` — Lay out a row of circular seals that share one size, color, and text style, such as a set of trust marks. · holding · holds Stamp
 - **List Item** `icon-heading-list-item` — Add one point to an icon + heading list, with a heading, a supporting line and its own icon if needed. · content · inside Icon + Heading List
 - **Payment Badges** `payment-badges` — Show the card and wallet logos you accept, such as Visa, Apple Pay, or Klarna. · content
 - **Social Icons** `social-icons` — Show a row of social profile links as icons, from the theme's own settings or from a hand-picked list. · holding · holds Social Link
-- **Stamp** `icon-stamp-list-item` — Add one seal to an icon stamp list, with its own icon and two curved lines of text. · content · inside Icon Stamp List
 
 ### Interactive
 
@@ -321,7 +323,7 @@ Contents: 208 blocks, 52 sections.
 - **Product Description** `product-description` — Show the product's description, folding long copy behind a Read more button at a set height. · content
 - **Product Price** `product-price` — Show a product's price beside the compare-at price it is discounted from, with an optional sale badge. · content · holds accents
 - **Product Subtotals** `product-subtotals` — Show what the shopper is saving and what the cart will come to, updating live as they choose. · content
-- **Product Title** `product-title` — Show the product's name as the page heading, with its own size, font and an optional gradient. · content
+- **Product Title** `product-title` — Show the product's name as a heading, with its own size, font and an optional gradient. · content
 - **Shop Pay Installments** `shop-pay-installments` — Show Shopify's Shop Pay installments message for a product or the cart total. · content
 - **Size Chart** `size-chart` — Lay out measurements by size in a table, with an optional toggle between inches and centimeters. · content
 - **Supplement Facts** `supplement-facts` — Show a supplement or nutrition facts label typed as plain rows, with indents, thick bars, and daily value notes. · content
@@ -334,9 +336,10 @@ Contents: 208 blocks, 52 sections.
 - **Product Upsells** `product-upsells` — Offer add-on products beside the buy button that a shopper selects and adds with the main product in one click. · holding + content · holds Upsell Item
 - **Quantity Selector** `product-quantity-selector` — Let shoppers pick a quantity with plus and minus buttons or a dropdown before adding to cart. · content
 - **Silent Subscription** `silent-subscription` — Put a subscription plan on the product form with nothing for the shopper to pick. · content
+- **Step 2** `step-two` — Turn the buy box into a two-step page, such as picking a bag count and then a flavor for each bag. · holding + content · inside Buy Box · holds content blocks
 - **Subscription Toggle** `subscription-toggle` — Turn a product's subscription on with one card and a checkbox, the plan's price always in view. · holding + content · holds content blocks
 - **Subscriptions** `subscriptions` — Sell a product on a subscription plan or as a one-time purchase, with two cards that reprice the page as the shopper picks. · holding + content · holds content blocks
-- **Variant Picker** `product-variant-picker` — Hold multiple Variant Option blocks in one picker, styling each product option independently as pills, swatches, images, cards or a dropdown. · holding + content · holds Option blocks
+- **Variant Picker** `product-variant-picker` — Let shoppers pick a product's variant, one option at a time, as pills, swatches, images, cards or a dropdown. · holding + content · holds Option blocks
 
 ### Quiz
 
@@ -344,7 +347,7 @@ Contents: 208 blocks, 52 sections.
 - **Popup Checkpoint** `quiz-loading-popup` — Pause a loading animation on a dialog and wait for the shopper to choose. · content · inside Loading Step
 - **Quiz Answer** `quiz-answer` — Add one answer to a question, with optional icon, image, subtext and customer tag. · content · inside Quiz Answers
 - **Quiz Answers** `quiz-answers` — Ask a question with text, icon or image answers, in a stack or a grid. · holding + content · inside Quiz Content · holds Quiz Answer
-- **Quiz Content** `quiz-content` — Hold the blocks that make up one quiz step. · holding · inside Quiz Loading, Quiz Page · holds content blocks
+- **Quiz Content** `quiz-content` — Hold the blocks that make up one quiz step. · holding + content · inside Quiz Loading, Quiz Page · holds content blocks
 - **Quiz Continue** `quiz-continue` — Give one quiz step its own advance button, replacing the shared Next button. · content · inside Quiz Content
 - **Quiz Email** `quiz-email` — Collect an email address and apply the customer tags the shopper's answers earned. · content · inside Quiz Content
 - **Quiz Loading Animation** `quiz-loading-animation` — Run a checklist, spinner or progress bar while a quiz loading step plays. · holding · inside Quiz Content · holds Loading Step
@@ -368,7 +371,7 @@ Contents: 208 blocks, 52 sections.
 
 ### Row
 
-- **Row Image** `row-image` — Place an image in a row beside other blocks, at its own width on desktop and mobile. · content · inside Row
+- **Row Image** `row-image` — Place an image in a row beside other blocks, at its own width on desktop and mobile. · content · inside Row, Slide
 
 ### Sliders & Grids
 
@@ -377,8 +380,8 @@ Contents: 208 blocks, 52 sections.
 - **Grid** `grid` — Lay out a set of equal cards, such as features, stats, or steps, in columns that wrap into rows. · holding · holds Grid Item
 - **Grid + Mobile Slider** `grid-mobile-slider` — Show items in a desktop grid that turns into a swipeable slider on mobile instead of a long stack. · holding · holds Grid Item
 - **Grid Item** `grid-item` — Hold the blocks for one card of a grid, which sets the padding, colors, and border for every card. · holding · inside Grid, Grid + Mobile Slider · holds content blocks
+- **Image Background** `slide-image-bg` — Layer a background image behind one slide or grid item, with an optional overlay to keep text readable. · content · inside Grid Item, Slide
 - **Slide** `slide` — Hold the blocks for one slide of a slider, which sets the padding and colors for every slide. · holding · inside Slider · holds content blocks
-- **Slide Image BG** `slide-image-bg` — Layer a background image behind one slide's content, with an optional overlay to keep text readable. · content · inside Slide
 - **Slider** `slider` — Show content in a swipeable carousel, one or several slides at a time, with optional autoplay. · holding · holds Slide
 - **Slider Arrows** `slider-arrows` — Page through the nearest slider with arrows placed anywhere in the section, such as beside its heading. · content
 - **Slider Thumbnails** `slider-thumbnails` — Let shoppers jump between slides of the nearest slider by tapping image or icon thumbnails. · content
@@ -405,7 +408,7 @@ Contents: 208 blocks, 52 sections.
 - **Collapsible Heading Icon** `collapsible-row-heading-icon` — Add an icon before a collapsible row's heading, such as a check mark or a shipping truck. · content · inside Collapsible Row, Collapsible Row Item
 - **Collapsible Row** `collapsible-row` — Hide a block of content behind a heading that expands when clicked, such as shipping details or a returns policy. · holding + content · holds content blocks
 - **Collapsible Row Item** `collapsible-row-item` — Add one row to a collapsible row list, carrying its own heading and content. · holding + content · inside Collapsible Row List · holds content blocks
-- **Collapsible Row List** `collapsible-row-list` — Stack several collapsible rows that share one set of styles, such as a shipping and returns FAQ. · holding · holds Collapsible Row Item and Colors
+- **Collapsible Row List** `collapsible-row-list` — Stack several collapsible rows that share one set of styles, such as a shipping and returns FAQ. · holding + content · holds Collapsible Row Item and Colors
 - **Colors** `collapsible-row-colors` — Color a collapsible row's header, border and panel, resting or expanded, from one base color or a color scheme. · content · inside Collapsible Row, Collapsible Row List
 - **Folder Tabs** `folder-tabs` — Organize content into switchable panels styled as file-folder tabs on a bordered box. · holding · holds Tab
 - **Tab** `tab` — Hold one panel's label, optional icon, and content blocks inside a tabs parent. · holding + content · inside Folder Tabs, Tabs, Underline Tabs · holds content blocks
