@@ -71,6 +71,8 @@ New files are created inside the theme: sections (either using theme blocks or s
 
 **Limitations:** the fewest of any method. Shopify's own limits apply: 300 theme blocks per theme and 50 section blocks per section.
 
+**Release stamp:** a new file never carries a Sugar release stamp. When you start one from a copy of a Sugar file, delete its line 1 (`sugar:<path>@<release>`): the stamp is how theme updates and bug checks tell Sugar's files from the user's own.
+
 ## Method 5: Edit Existing Files
 
 The code inside a file that already exists in the theme is edited, to change its design or functionality or to add features on top of it.
@@ -80,6 +82,8 @@ The code inside a file that already exists in the theme is edited, to change its
 **Pros:** existing code is tweaked rather than written from scratch, so most of its functionality and design survive and iteration is fast. Changes that are meant to affect the store's look everywhere are achieved exactly this way.
 
 **Cons:** if the file is used elsewhere in the theme, it changes there too. Depending on the context that is the point, and matches the request. New settings added to the file's schema add to the template size everywhere the file is used, which matters only for a heavily used block. And a shipped Sugar file that has been edited is a file a theme update has to merge instead of replace, so every such edit must be logged (below).
+
+**Release stamp:** leave line 1 of the edited file alone. It names the Sugar release the file started from, which is what lets a later update merge Sugar's fixes into the user's edited copy.
 
 **Limitations:** the second fewest. Extending an existing file adds no theme blocks, but a comprehensive section is still bound by the 50 section blocks limit, which is hard to hit in practice.
 

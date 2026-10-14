@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.1
+
+- When something in a Sugar block breaks, your agent now checks what Sugar changed in that exact file since your copy. Every Sugar file names the release it came from on its first line, so the agent can ask "what was fixed in this file after 2.0.0" and bring in a proven fix instead of writing a new one.
+- Theme updates use the same line. A file you brought up to date earlier on its own is merged from the release it says it came from, instead of from the release the rest of your theme came from.
+
 ## 1.3.0
 
 - Your agent can now look at videos. It can't play one, so it cuts the video into still frames and looks at those: a competitor's autoplay video you want cloned, a video already on your page, or a screen recording you send it of a bug. It sees the picture, not the sound.

@@ -102,6 +102,18 @@ function fingerprint(p, buf) {
   return crypto.createHash("sha256").update(payload).digest("hex");
 }
 
+// Line 1 of every Sugar .liquid/.js/.css file names the release it started from. The app uses it to
+// merge a file that was brought forward on its own from that release rather than the theme's.
+const STAMP = { ".liquid": /^\{%- comment -%\}sugar:([^\s@{}]+)@([^\s{}]+)\{%- endcomment -%\}\r?$/, ".js": /^\/\* sugar:([^\s@*]+)@([^\s*]+) \*\/\r?$/, ".css": /^\/\* sugar:([^\s@*]+)@([^\s*]+) \*\/\r?$/ };
+
+function readStamp(p, buf) {
+  const re = STAMP[path.extname(p).toLowerCase()];
+  if (!re) return null;
+  const nl = buf.indexOf(10);
+  const m = re.exec(buf.subarray(0, nl === -1 ? buf.length : nl).toString("utf8"));
+  return m && m[1] === p ? m[2] : null;
+}
+
 function walk(dir, prefix = "") {
   const out = [];
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -163,8 +175,15 @@ async function check() {
   const checkUrl = flag("--check-url");
   const filesUrl = flag("--files-url");
   if (!checkUrl || !filesUrl) fail("check needs --check-url and --files-url (both from the MCP's check_theme_updates).");
-  const files = walk(themeDir).filter(isCodeFile).map((p) => ({ path: p, sha256: fingerprint(p, fs.readFileSync(path.join(themeDir, p))) }));
-  const plan = await post(checkUrl, { files, base: flag("--base") || undefined });
+  const files = [];
+  const stamps = {};
+  for (const p of walk(themeDir).filter(isCodeFile)) {
+    const buf = fs.readFileSync(path.join(themeDir, p));
+    files.push({ path: p, sha256: fingerprint(p, buf) });
+    const stamp = readStamp(p, buf);
+    if (stamp) stamps[p] = stamp;
+  }
+  const plan = await post(checkUrl, { files, stamps, base: flag("--base") || undefined });
   fs.rmSync(work, { recursive: true, force: true });
   write(path.join(work, "plan.json"), JSON.stringify({ ...plan, files_url: filesUrl }, null, 2));
 
