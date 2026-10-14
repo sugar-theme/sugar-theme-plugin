@@ -1,12 +1,12 @@
 ---
 name: update-check
-description: Check the Sugar plugin and the user's Sugar Theme for available updates, update the plugin when the user agrees, report which theme fixes and improvements apply to their copy, and merge the ones they choose while keeping their customizations. Use when the user asks to check for Sugar updates or to update the plugin, when a bug in a shipped Sugar file surfaces since a fix may already exist, or when the feedback skill sends you here first.
+description: Check the Sugar plugin and the user's Sugar Theme for available updates, update the plugin when the user agrees, report which theme fixes and improvements apply to their copy, and merge the ones they choose while keeping their customizations. Use when the user asks to check for Sugar updates or to update the plugin, when they paste the prompt from the app's "Update from your zip" card, when a bug in a shipped Sugar file surfaces since a fix may already exist, or when the feedback skill sends you here first.
 disable-model-invocation: false
 ---
 
 # Overview
 
-Sugar ships fixes and improvements as changes, not as whole-theme reinstalls. A change usually touches several files and comes with a title, the symptoms it fixes, and the exact diff. This skill finds out which changes the user's copy is missing, tells them in plain words, and applies the ones they pick. It never touches their content: templates, settings and anything the theme editor writes are the user's data and are left alone.
+Sugar ships fixes and improvements by publishing a new build of the theme. This skill finds out which files of the user's copy are behind, tells them in plain words what changed, and brings in what they pick. Files they never changed are replaced; files they changed that Sugar also changed are merged three ways, keeping what their change does. It never touches their content: templates, section groups, `settings_data.json` and anything else the theme editor writes are the user's data and are left alone.
 
 # Step 0: The plugin
 
@@ -20,56 +20,65 @@ The Claude app's own plugin menu may keep showing the older number after this. T
 
 # Prerequisites
 
-- **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first.
-- **The Sugar Theme MCP**, connected during setup. It provides the updates index, each change's page and diff, the original of any shipped file at any release, and a classifier that tells whether a file is untouched or customized.
+- **Working theme** from the project's AGENTS.md. If it is missing, run `/sugar-theme:setup` first. **When the user pasted the prompt from the app's "Update from your zip" card**, the theme to update is the one they just uploaded, not necessarily the working theme; ask which one it is if the prompt and the theme list don't make it obvious.
+- **The Sugar Theme MCP**, connected during setup. `check_theme_updates` gives this check its links, and `search_theme_updates` finds a published fix by its symptom.
 
-**Not live yet.** If the MCP has no `sugar_updates_since` tool, update checks have not been switched on. Tell the user in one sentence that theme update checks are coming in a later release and nothing is needed from them, and stop here. Never compare their theme against a copy you downloaded or guessed at instead.
+Files are read from and written to the store as described in `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md`. This skill is the one case that pulls the whole theme, because every code file has to be compared. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
 
-Files are read from and written to the store as described in `${CLAUDE_PLUGIN_ROOT}/references/store-editing.md`. This skill is the one case that pulls the whole theme, because every code file has to be classified. (`${CLAUDE_PLUGIN_ROOT}` is the plugin's root folder, two levels above this skill file, for an agent that does not fill the variable in.)
+**If you came here because of a bug**, call `search_theme_updates` with the symptom first ("FAQ tooltips cut off on iPhone"). If a change matches, tell the user a proven fix exists before anyone writes a new one, then carry on below to bring it in.
 
 # Step 1: Pull
 
-Pull the working theme in full into the scratch folder. The theme editor rewrites templates and settings constantly, so a copy from an earlier task is stale; pull fresh even if one exists.
+Pull the theme in full into the scratch folder. The theme editor rewrites templates and settings constantly, so a copy from an earlier task is stale; pull fresh even if one exists.
 
-# Step 2: Classify
+# Step 2: Check
 
-Every shipped code file carries a stamp on its first line, `sugar:<path>@<release>`, naming the release it last changed in. Read the theme's own release number from `theme_version` in the settings schema. Then, for every code file, send its path and fingerprint to the MCP's classifier: it answers **untouched**, **customized** or **unknown**, with the release the file started from. Fingerprints are the truth; the stamp only tells you which original a customized file began as.
+Call `check_theme_updates`. It returns a check link and a files link, both good for an hour. Run:
+
+```
+node "${CLAUDE_PLUGIN_ROOT}/scripts/theme-updates.js" check <theme folder> --check-url "<check_url>" --files-url "<files_url>"
+```
+
+Add `--base <build>` when the user's prompt from the app names one ("base build 577ae28"). After the app's zip update their untouched files already match the latest, so the check can't tell from them which build their changed files started from; without it those files read as needing nothing.
+
+The script sends fingerprints, never the files, and writes everything to `<theme folder>.sugar-update/`, beside the theme so a push never picks it up:
+
+- `plan.json`: the build the theme came from and the latest, then each file's fate. `replace` (untouched, behind), `add` (new in Sugar), `protectedReplaced` (changed, but protected: always replaced whole, never merged, because merging them line by line is how they quietly stop working), `merge` (changed by the user and by Sugar), `keep` (changed by the user, unchanged by Sugar since: nothing to do), `own` (the user's own files), `retired` (untouched files Sugar no longer ships; left in place), and `changes`, newest first.
+- `merged/`: each merge file already merged three ways, Liquid, JS and CSS with git's merge (conflicts marked `<<<<<<< yours` / `>>>>>>> sugar`), JSON key by key. `merge-report.json` says which merged cleanly, which conflict and which need a hand merge. `base/` and `latest/` hold the two originals.
 
 Read the project's `custom-sections-blocks.md` as well. Its changes table says which shipped files an agent edited and why, which is what you need to merge them without losing the reason.
 
 # Step 3: Report
 
-Ask the MCP for every change newer than the theme's release, and show the user the ones that apply to their copy: grouped by type, newest first, each with its title and the symptoms it fixes, in words a store owner understands. Hide changes recorded as already applied in the project's update ledger. Show a change whose requirements aren't met with what it needs first.
+Tell the user, in words a store owner understands:
 
-**If you came here because of a bug**, search the index by symptom first: "FAQ tooltips cut off on iPhone". If a change matches, tell the user a proven fix exists before anyone writes a new one.
+- What changed in Sugar since their theme's build, from `changes`, newest first.
+- How many files the update replaces and adds, and which of their changed files it merges. Name those files and what their change was for, when the log says.
+- Any protected file being replaced whole although it was changed, and why.
+
+If nothing is behind, say the theme is on the latest Sugar and stop.
 
 # Step 4: Choose
 
-The user picks: everything, a type, or specific changes. Use the AskUserQuestion tool (or your agent's equivalent). Recommend `security` and `protected` changes first, and say why.
+The user picks: everything, or only the replacements and additions with the merges left for later. Use the AskUserQuestion tool (or your agent's equivalent). Recommend everything: a merge left out keeps an old file next to new ones.
 
 # Step 5: Apply
 
-Apply in dependency order:
-
-- **Untouched files** are replaced with the new original.
-- **Customized files** are merged three ways: the original the file started from, the new original, and the user's copy. Show the user any hunk you were unsure about before writing it, with what the customization was for, from the log.
-- **Protected files** are replaced whole, never merged, even when customized. The report says so. These files carry the theme's integrity checks; merging them line by line is how they quietly stop working.
-- **Migrations** that ship with a change run against the freshly pulled templates, since they are the only updates that touch merchant data, and only in the way the change describes.
+- **Replacements, protected files and new files:** `node "${CLAUDE_PLUGIN_ROOT}/scripts/theme-updates.js" apply <theme folder>`. It writes them into the theme and lists them in `.sugar-update/changed.txt`.
+- **Merges:** for each file in `merge-report.json`, review `merged/<path>` against what the user's change was for. A clean merge still gets a read; a conflict is resolved by keeping what their change does and bringing in Sugar's fix around it. Show the user any part you were unsure about before writing it. Then copy the file into the theme. A file marked for a hand merge is compared with `latest/` by hand the same way.
 
 Never blindly merge. A change can conflict with something the user's store relies on; when it does, say so and let them decide.
 
-# Step 6: Record and push
+# Step 6: Push
 
-Stamp each written file with its new release. Record the applied change ids in the project's update ledger, `sugar-updates.json`, next to `custom-sections-blocks.md`, so the next check doesn't offer them again. Raise `theme_version` once no file is behind the release it names.
+Push only the files you wrote: the ones in `changed.txt` plus the merged ones, each written out with `--only`, following the working-theme policy. Then delete the scratch folder and its `.sugar-update` folder.
 
-Push only the files you changed to the working theme, following the working-theme policy. Then delete the scratch folder.
-
-**One exception.** If the working theme is the live theme (AGENTS.md says `Live edits: yes`) and the chosen changes include `protected` or `security` ones, which replace whole files, duplicate the live theme first and push there instead. Tell the user why: that is the one update they should look at before customers see it. Record the duplicate's ID in AGENTS.md as the working theme for the review.
+**One exception.** If the theme is the live theme (AGENTS.md says `Live edits: yes`) and the update replaces a protected file, duplicate the live theme first and push there instead. Tell the user why: that is the one update they should look at before customers see it. Record the duplicate's ID in AGENTS.md as the working theme for the review.
 
 # Step 7: Verify and deliver
 
-Open the pages the changes affect in both viewports and both browsers, and confirm the symptoms are gone and nothing around them regressed. Deliver a theme editor deep link to the theme and the pages to check, with a short list of what changed. The user reviews in the editor and publishes when ready, or asks you to.
+Open the pages the changes affect in both viewports and both browsers, and confirm the fixes show and nothing around them regressed, the merged files' features above all. Deliver a theme editor deep link to the theme and the pages to check, with a short list of what changed. The user reviews in the editor and publishes when ready, or asks you to.
 
 # Additional Updates
 
-If you came here because a bug surfaced in one Sugar file, check for updates to the other files too, so you can proactively bring in fixes and avoid the next issue. Offer them; don't apply them unasked.
+If you came here because a bug surfaced in one Sugar file, the check shows every other file that is behind too, so you can proactively bring in fixes and avoid the next issue. Offer them; don't apply them unasked.

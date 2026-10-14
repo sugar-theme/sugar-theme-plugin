@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.2.0
+
+- Your agent can now update your Sugar theme. Ask it to check for Sugar updates: it compares every file of your theme with the latest Sugar, tells you what's new since your copy, replaces the files you never changed, adds new ones, and merges the files you changed that Sugar also changed, keeping what your changes do. It shows you anything it's unsure about before writing it, and nothing reaches your live theme until you publish.
+- The app's Store page has a new **Update from your zip** card that does the simple part without an agent. When it finds files that both you and Sugar changed, it gives you a prompt to paste into your agent, and the agent finishes from there.
+- When you hit a bug in a Sugar block, your agent first checks whether Sugar already shipped a fix for it.
+
 ## 1.1.0
 
 - The agent now finds icons in Sugar's icon library instead of guessing their names. It searches the whole library (about 30,000 icons and emoji) by what the icon shows, the set your store already uses and the kind of message (shipping, trust, discounts and more), checks each name before using it, and can send you a link to the library already filtered so you can pick by eye. Before, a wrong guess showed no icon at all.
