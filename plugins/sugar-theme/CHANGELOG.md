@@ -2,6 +2,10 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.2
+
+- Setup now asks Shopify for permission to manage subscription plans (selling plans) along with products and discounts, so your agent can create and attach subscribe-and-save plans without stopping to ask again. Already set up? The next time a task needs it, your agent re-runs the Shopify approval once and carries on.
+
 ## 1.3.1
 
 - When something in a Sugar block breaks, your agent now checks what Sugar changed in that exact file since your copy. Every Sugar file names the release it came from on its first line, so the agent can ask "what was fixed in this file after 2.0.0" and bring in a proven fix instead of writing a new one.
