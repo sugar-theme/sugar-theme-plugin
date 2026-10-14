@@ -96,7 +96,7 @@ Decide which method, or methods, you will use to build the clone. Read `${CLAUDE
 
 **Before starting, make sure you know exactly which template and, where relevant, which product the clone is for.** The theme itself comes from AGENTS.md. If the user has not named the template or product, and nothing in the project says which to use, ask. Do not assume. If the working theme is the live theme, say so before you change it.
 
-Once the user has picked a method from your suggestions, build the clone in the target theme and template. If the method creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done.
+Once the user has picked a method from your suggestions, build the clone in the target theme and template. If the method creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done. Before you write a new section or block, or add settings to an existing one, read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md`; its schema rules apply to both, and every file you touched passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify.
 
 # Step 4: Verification
 

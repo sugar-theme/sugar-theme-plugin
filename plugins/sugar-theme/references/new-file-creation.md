@@ -111,6 +111,19 @@ Settings the user is used to from editing the rest of the theme.
 
 Organize the settings into headers so the user can find things. Beyond the patterns above, think about which other settings the context calls for. The file should be very editable on its own without feeling cluttered or complex.
 
+## Five or six settings per header, never a wall
+
+Every header holds **five or six settings at most**; the settings before the first header count as a group too. Twenty sliders under one "Settings" or "Style" header is the most common way a generated file looks generated: the user has to scroll past everything to find the one control they came for. Every Sugar file follows this, so a file that doesn't stands out next to them.
+
+- **Split by what the user is doing, not by setting type.** `Text` / `Rows` / `Icons` / `Row Separators` beats one `Global Settings`. A header's name says what its settings change; "Settings", "Style", "Options" or "Advanced" are not names.
+- **A desktop/mobile pair counts as two.** Keep the pair under the same header.
+- **Adding a setting to an existing file:** put it under the header whose name says what it does. If that header already holds six, add a new header rather than a seventh setting. This applies to shipped Sugar files you extend as much as to new ones.
+- **Splitting costs nothing.** Moving settings under new headers changes no setting ids, defaults or stored values, so it never breaks a template.
+- **A header whose settings all share a `visible_if` carries that condition itself,** or the editor shows the heading with nothing under it.
+- The only exception is a set that is meaningless split: one row of a size chart, the seven reaction toggles of a social post. Say so in the task summary.
+
+Before you hand off any section or block you created or added settings to, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` and fix what it reports. It checks the header groups and the platform rules below.
+
 Platform rules that fail silently or reject the upload:
 
 - Conditional visibility (`visible_if`) supports `==`, `!=`, `and` and `or`. It does not support `>=`, `<=` or parentheses, and an expression over 250 characters is rejected. A bad expression rejects the whole schema with no clear error. Product, collection, page, blog and article pickers can't be conditional at all.

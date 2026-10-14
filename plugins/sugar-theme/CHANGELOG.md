@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.3
+
+- Sections and blocks your agent builds or adds settings to now keep the theme editor tidy: five or six settings per heading at most, grouped by what you're changing (Text, Icons, Spacing), instead of one long list of 20 sliders. When it adds a setting to an existing block, it goes under the heading that fits, or a new heading if that one is full.
+- Before handing the work to you, the agent runs a quick check on every section or block it touched. It catches an overloaded heading, a heading that would show empty, and the schema mistakes that make Shopify reject an upload.
+
 ## 1.3.2
 
 - Setup now asks Shopify for permission to manage subscription plans (selling plans) along with products and discounts, so your agent can create and attach subscribe-and-save plans without stopping to ask again. Already set up? The next time a task needs it, your agent re-runs the Shopify approval once and carries on.
