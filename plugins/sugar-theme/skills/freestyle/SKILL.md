@@ -38,7 +38,7 @@ The user may like more than one suggestion and ask to see them all built before 
 
 **Images, videos and other visuals**
 
-Say which images or other assets the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use assets already in their store or on their device. The user may want to defer the creation of the image until later.
+Say which images or other assets the build needs and why before building, and offer to create them with an image tool the user has connected, such as the Higgsfield MCP or a similar generator, or to use assets already in their store or on their device. The user may want to defer the creation of the image until later. A video you generate or the user hands you goes through `bash ${CLAUDE_PLUGIN_ROOT}/scripts/video.sh web` before it is uploaded, and `video.sh frames` lets you check it shows what the build needs.
 
 # Step 2: Build
 

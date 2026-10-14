@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.0
+
+- Your agent can now look at videos. It can't play one, so it cuts the video into still frames and looks at those: a competitor's autoplay video you want cloned, a video already on your page, or a screen recording you send it of a bug. It sees the picture, not the sound.
+- Before a video goes into your store, the agent makes it light: a 20 MB clip typically comes down to a few MB, starts playing before it finishes downloading, and gets a cover image from its first frame. It tells you the size before and after. The speed skill uses the same tool to compress the videos already on your page.
+- **To do:** run `/sugar-theme:setup` once in each existing project, so the agent also knows to look at screen recordings and videos you send it. Cloning and speed work pick it up without that. The tool (FFmpeg) installs with no password, and new projects get it during setup.
+
 ## 1.2.0
 
 - Your agent can now update your Sugar theme. Ask it to check for Sugar updates: it compares every file of your theme with the latest Sugar, tells you what's new since your copy, replaces the files you never changed, adds new ones, and merges the files you changed that Sugar also changed, keeping what your changes do. It shows you anything it's unsure about before writing it, and nothing reaches your live theme until you publish.

@@ -74,7 +74,7 @@ Use the AskUserQuestion tool (or your agent's equivalent) so the user picks the 
 
 # Step 4: Optimize & Verify
 
-Implement the chosen changes. For media, upload the optimized files to the store's Files and point the settings at them rather than keeping anything locally. For shipped Sugar files you edit, log the change in the project's `custom-sections-blocks.md`; a theme update would otherwise overwrite it.
+Implement the chosen changes. Compress videos with `bash ${CLAUDE_PLUGIN_ROOT}/scripts/video.sh web VIDEO` (the store's video address works as VIDEO): `--width` at about twice the width the video fills on screen, no sound unless it plays with sound, and the poster it saves as the video's cover image. Look at the result with `video.sh frames` before swapping it in, so a softer picture is caught before the user sees it. For media, upload the optimized files to the store's Files and point the settings at them rather than keeping anything locally. For shipped Sugar files you edit, log the change in the project's `custom-sections-blocks.md`; a theme update would otherwise overwrite it.
 
 Then verify twice:
 

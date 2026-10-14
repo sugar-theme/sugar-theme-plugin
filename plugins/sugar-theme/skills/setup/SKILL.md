@@ -34,6 +34,13 @@ Nothing here needs an administrator password, so you do all of it. Check what ex
   Your shell does not pick up the new install on its own for the rest of this conversation. Start every command that needs `node`, `npm` or `npx` from here on with `. ~/.nvm/nvm.sh &&`, beginning with `. ~/.nvm/nvm.sh && nvm install --lts`. From the next conversation on it is on the path by itself.
 - **Shopify CLI**: `npm install -g @shopify/cli@latest`. Run it again to update. npm prints a warning that it blocked an install script belonging to `esbuild`; that is expected and harmless, say so if the user sees it.
 - **sharp**, the image library behind the plugin's `scripts/zoom.js`, which crops and enlarges screenshots and puts a reference and a clone side by side: `npm install -g sharp`. No compiler, no Python.
+- **FFmpeg**, the video tool behind the plugin's `scripts/video.sh`. An agent can't play a video; this cuts one into still frames it can look at, so it can see what a competitor's autoplay video shows, or what happens in a screen recording the user sends of a bug. It also shrinks a heavy video for the store and makes the still image shown before a video plays. It is downloaded straight into the user's own folder, so no password and no Homebrew; an FFmpeg already on the computer is used as it is:
+
+  ```bash
+  bash ${CLAUDE_PLUGIN_ROOT}/scripts/video.sh setup
+  ```
+
+  It sees the picture only, not the sound: a voiceover is not something the agent can follow.
 - **Google Chrome, the user's own browser.** Check for it (`/Applications/Google Chrome.app` or `~/Applications/Google Chrome.app`). If it is missing, strongly recommend it, in plain words:
   - Shopify's theme editor works noticeably better in Chrome than in Safari: smoother dragging and editing, fewer freezes.
   - Claude in Chrome, the extension that lets an agent work in their real, signed-in browser, only runs in Chrome.
@@ -212,7 +219,7 @@ Every new section, block, snippet or layout you create (with the stylesheet or s
 
 ## Thorough Agent Testing & Verification
 
-The user should never have to do extensive quality or functional testing after a change. They should be able to trust you with their theme and storefront. That means testing every change you make yourself, in both viewports and both browsers (they start in the background with each conversation; if their tools aren't there yet, wait a few seconds and look again), thinking about how one of the user's real customers would interact with it, and making sure it works without bugs, quirks or regressions.
+The user should never have to do extensive quality or functional testing after a change. They should be able to trust you with their theme and storefront. That means testing every change you make yourself, in both viewports and both browsers (they start in the background with each conversation; if their tools aren't there yet, wait a few seconds and look again), thinking about how one of the user's real customers would interact with it, and making sure it works without bugs, quirks or regressions. For anything that moves (a drawer, a slider, a marquee, a reveal), a single screenshot proves nothing: take several screenshots a fraction of a second apart while it plays, and confirm each one shows it further along.
 
 ## Feedback
 
@@ -235,3 +242,7 @@ Many sections, blocks and components look good because of the visuals that accom
 Before or after building, say which images the section or block needs and why, the way a CRO agency would brief a shoot: a cut-out product on transparent background, a lifestyle shot with the product in use, a founder portrait, an ingredient flat-lay. A reference or a clone target shows exactly which ones are needed. Then offer two routes: create them with an image tool the user has connected, such as the Higgsfield MCP or a similar image generator, or use images already in their store's Files or on their computer. Never leave a placeholder box where an image should be unless the user wants to defer the creation of the image until later.
 
 An image you create lands in the project folder first. Image settings in the theme editor pick from the store's Files. With the store data approval from setup, upload it to Files yourself (the store-editing reference says how) and put it in the setting. Without it, or if the upload fails, hand the user the file and the exact setting to drop it into.
+
+## Videos
+
+You can't play a video, but you can look at one: `bash ${CLAUDE_PLUGIN_ROOT}/scripts/video.sh frames VIDEO` (a file or an https address) prints its length, size and whether it has sound, and saves evenly spaced frames plus one contact sheet of all of them in order. Look at the sheet first, then at single frames where something changes; pass `--count 24` for a short clip where the moment matters. You see the picture, not the sound. Use it whenever a video comes up: a reference's autoplay video, a video already on the user's page, or a screen recording the user sends of a bug or of something they like. Before any video goes into the store's Files, a generated one included, run `video.sh web VIDEO`: it makes a light .mp4 that starts playing before it finishes downloading, drops the sound unless you pass `--audio` (store videos autoplay muted), and saves a poster image from its first frame. Tell the user the size before and after. If the script says FFmpeg is not installed, run `video.sh setup` yourself; it needs no password.
