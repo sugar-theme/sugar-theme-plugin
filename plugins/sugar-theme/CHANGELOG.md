@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.6
+
+- **Setup shows you how to switch to your own computer.** Some Claude and Codex accounts open new conversations in a cloud environment, where setup can't install anything or reach your store. When setup finds itself there, it now names the picker to change (in Claude, the environment picker at the bottom left of the chat box; in Codex, **Work in**), so you can choose **This computer** and run it again.
+- **To do:** nothing.
+
 ## 1.3.5
 
 - **Windows works now.** Setup used to assume a Mac, so on a Windows PC it stopped at the first step and the agent's browsers never started. Setup now gives Claude Git Bash (it uses the one you have, or unpacks a portable copy into your own folder with no administrator password), installs Node.js the same way, and fetches the Windows versions of the video and speed-test tools. At the end you quit and reopen the Claude app once, which switches the browsers on.
