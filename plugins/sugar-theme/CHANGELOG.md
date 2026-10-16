@@ -2,6 +2,10 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.4
+
+- Bug reports, learnings and shared task summaries now say which model sent them and at what thinking level (for example Sonnet 5.5 at medium), read straight from Claude Code rather than guessed. It helps the Sugar team tell a real bug from a misunderstanding, and nothing else about your setup is sent.
+
 ## 1.3.3
 
 - Sections and blocks your agent builds or adds settings to now keep the theme editor tidy: five or six settings per heading at most, grouped by what you're changing (Text, Icons, Spacing), instead of one long list of 20 sliders. When it adds a setting to an existing block, it goes under the heading that fits, or a new heading if that one is full.
