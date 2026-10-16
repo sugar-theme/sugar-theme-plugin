@@ -135,7 +135,7 @@ Each of these sent an earlier agent after a problem that wasn't there:
 - **Scroll the way a person does**, with the mouse wheel (`page.mouse.wheel`) in small steps. Jumping with `scrollTo` skips past elements, so anything that waits for an element to come into view (sticky bars, counters, reveal effects) never fires and a working feature looks broken.
 - **Hide what covers a screenshot.** A sticky header or announcement bar can sit over what you're checking; hide it for the screenshot only.
 - **Code run in the browser is browser code.** `require` and other Node features don't exist there; do file work in a shell command.
-- **The browsers save files only under `/tmp/playwright-mcp/` or the project folder.** Save screenshots under `/tmp/playwright-mcp/` (or give no path), not in your scratch folder, and delete them when done.
+- **The browsers save files only under `/tmp/playwright-mcp/` or the project folder.** Save screenshots under `/tmp/playwright-mcp/` (or give no path), not in your scratch folder, and delete them when done. On Windows give no path: the browsers' folder is `%TEMP%\playwright-mcp`, and the screenshot result says where the file went.
 - **A headless browser shows no scrollbar.** A bug that needs a scrollbar taking up space (sideways scrolling in the theme editor's mobile view) won't appear; ask the user where they see it.
 
 ## Store data: products, discounts, subscription plans, pages, menus, blog posts, Files and analytics

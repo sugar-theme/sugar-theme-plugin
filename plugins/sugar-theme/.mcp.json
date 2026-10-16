@@ -10,7 +10,7 @@
       }
     },
     "playwright": {
-      "command": "bash",
+      "command": "${CLAUDE_CODE_GIT_BASH_PATH:-bash}",
       "args": [
         "${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh",
         "--headless",
@@ -21,7 +21,7 @@
       ]
     },
     "playwright-safari": {
-      "command": "bash",
+      "command": "${CLAUDE_CODE_GIT_BASH_PATH:-bash}",
       "args": [
         "${CLAUDE_PLUGIN_ROOT}/scripts/playwright-mcp.sh",
         "--headless",

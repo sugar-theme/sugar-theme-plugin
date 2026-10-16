@@ -4,8 +4,9 @@
 #
 #   lighthouse-headers.sh STORE.myshopify.com THEME_ID
 #
-# Prints two lines: host=<the storefront's host> and headers=<a file for Lighthouse's
-# --extra-headers>. The file carries Shopify's cookie, which holds both the storefront
+# Prints three lines: host=<the storefront's host>, headers=<a file for Lighthouse's
+# --extra-headers> and chrome=<a browser for Lighthouse's CHROME_PATH>, empty when
+# Google Chrome is installed and Lighthouse finds it on its own. The file carries Shopify's cookie, which holds both the storefront
 # unlock (from the password in the project's AGENTS.md) and the choice of preview theme, so
 # Lighthouse tests the plain page address: no password page, no preview_theme_id redirect
 # on every run. Add ?pb=0 to the tested address to hide the preview bar.
@@ -48,5 +49,25 @@ cookie="$(awk 'BEGIN{FS="\t"} /^#HttpOnly_/ {sub(/^#HttpOnly_/, "")} !/^#/ && NF
 
 headers="$(umask 077; mktemp "${TMPDIR:-/tmp}/sugar-lighthouse-XXXXXX")"
 printf '{"Cookie": "%s"}\n' "$(printf '%s' "$cookie" | sed 's/["\\]/\\&/g')" > "$headers"
+# Without Google Chrome, Lighthouse runs on the Chromium that setup installed for the
+# agent's browsers. A Windows path is printed with forward slashes, which Node reads.
+chrome=""
+case "$(uname -s)" in
+  Darwin)
+    [ -d "/Applications/Google Chrome.app" ] || [ -d "$HOME/Applications/Google Chrome.app" ] ||
+      chrome="$(ls -d "$HOME"/Library/Caches/ms-playwright/chromium-*/chrome-mac*/"Google Chrome for Testing.app"/Contents/MacOS/"Google Chrome for Testing" 2>/dev/null | tail -1)" ;;
+  MINGW*|MSYS*|CYGWIN*)
+    found=""
+    for dir in "$LOCALAPPDATA" "$PROGRAMFILES" "${PROGRAMW6432:-}" "$(printenv 'PROGRAMFILES(X86)')"; do
+      [ -n "$dir" ] && [ -f "$(cygpath -u "$dir")/Google/Chrome/Application/chrome.exe" ] && found=1
+    done
+    [ -n "$found" ] || chrome="$(ls -d "$(cygpath -u "$LOCALAPPDATA")"/ms-playwright/chromium-*/chrome-win*/chrome.exe 2>/dev/null | tail -1)"
+    [ -n "$chrome" ] && chrome="$(cygpath -m "$chrome")" ;;
+  *)
+    command -v google-chrome >/dev/null 2>&1 || command -v google-chrome-stable >/dev/null 2>&1 ||
+      chrome="$(ls -d "$HOME"/.cache/ms-playwright/chromium-*/chrome-linux*/chrome 2>/dev/null | tail -1)" ;;
+esac
+
 echo "host=$host"
 echo "headers=$headers"
+echo "chrome=$chrome"

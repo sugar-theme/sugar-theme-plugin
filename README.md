@@ -11,6 +11,8 @@ Skills and references that teach an AI agent to edit a Shopify store built on th
 3. Find **sugar-theme** in the plugin list and click **Install**.
 4. Make an empty folder for your store, start a new conversation in it, and type `/sugar-theme:setup`.
 
+Sugar runs on your own computer, a Mac or a Windows PC, in a conversation that works in a folder there. It doesn't run in cloud sessions or in a chat's code sandbox: those can't install tools on your computer or reach your store. To follow a task from your phone, start it on your computer and turn on Remote Control.
+
 Setup installs the tools, connects your store, has you sign in to Sugar once, asks whether to keep the plugin updated automatically and whether to share how you work, and writes the project's `AGENTS.md`. Plugins load when a conversation starts, so the skill appears in the conversation after the install, not the one it happened in. On a computer that didn't have Node.js yet, setup ends by asking for one more new conversation, which switches on the agent's browsers.
 
 **Updating:** when you start a task, the agent checks for a newer Sugar plugin and offers to update it; it always asks first. You can also ask for `/sugar-theme:update-check`. The Update button in the Claude app isn't needed. What changed in each version is in [`CHANGELOG.md`](plugins/sugar-theme/CHANGELOG.md).

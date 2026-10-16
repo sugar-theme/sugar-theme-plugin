@@ -14,24 +14,39 @@ The user has installed the plugin from the Claude app and typed `/sugar-theme:se
 
 **Most users are in the Claude desktop app.** Everything they do themselves happens with clicks there; never tell them to open a terminal, and never run `claude` commands, which are not available inside the app. Commands are yours to run.
 
-**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates, and approve Shopify's command-line app once so the agent can create products, discounts, pages and menus for them and read their store's analytics. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers. If their storefront is password-protected, they paste its storefront password once.
+# Step 0: Which computer
+
+Sugar's tools run on the user's own computer, a Mac or a Windows PC, in a conversation that works in a folder there (the Claude desktop app's Code tab, or Claude Code). Check before anything else, with one command: `uname -s` (on Windows with only PowerShell, there is no `uname`; that is Windows).
+
+- **`Darwin`:** a Mac. Follow the steps as written.
+- **`MINGW…`, `MSYS…`, or PowerShell only:** Windows. Follow the steps, with the **On Windows** parts.
+- **`Linux`, or any sign you are not on the user's computer:** most likely a cloud sandbox: a Claude Code cloud session (`CLAUDE_CODE_REMOTE` is `true`), a chat's code sandbox, or Cowork. Confirm with `curl -s -o /dev/null --max-time 8 -w '%{http_code}' https://accounts.shopify.com/` (no number back means Shopify is blocked from here) and, if unsure, ask which computer they are on. A user who really is on a Linux desktop goes ahead; the scripts handle Linux.
+
+**In a cloud sandbox, stop before installing anything.** Nothing installed there reaches the user's computer, Shopify's sign-in can't open from it, and Shopify's addresses are usually blocked. Tell the user plainly, in these words or close: "This conversation runs in a sandbox in the cloud, not on your computer, so it can't install Sugar's tools or reach your store. Open the Claude desktop app on your Mac or Windows PC, choose a folder for your store in the Code tab, and type `/sugar-theme:setup` there. To check on a task from your phone later, start it on your computer and turn on Remote Control from that conversation; the work still runs on your computer." Say what does work here: questions about the theme and the Sugar app, answered from Sugar's docs (the `/sugar-theme:ask` skill). Don't write AGENTS.md.
+
+**Tell the user up front what to expect**, in two sentences: setup takes a few minutes, mostly installs that run on their own, and they will sign in twice, once to Shopify so the agent can reach their theme, once to Sugar for the docs and updates, and approve Shopify's command-line app once so the agent can create products, discounts, pages and menus for them and read their store's analytics. On a computer that didn't have Node.js yet, they open one new conversation at the end, which switches on the agent's browsers; on Windows they quit and reopen the Claude app instead. If their storefront is password-protected, they paste its storefront password once.
 
 # Step 1: Tools
 
 Nothing here needs an administrator password, so you do all of it. Check what exists, install what is missing, update what is old.
 
-- **Node.js**, installed for the user only, so no password is ever asked. If `node` is missing or older than the current LTS:
+- **On Windows, Git Bash first.** Every script in the plugin is a bash script, and Claude on Windows runs bash in Git Bash; without it Claude has only PowerShell, and the agent's browsers can't start. Run this from whichever shell you have:
 
   ```bash
-  touch ~/.zshrc
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | METHOD=script bash
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/windows-setup.ps1"
   ```
 
-  `METHOD=script` matters: without it the installer uses `git`, and on a Mac with no developer tools the `git` command is a stub that opens Apple's "install command line developer tools" dialog. For the same reason, never run `git` during setup. Do not use Homebrew either: its installer asks for the user's password in a terminal, which you cannot type and they should not have to.
+  It uses a Git Bash already on the computer, or unpacks Portable Git (Git for Windows' no-install edition, about 60 MB, no administrator password) into the user's own folder, then saves its location for Claude. It prints `bash=` (the path to `bash.exe`) and `restart=`. If your Bash tool works, use it for the rest of setup. If you only have PowerShell in this conversation, run each command of the remaining steps through that bash: `& "BASH" -lc 'COMMAND'`, with BASH written out in full. Every later command runs in Git Bash, here and in every later conversation, never straight in PowerShell: plain `bash` typed in PowerShell can be WSL's, which can't run these scripts. When it says `restart=yes`, the browsers start only after the Claude app has been quit and reopened (Step 6).
 
-  The `touch` matters too: a new Mac has no `~/.zshrc`, and without one nvm installs but never adds itself to the shell, so every later conversation finds no `node`.
+- **Node.js**, installed for the user only, so no password is ever asked. One script checks it and installs or updates it when it is missing or older than the current LTS, on a Mac, on Windows and on Linux:
 
-  Your shell does not pick up the new install on its own for the rest of this conversation. Start every command that needs `node`, `npm` or `npx` from here on with `. ~/.nvm/nvm.sh &&`, beginning with `. ~/.nvm/nvm.sh && nvm install --lts`. From the next conversation on it is on the path by itself.
+  ```bash
+  bash ${CLAUDE_PLUGIN_ROOT}/scripts/node-setup.sh
+  ```
+
+  On a Mac it installs nvm without `git` (on a Mac with no developer tools, `git` opens Apple's "install command line developer tools" dialog), so never run `git` during setup. On Windows it unpacks Node.js from nodejs.org into the user's own folder instead of running the Node installer, which would ask for administrator rights. Never use Homebrew or an installer that asks for a password, which you cannot type and the user should not have to.
+
+  Your shell does not pick up a new install on its own for the rest of this conversation. The script's last line is `use=` followed by a prefix (`. ~/.nvm/nvm.sh &&` on a Mac, an `export PATH=…` on Windows): start every command that needs `node`, `npm`, `npx` or `shopify` from here on with that prefix. When `use=` is empty, no prefix is needed. From the next conversation on it is on the path by itself.
 - **Shopify CLI**: `npm install -g @shopify/cli@latest`. Run it again to update. npm prints a warning that it blocked an install script belonging to `esbuild`; that is expected and harmless, say so if the user sees it.
 - **sharp**, the image library behind the plugin's `scripts/zoom.js`, which crops and enlarges screenshots and puts a reference and a clone side by side: `npm install -g sharp`. No compiler, no Python.
 - **FFmpeg**, the video tool behind the plugin's `scripts/video.sh`. An agent can't play a video; this cuts one into still frames it can look at, so it can see what a competitor's autoplay video shows, or what happens in a screen recording the user sends of a bug. It also shrinks a heavy video for the store and makes the still image shown before a video plays. It is downloaded straight into the user's own folder, so no password and no Homebrew; an FFmpeg already on the computer is used as it is:
@@ -41,13 +56,13 @@ Nothing here needs an administrator password, so you do all of it. Check what ex
   ```
 
   It sees the picture only, not the sound: a voiceover is not something the agent can follow.
-- **Google Chrome, the user's own browser.** Check for it (`/Applications/Google Chrome.app` or `~/Applications/Google Chrome.app`). If it is missing, strongly recommend it, in plain words:
+- **Google Chrome, the user's own browser.** Check for it: on a Mac `/Applications/Google Chrome.app` or `~/Applications/Google Chrome.app`; on Windows `Google\Chrome\Application\chrome.exe` under `%LOCALAPPDATA%`, `%PROGRAMFILES%` or `%PROGRAMFILES(X86)%`. If it is missing, strongly recommend it, in plain words:
   - Shopify's theme editor works noticeably better in Chrome than in Safari: smoother dragging and editing, fewer freezes.
   - Claude in Chrome, the extension that lets an agent work in their real, signed-in browser, only runs in Chrome.
   - Most desktop shoppers browse in Chrome, so it is the browser worth checking the store in.
   - Google's speed tests (Lighthouse, PageSpeed) are built on it, so results match what they will see there.
 
-  Ask whether to install it now (recommended). On a yes, install it from Google's own address; nothing here needs a password:
+  Ask whether to install it now (recommended). On a yes, on a Mac, install it from Google's own address; nothing here needs a password:
 
   ```bash
   curl -fL -o "$TMPDIR/googlechrome.dmg" https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg
@@ -57,7 +72,9 @@ Nothing here needs an administrator password, so you do all of it. Check what ex
   hdiutil detach -quiet "$TMPDIR/chrome-dmg"; rm -f "$TMPDIR/googlechrome.dmg"
   ```
 
-  Then ask them to open Chrome, sign in to their Shopify admin there, and accept when Chrome offers to become the default browser. The review links you hand them open in the default browser, and one that isn't signed in to Shopify shows a login page instead of the editor. If Chrome is already installed, check whether it is the default (`defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers | grep -B3 'LSHandlerURLScheme = https;'` names `com.google.chrome` when it is) and, if not, make the same suggestion once. If they decline either, carry on.
+  On Windows, open Google's download page in their current browser (`cmd.exe //c start "" https://www.google.com/chrome/`) and tell them to click **Download Chrome** and run the file; Windows may ask them to allow it. Check again once they say it's done.
+
+  Then ask them to open Chrome, sign in to their Shopify admin there, and accept when Chrome offers to become the default browser. The review links you hand them open in the default browser, and one that isn't signed in to Shopify shows a login page instead of the editor. If Chrome is already installed, check whether it is the default and, if not, make the same suggestion once. On a Mac, `defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers | grep -B3 'LSHandlerURLScheme = https;'` names `com.google.chrome` when it is; on Windows, `powershell.exe -NoProfile -Command "(Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice').ProgId"` prints `ChromeHTML`. If they decline either, carry on.
 - **Two headless browsers**, Chromium (Chrome's engine) and WebKit (Safari's). The plugin registers both itself, so there is nothing to add or configure. One command installs the browser server at the version the plugin pins, so every conversation starts it from disk with no download, and fetches both browser engines:
 
   ```bash
@@ -149,6 +166,8 @@ When the browsers answer: open a page of the user's store in each browser and ta
 
 Only when they answer with `browser_setup_needed`, because Node.js was installed during this conversation, leave `Setup: browsers pending` and tell the user, in these words or close: "One last thing: open a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If they still answer that way in a new conversation, Node.js did not install; go back to Step 1.
 
+**On Windows**, when `windows-setup.ps1` said `restart=yes`, the browsers have no tools at all in this conversation, not even `browser_setup_needed`: the app keeps the settings it started with. Leave `Setup: browsers pending` and say instead: "One last thing: quit the Claude app completely (right-click its icon next to the clock and choose Quit, since closing the window leaves it running), open it again, and start a new conversation in this same folder. That switches on the agent's browsers, and it will check them on its own." If the browsers still don't start after that, run `windows-setup.ps1` again and read what it prints.
+
 Then tell the user setup is done and what they can ask for now, in two or three examples in their words ("build me a comparison table on my product page", "clone this section from a competitor's site", "make my page faster").
 
 # System Prompt Contents
@@ -166,6 +185,8 @@ The Sugar Theme is a next-generation Shopify theme built on patterns and compone
 ## Folder Constraints
 
 This folder hosts the project, not the theme's files. The theme lives on the user's Shopify store and that is where it is read and edited. Keeping theme files here would mean two copies of the store that drift apart, which confuses a user who is used to seeing and editing their store on Shopify.
+
+On Windows, run every command and every plugin script in Git Bash (the Bash tool), never straight in PowerShell.
 
 When a task needs a file on disk, use a scratch folder in the system temp directory, never this project. Pull only the files the task touches from the store, edit them, push only those files back, and delete the scratch folder when the task ends. A scratch copy is only valid for the task that pulled it: pull again at the start of every task. Each conversation makes its own scratch folder and deletes only that one, because other conversations may be working on this store at the same time.
 

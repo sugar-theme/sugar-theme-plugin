@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.5
+
+- **Windows works now.** Setup used to assume a Mac, so on a Windows PC it stopped at the first step and the agent's browsers never started. Setup now gives Claude Git Bash (it uses the one you have, or unpacks a portable copy into your own folder with no administrator password), installs Node.js the same way, and fetches the Windows versions of the video and speed-test tools. At the end you quit and reopen the Claude app once, which switches the browsers on.
+- **Setup notices when it isn't on your computer.** A cloud conversation (a Claude Code cloud session, a chat's code sandbox) can't install anything on your computer or reach your store, so setup now says that in its first step, tells you where to run it instead, and doesn't half-install. Questions about the theme still work there.
+- **To do:** nothing on a Mac. On Windows, run `/sugar-theme:setup` again in your project.
+
 ## 1.3.4
 
 - Bug reports, learnings and shared task summaries now say which model sent them and at what thinking level (for example Sonnet 5.5 at medium), read straight from Claude Code rather than guessed. It helps the Sugar team tell a real bug from a misunderstanding, and nothing else about your setup is sent.

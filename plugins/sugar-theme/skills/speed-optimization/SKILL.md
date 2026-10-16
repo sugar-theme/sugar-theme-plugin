@@ -32,11 +32,10 @@ Lighthouse can't type a storefront password, and a preview link redirects on eve
 bash ${CLAUDE_PLUGIN_ROOT}/scripts/lighthouse-headers.sh STORE.myshopify.com THEME_ID
 ```
 
-It prints `host=` and `headers=` (a file), and stops with a plain reason if the password is refused or the store isn't serving the working theme. Then run Lighthouse in mobile mode with real throttling on the plain page address on that host, with `pb=0` to hide Shopify's preview bar (about 420 KB shoppers never download, competing with the main image):
+It prints `host=`, `headers=` (a file) and `chrome=`, and stops with a plain reason if the password is refused or the store isn't serving the working theme. `chrome=` names the headless Chromium to run Lighthouse in when Google Chrome isn't installed; when it is empty, leave out the `CHROME_PATH` part below. Then run Lighthouse in mobile mode with real throttling on the plain page address on that host, with `pb=0` to hide Shopify's preview bar (about 420 KB shoppers never download, competing with the main image):
 
 ```bash
-[ -d "/Applications/Google Chrome.app" ] || export CHROME_PATH="$(ls -d "$HOME"/Library/Caches/ms-playwright/chromium-*/chrome-mac*/"Google Chrome for Testing.app"/Contents/MacOS/"Google Chrome for Testing" | tail -1)"
-npx lighthouse "https://HOST/products/HANDLE?pb=0" --extra-headers=HEADERS_FILE --preset=perf --form-factor=mobile --throttling-method=devtools --output=json --output-path=./lighthouse-1.json --chrome-flags="--headless=new"
+CHROME_PATH="CHROME" npx lighthouse "https://HOST/products/HANDLE?pb=0" --extra-headers=HEADERS_FILE --preset=perf --form-factor=mobile --throttling-method=devtools --output=json --output-path=./lighthouse-1.json --chrome-flags="--headless=new"
 ```
 
 Check each report's final address is the page you meant, not `/password`. Make a fresh headers file for the after runs, and delete both when done.

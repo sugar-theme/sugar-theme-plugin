@@ -8,14 +8,19 @@
 #                                                    H.264 .mp4 for the web, plus a poster .jpg
 #   video.sh ffmpeg ARGS... | video.sh ffprobe ARGS...   anything else
 #
-# Setup downloads Martin Riedl's static macOS builds into ~/.local/bin: no
-# password, no Homebrew, no install script for npm to block. An ffmpeg already
-# on the PATH (Homebrew's, say) is used as it is.
+# Setup downloads static builds into ~/.local/bin: no password, no Homebrew, no
+# install script for npm to block. Martin Riedl's builds on a Mac and on Linux,
+# BtbN's (on GitHub) on Windows. An ffmpeg already on the PATH (Homebrew's, say)
+# is used as it is.
 BIN_DIR="$HOME/.local/bin"
-BUILDS="https://ffmpeg.martin-riedl.de/redirect/latest/macos"
+RIEDL="https://ffmpeg.martin-riedl.de/redirect/latest"
+BTBN="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest"
+
+is_windows() { case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) return 0 ;; esac; return 1; }
 
 find_tool() {
   if [ -x "$BIN_DIR/$1" ]; then echo "$BIN_DIR/$1"; return; fi
+  if [ -x "$BIN_DIR/$1.exe" ]; then echo "$BIN_DIR/$1.exe"; return; fi
   for dir in /opt/homebrew/bin /usr/local/bin; do
     if [ -x "$dir/$1" ]; then echo "$dir/$1"; return; fi
   done
@@ -37,21 +42,49 @@ setup() {
     echo "Already installed."
     return 0
   fi
-  case "$(uname -m)" in
-    arm64) arch=arm64 ;;
-    x86_64) arch=amd64 ;;
-    *) echo "No ffmpeg build for $(uname -m)." >&2; return 1 ;;
-  esac
   mkdir -p "$BIN_DIR"
   tmp="$(mktemp -d)"
-  for tool in ffmpeg ffprobe; do
-    curl -fsSL -o "$tmp/$tool.zip" "$BUILDS/$arch/release/$tool.zip" &&
-      unzip -oq "$tmp/$tool.zip" -d "$tmp" &&
-      mv -f "$tmp/$tool" "$BIN_DIR/$tool" &&
-      chmod +x "$BIN_DIR/$tool" || { echo "Downloading $tool failed." >&2; rm -rf "$tmp"; return 1; }
-  done
+  if is_windows; then
+    setup_windows "$tmp" || { rm -rf "$tmp"; return 1; }
+  else
+    case "$(uname -s)" in
+      Darwin) os=macos ;;
+      Linux) os=linux ;;
+      *) echo "No ffmpeg build for $(uname -s)." >&2; rm -rf "$tmp"; return 1 ;;
+    esac
+    case "$(uname -m)" in
+      arm64|aarch64) arch=arm64 ;;
+      x86_64) arch=amd64 ;;
+      *) echo "No ffmpeg build for $(uname -m)." >&2; rm -rf "$tmp"; return 1 ;;
+    esac
+    for tool in ffmpeg ffprobe; do
+      curl -fsSL -o "$tmp/$tool.zip" "$RIEDL/$os/$arch/release/$tool.zip" &&
+        unzip -oq "$tmp/$tool.zip" -d "$tmp" &&
+        mv -f "$tmp/$tool" "$BIN_DIR/$tool" &&
+        chmod +x "$BIN_DIR/$tool" || { echo "Downloading $tool failed." >&2; rm -rf "$tmp"; return 1; }
+    done
+  fi
   rm -rf "$tmp"
-  "$BIN_DIR/ffmpeg" -hide_banner -version | head -1
+  "$(find_tool ffmpeg)" -hide_banner -version | head -1
+}
+
+# One zip with both tools (about 200 MB). Git Bash may lack unzip; Windows 10 and later
+# ship tar.exe, which reads zips.
+setup_windows() {
+  local tmp="$1" arch=win64 zip dir
+  [ "${PROCESSOR_ARCHITEW6432:-$PROCESSOR_ARCHITECTURE}" = "ARM64" ] && arch=winarm64
+  zip="$tmp/ffmpeg.zip"
+  echo "Downloading FFmpeg (about 200 MB)..."
+  curl -fL --progress-bar -o "$zip" "$BTBN/ffmpeg-master-latest-$arch-gpl.zip" ||
+    { echo "Downloading ffmpeg failed." >&2; return 1; }
+  if command -v unzip >/dev/null 2>&1; then
+    unzip -oq "$zip" -d "$tmp"
+  else
+    "$(cygpath -u "${SYSTEMROOT:-C:\\Windows}")/System32/tar.exe" -xf "$(cygpath -w "$zip")" -C "$(cygpath -w "$tmp")"
+  fi
+  dir="$(ls -d "$tmp"/ffmpeg-*/bin 2>/dev/null | head -1)"
+  [ -f "$dir/ffmpeg.exe" ] && [ -f "$dir/ffprobe.exe" ] || { echo "The ffmpeg download didn't unpack." >&2; return 1; }
+  mv -f "$dir/ffmpeg.exe" "$dir/ffprobe.exe" "$BIN_DIR/"
 }
 
 # Prints duration, size, frame rate, sound and file size, the way a person would ask.
@@ -86,10 +119,18 @@ frames() {
     "$FFMPEG" -v error -y -ss "$t" -i "$video" -frames:v 1 "$out/frame-$(printf %02d "$i")-${t}s.png"
   done
   # One image of every frame in order, left to right then down, for a first look.
+  # Numbered copies feed it: Windows builds of ffmpeg can't read a glob pattern.
   cols=$(( count < 4 ? count : 4 ))
   rows=$(( (count + cols - 1) / cols ))
-  "$FFMPEG" -v error -y -pattern_type glob -i "$out/frame-*.png" \
+  mkdir -p "$out/.seq"
+  i=0
+  for f in "$out"/frame-*.png; do
+    i=$((i + 1))
+    cp "$f" "$out/.seq/$(printf %02d "$i").png"
+  done
+  "$FFMPEG" -v error -y -start_number 1 -i "$out/.seq/%02d.png" \
     -vf "scale=480:-2,tile=${cols}x${rows}:padding=8:color=white" -frames:v 1 "$out/sheet.jpg"
+  rm -rf "$out/.seq"
   echo "$out/sheet.jpg"
   ls "$out"/frame-*.png
 }

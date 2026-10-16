@@ -11,10 +11,19 @@
 PLAYWRIGHT_MCP_VERSION="0.0.82"
 
 # Node may be installed where an app-launched process can't see it (nvm edits
-# the shell profile, which the app does not read), so look in the usual places.
-# The last match wins: the newest nvm version, then Volta, Homebrew, the installer.
+# the shell profile, which the app does not read; on Windows the app keeps the
+# PATH it started with until it restarts), so look in the usual places.
+# The last match wins: the newest nvm version, then Volta, Homebrew, the installer,
+# and on Windows the per-user folder setup installs into.
+WIN_DIRS=""
+if command -v cygpath >/dev/null 2>&1; then
+  [ -n "$PROGRAMFILES" ] && WIN_DIRS="$(cygpath -u "$PROGRAMFILES")/nodejs"
+  [ -n "$APPDATA" ] && WIN_DIRS="$WIN_DIRS:$(cygpath -u "$APPDATA")/npm"
+  [ -n "$LOCALAPPDATA" ] && WIN_DIRS="$WIN_DIRS:$(cygpath -u "$LOCALAPPDATA")/Programs/nodejs"
+fi
 if ! command -v npx >/dev/null 2>&1; then
-  for dir in /usr/local/bin /opt/homebrew/bin "$HOME/.volta/bin" "$HOME/.nvm/versions/node"/*/bin; do
+  IFS=: read -r -a WIN_LIST <<<"$WIN_DIRS"
+  for dir in "${WIN_LIST[@]}" /usr/local/bin /opt/homebrew/bin "$HOME/.volta/bin" "$HOME/.nvm/versions/node"/*/bin; do
     if [ -x "$dir/npx" ]; then
       NPX_DIR="$dir"
     fi
@@ -64,7 +73,9 @@ if command -v npx >/dev/null 2>&1; then
     install*) ;;
     *) set -- "$@" --isolated $(unlock_args) ;;
   esac
-  INSTALLED="$(npm root -g 2>/dev/null)/@playwright/mcp"
+  INSTALLED="$(npm root -g 2>/dev/null)"
+  command -v cygpath >/dev/null 2>&1 && [ -n "$INSTALLED" ] && INSTALLED="$(cygpath -u "$INSTALLED")"
+  INSTALLED="$INSTALLED/@playwright/mcp"
   if [ -f "$INSTALLED/cli.js" ] && grep -q "\"version\": \"$PLAYWRIGHT_MCP_VERSION\"" "$INSTALLED/package.json" 2>/dev/null; then
     exec node "$INSTALLED/cli.js" "$@"
   fi
