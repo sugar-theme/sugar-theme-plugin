@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "The Sugar Theme plugin: skills and references for editing a Shopify store built on the Sugar Theme with AI agents.",
-    "version": "1.3.6"
+    "version": "1.3.7"
   },
   "plugins": [
     {
       "name": "sugar-theme",
       "description": "Edit a Shopify store built on the Sugar Theme with AI agents.",
-      "version": "1.3.6",
+      "version": "1.3.7",
       "author": {
         "name": "Sugar Theme"
       },

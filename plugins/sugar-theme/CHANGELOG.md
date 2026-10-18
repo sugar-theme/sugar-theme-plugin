@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.7
+
+- **The agent's browsers start on Windows.** The Claude desktop app on Windows quietly keeps new folders under AppData\Local in its own private copy, so the Chromium browser setup installed there couldn't start, and the agent couldn't look at your store. Setup now installs both browsers into your home folder, which Windows sees the same way inside and outside the app.
+- **To do:** nothing on a Mac. On Windows, run `/sugar-theme:setup` again in your project, then start a new conversation.
+
 ## 1.3.6
 
 - **Setup shows you how to switch to your own computer.** Some Claude and Codex accounts open new conversations in a cloud environment, where setup can't install anything or reach your store. When setup finds itself there, it now names the picker to change (in Claude, the environment picker at the bottom left of the chat box; in Codex, **Work in**), so you can choose **This computer** and run it again.
