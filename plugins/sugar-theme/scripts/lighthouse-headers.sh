@@ -61,7 +61,15 @@ case "$(uname -s)" in
     for dir in "$LOCALAPPDATA" "$PROGRAMFILES" "${PROGRAMW6432:-}" "$(printenv 'PROGRAMFILES(X86)')"; do
       [ -n "$dir" ] && [ -f "$(cygpath -u "$dir")/Google/Chrome/Application/chrome.exe" ] && found=1
     done
-    [ -n "$found" ] || chrome="$(ls -d "$(cygpath -u "$LOCALAPPDATA")"/ms-playwright/chromium-*/chrome-win*/chrome.exe 2>/dev/null | tail -1)"
+    # Setup puts the engines in the home folder (see playwright-mcp.sh: the packaged
+    # Claude app can't start Chromium from a folder it created in AppData\Local).
+    # Older setups left them in Playwright's default folder.
+    if [ -z "$found" ]; then
+      for dir in "$PLAYWRIGHT_BROWSERS_PATH" "${USERPROFILE:+$USERPROFILE/.cache/ms-playwright}" "${LOCALAPPDATA:+$LOCALAPPDATA/ms-playwright}"; do
+        [ -n "$dir" ] && [ -z "$chrome" ] || continue
+        chrome="$(ls -d "$(cygpath -u "$dir")"/chromium-*/chrome-win*/chrome.exe 2>/dev/null | tail -1)"
+      done
+    fi
     [ -n "$chrome" ] && chrome="$(cygpath -m "$chrome")" ;;
   *)
     command -v google-chrome >/dev/null 2>&1 || command -v google-chrome-stable >/dev/null 2>&1 ||

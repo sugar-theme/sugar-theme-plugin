@@ -33,6 +33,37 @@ if ! command -v npx >/dev/null 2>&1; then
   fi
 fi
 
+# Windows: keep the browser engines in the user's home folder, not in Playwright's
+# default %LOCALAPPDATA%\ms-playwright. The Claude desktop app is a packaged (MSIX)
+# app, and a new folder its processes create under AppData\Local is stored in the
+# app's private copy of AppData instead. Programs started from the app still see it
+# there, but Windows checks Chromium's side-by-side manifest at the real path when it
+# starts chrome.exe, finds nothing, and refuses to start it ("spawn UNKNOWN", "side-by-
+# side configuration is incorrect"). The home folder is the same inside and outside
+# the app. Installs always go there; a browser server switches to it only once its
+# engine is there, so a computer set up before this keeps working as it did until
+# setup runs again. A PLAYWRIGHT_BROWSERS_PATH the user set themselves wins.
+if [ -z "$PLAYWRIGHT_BROWSERS_PATH" ] && command -v cygpath >/dev/null 2>&1 && [ -n "$USERPROFILE" ]; then
+  HOME_BROWSERS="$(cygpath -u "$USERPROFILE")/.cache/ms-playwright"
+  ENGINE=""
+  PREV=""
+  for arg in "$@"; do
+    [ "$PREV" = "--browser" ] && ENGINE="$arg"
+    case "$arg" in --browser=*) ENGINE="${arg#--browser=}" ;; esac
+    PREV="$arg"
+  done
+  USE_HOME_BROWSERS=""
+  case "$1" in
+    setup|install*) USE_HOME_BROWSERS=1 ;;
+    *) [ -n "$ENGINE" ] && ls -d "$HOME_BROWSERS/$ENGINE"-* >/dev/null 2>&1 && USE_HOME_BROWSERS=1 ;;
+  esac
+  if [ -n "$USE_HOME_BROWSERS" ]; then
+    mkdir -p "$HOME_BROWSERS"
+    PLAYWRIGHT_BROWSERS_PATH="$(cygpath -w "$HOME_BROWSERS")"
+    export PLAYWRIGHT_BROWSERS_PATH
+  fi
+fi
+
 # A password-protected storefront: the project's AGENTS.md names the store and its
 # storefront password. Unlock it here with one request and start the browser already
 # holding Shopify's unlock cookie, so the agent never has to type into the password
