@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.9
+
+- **New sliders keep their first card off the screen edge, and card shadows stop getting cut off.** When the agent builds its own swipe row, it now keeps the same gap before the first card as after the last one on phones, and leaves room for each card's shadow before the progress bar, dots or next block. Grids and containers get the same shadow room.
+- **To do:** nothing. A slider or grid the agent already built keeps its look; ask the agent to fix it if you see either problem.
+
 ## 1.3.8
 
 - **Two edits to the same file in one task no longer undo each other.** Right after the agent pushes a file, pulling it straight back can briefly return the copy from before that push. The agent now checks that a fresh copy still holds its own last change, and waits and pulls again when it doesn't, so a second push never quietly reverts the first.
