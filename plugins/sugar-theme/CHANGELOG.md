@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.8
+
+- **Two edits to the same file in one task no longer undo each other.** Right after the agent pushes a file, pulling it straight back can briefly return the copy from before that push. The agent now checks that a fresh copy still holds its own last change, and waits and pulls again when it doesn't, so a second push never quietly reverts the first.
+- **To do:** nothing.
+
 ## 1.3.7
 
 - **The agent's browsers start on Windows.** The Claude desktop app on Windows quietly keeps new folders under AppData\Local in its own private copy, so the Chromium browser setup installed there couldn't start, and the agent couldn't look at your store. Setup now installs both browsers into your home folder, which Windows sees the same way inside and outside the app.
