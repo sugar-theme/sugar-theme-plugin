@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.10
+
+- **Speed checks look at where your hero sits.** Your theme loads the pictures of only the first two sections of a page up front. When the speed check finds thin strips, a logo row or code-only Custom Liquid sections pushing your hero picture to third place or lower, it now says so and suggests the fix: turn a one-line strip into an Announcement Bar section, merge code-only Custom Liquid sections, or move the hero up. On a test page this made the hero appear about twice as fast.
+- **To do:** nothing. Theme 2.1.14 also stops counting sections that draw nothing (A/B tests, redirects, floating bars, code-only Custom Liquid), so updating the theme can fix some pages on its own.
+
 ## 1.3.9
 
 - **New sliders keep their first card off the screen edge, and card shadows stop getting cut off.** When the agent builds its own swipe row, it now keeps the same gap before the first card as after the last one on phones, and leaves room for each card's shadow before the progress bar, dots or next block. Grids and containers get the same shadow room.
