@@ -63,6 +63,8 @@ Analyze the results thoroughly and document every potential improvement. Beyond 
 - Layout shift: anything that moves or appears after the first paint
 - Sections or blocks the page carries but never shows
 
+Check where the hero sits. The theme loads the pictures of only the page's first two content sections up front; everything from the third section on waits its turn, so a hero there paints far later (about twice as slow on a test page). The header, announcement bars, Page Styles, Page Background, Hide Header & Footer, a Custom Liquid with no padding that holds only styles or scripts, and a floating or one-row Sticky Navigation take no place. If thin strips, logo rows or Custom Liquid sections push the hero to third or later, recommend one of these: turn a one-line strip into an Announcement Bar section, since it takes no place; merge code-only Custom Liquid sections into one with zero padding; or move the hero up. Tell the user in plain words why: only the first two sections load their pictures first.
+
 Rank every optimization by highest impact and lowest blast radius, meaning how much of the store's look and functionality it could change, and how many pages it touches.
 
 # Step 3: Suggest & Decide
