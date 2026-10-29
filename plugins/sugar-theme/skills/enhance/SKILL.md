@@ -73,7 +73,7 @@ After analyzing the request and deciding which enhancements would make the bigge
 
 # Step 3: Build & Verify
 
-Once the user has chosen an enhancement or several, build them. If the working theme is the live theme, say so before you change it. If it creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done. Before you write a new section or block, or add settings to an existing one, read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md`; its schema rules apply to both, and every file you touched passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify.
+Once the user has chosen an enhancement or several, build them. If the working theme is the live theme, say so before you change it. If it creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the *Store additions* section of the theme's `AGENTS.md` when you are done. Before you write a new section or block, or add settings to an existing one, read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md`; its schema rules apply to both, and every file you touched passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify.
 
 Then verify that the enhancements look and work properly. Open the page's preview so you see it the way a live customer would. Click around to test the functionality. Check both viewports, in both Chrome and Safari using the two headless browsers installed by setup; desktop may look right while mobile has bugs. Compare against how the component looked before, so the improvement is real and nothing around it regressed.
 

@@ -19,7 +19,7 @@ The user never leaves the conversation and never fills in a form. The MCP knows 
 
 1. **Is it already fixed?** For a bug, call the MCP's `search_theme_updates` with the symptom, and again with the file's path as `file` and the release on its line 1 (`sugar:<path>@<release>`) as `since_version`. If a change matches, bring it in with the update-check skill instead of reporting it. Name the file and that release in the report.
 2. **Is it already known?** The report tool checks for duplicates itself and answers with the existing entry when it finds one. Read it: it may carry a workaround, and you are done.
-3. **Is it a bug at all?** A file you or another agent edited is not a Sugar bug; check the project's `custom-sections-blocks.md` before blaming the shipped file. A setting that does nothing is a bug, not a quirk.
+3. **Is it a bug at all?** A file you or another agent edited is not a Sugar bug; check the *Store additions* section of the theme's `AGENTS.md` before blaming the shipped file. A setting that does nothing is a bug, not a quirk.
 
 # Step 2: Report
 
@@ -35,7 +35,7 @@ Send the report with the MCP's report tool, with its kind and:
 
 ## When you fixed it yourself
 
-Don't wait for the Sugar team. If a shipped Sugar file has a bug and you can fix it, fix it in the user's theme, verify it, and log the file in `custom-sections-blocks.md` the way any edited Sugar file is logged. Then report the bug with the fix attached. The report is what lets the fix ship to every store in the next release; without it, the user's copy stays patched and everyone else keeps hitting it.
+Don't wait for the Sugar team. If a shipped Sugar file has a bug and you can fix it, fix it in the user's theme, verify it, and log the file in the *Store additions* section of the theme's `AGENTS.md` the way any edited Sugar file is logged. Then report the bug with the fix attached. The report is what lets the fix ship to every store in the next release; without it, the user's copy stays patched and everyone else keeps hitting it.
 
 ## Attaching the task log
 

@@ -2,6 +2,12 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.11
+
+- **Your custom sections and blocks are now listed in your theme, where Shopify's Sidekick can see them too.** Sugar themes now carry two guide files that Sidekick and this agent both read: `AGENTS.md`, how Sugar is built (with a section at the end listing your store's own sections, blocks and changed files), and `DESIGN.md`, what your colors, color schemes and fonts are for. The agent reads both at the start of every task and keeps the list current, so Claude and Sidekick build the same way and never redo each other's work.
+- **Your brand decisions have one home.** When you tell the agent something lasting ("our heading font looks wrong in bold", "the cream swatch is only for cards"), it records it in `DESIGN.md`, which Sidekick follows too.
+- **To do:** nothing. The first time the agent works on a theme that has `AGENTS.md`, it offers to move the list it kept in your project folder into the theme. If your theme is older and has no `AGENTS.md` yet, it keeps the project list and suggests a theme update.
+
 ## 1.3.10
 
 - **Speed checks look at where your hero sits.** Your theme loads the pictures of only the first two sections of a page up front. When the speed check finds thin strips, a logo row or code-only Custom Liquid sections pushing your hero picture to third place or lower, it now says so and suggests the fix: turn a one-line strip into an Announcement Bar section, merge code-only Custom Liquid sections, or move the hero up. On a test page this made the hero appear about twice as fast.

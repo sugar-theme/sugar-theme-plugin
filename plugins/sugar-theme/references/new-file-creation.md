@@ -2,177 +2,25 @@
 
 How to create new section, block, asset and snippet files on a user's Sugar Theme so they behave like the rest of the theme: editable the way the user expects, fast, and findable by the next agent.
 
-# Sections
+**The conventions themselves live in the theme's own `AGENTS.md`**, which you pulled at the start of the task (store-editing reference): when to build a section or a block, section blocks versus theme blocks, allowlists, naming and categories, every setting pattern (corners, colors, icons, fonts, margins, padding, desktop and mobile values, five or six settings per header), the platform limits that fail silently, where CSS goes, the styling traps, the scripts to reuse, speed, and the design and conversion principles. Follow it. It matches the Sugar release the store runs, and Shopify's Sidekick follows the same file, so what you build and what Sidekick builds come out alike. If the theme has no `AGENTS.md` (an older release), read `${CLAUDE_PLUGIN_ROOT}/references/theme-AGENTS.md`, the newest release's copy, instead.
 
-When creating a new section, decide whether it will use theme blocks or section blocks. **You cannot combine both in one section.**
+This reference only adds what you do with the plugin's tools on top of it.
 
-## Theme blocks
+# Ask the user
 
-**Pros**
+- **Name and category.** Both show in the theme editor's add menu, so ask with the AskUserQuestion tool (or your agent's equivalent), with your suggestion first. Asset and snippet names are your call.
+- **Where a new block should be addable.** Inside Custom Columns means the Column block's allowlist; Container, Row, Slide and others may fit too. Ask which, then make sure it works in each place you add it to.
 
-1. Reuse the blocks already in the theme. (You can also copy a theme block's code into a section block and amend it.)
-2. Nesting: a List Item child inside an Icon + Text List parent, for example. Only theme blocks nest.
+# Defaults and starting values
 
-**Cons**
+- **Icons:** find a default with the MCP's `search_icons` and confirm it with `check_icons`, never from memory. A token that doesn't exist renders nothing.
+- **When cloning,** start every setting at the reference's values, on each viewport, so the first preview already matches.
+- **Brand:** defaults bind to the theme's variables and palette, never to copied values. `DESIGN.md` says which palette color or scheme fits which job on this store.
 
-1. If the section needs new blocks of its own, they count against Shopify's limit of 300 theme blocks per theme.
-2. Editing can be more complex for the user because of nesting levels and allowlists.
-3. The section tends to be larger in the template, since versatile blocks write every one of their settings into it.
+# Check the schema
 
-## Section blocks
-
-**Pros**
-
-1. No 300-block limit. The limit is 50 blocks per section.
-2. Focused blocks with settings specific to the section's purpose, which means a smaller template footprint and simpler editing.
-3. A section with a single block type is the most pleasant to edit: one click adds another of the thing (a Listicle section with a Reason block).
-
-**Cons**
-
-1. The blocks can't be used in other sections unless they are ported to theme blocks or to the other section's block set.
-2. Less versatility in the editor, and no nesting.
-
-**In most cases, opt for section blocks.** Sugar already ships versatile layout sections like Custom Columns that give a high degree of flexibility with theme blocks. A new section is usually created when too many Custom Columns sections would push a template toward the 512 KB limit, when the available blocks don't have the desired design or functionality, or when the user simply wants a simpler editing experience.
-
-## Section allowlist
-
-The theme has four section groups: Header, Template, Email Popups and Footer. Scope a new section to the Template group only, unless it genuinely belongs elsewhere; this keeps each group's "Add section" list relevant.
-
-Sections can also be scoped to template types. Product-only sections exist only on product templates; Custom Columns is available everywhere. Most new sections can be added to all page types, but it is a judgement call based on what the section is for.
-
-## Section best practices
-
-Keep settings that affect several blocks at the section level, colors, positioning, text sizes, behaviour, instead of making the user change them block by block. Keep the variable content, the actual text, the image or video, in the blocks. Do this intelligently: sometimes a color, a position or a text size should live in the block. The goal is a focused, seamless editing experience with a lean schema, and it matters most in sections with section blocks.
-
-# Blocks
-
-When adding a theme block, decide where it should be addable and update those allowlists. Sugar is a block-focused theme: to make a block available inside Custom Columns, add it to the **Column** block's allowlist, not the section's. Consider the other wrapper blocks where it could be useful (Container, Row, Slide, and so on). It is worth asking the user, with the AskUserQuestion tool (or your agent's equivalent), where they want the block to appear. Make sure it works in each context you add it to.
-
-# File and category naming
-
-For sections and blocks alike, choose clear, straightforward names that say what the component does, so a person or another agent understands it at a glance. Abstract names cost the next agent a file read.
-
-Two files must have distinct file names, though the user-facing name in the editor can repeat across files. Clarity and distinction still matter there.
-
-Every section and block sits in a category in the editor's add menu. If a category already exists where the component belongs, use it; otherwise create one. A block with no category floats to the top of the list, which may be what the user wants. The category goes inside the block's `presets` entry, not at the top level of the schema; at the top level the upload is rejected.
-
-Ask the user for the name and category, since both are what they will see in the editor. The names of assets and snippets are your call, but keep them clear for whoever reads the code next.
-
-# Assets and snippets
-
-Put a new component's static CSS in its own asset file (`assets/section-<name>.css` or `assets/block-<name>.css`) and load it from the file where its markup begins. The browser fetches the sheet once however many instances are on the page, and pages that don't use the component never load it. Do not use a `{% stylesheet %}` tag: Shopify compiles every one of those in the theme into a single stylesheet served on every page, so each new one slows every page of the store, not just the page that uses it. Setting-driven values go on the root element's inline style as custom properties, so the stylesheet stays static.
-
-Consider a snippet when the same markup will be rendered by several files. Don't add an asset or snippet that duplicates one the theme already has; too many files that do the same thing is its own kind of bloat.
-
-# Common settings to include
-
-Use the theme's setting conventions wherever they apply, unless the user asks for something different or you leave a setting out on purpose to keep the schema lean. Every setting a file declares is written into the template for every instance, defaults included, which is how templates grow toward the 512 KB limit. A setting the user will rarely touch costs the same as one they will use every day.
-
-## 1. Global theme settings
-
-Customizations set once in theme settings, which new files should read rather than re-ask:
-
-- **Corner rounding.** Four values, for media, containers, badges and buttons. Read the matching one. A per-component override is a single text setting with no default, labelled "Corner rounding", where blank means the theme value, `0` means square and `999` means a pill.
-- **Color schemes.** Background, an optional background gradient, text and accent, set together. Sections and containers pick a scheme; a new component reads the scheme's colors so it follows whichever surface it sits on.
-- **Palette.** The theme ships two swatches, the brand color and the accent, which code can reference as defaults. Swatches the user adds are editor-only and can't be referenced from code.
-- **Buttons.** Primary, Secondary and Outline, each with its own colors. A new button reads one of the three.
-- **Logos.** Primary and secondary.
-- **Page width.** How wide content stretches in a section.
-
-Read these with reasonable defaults for the context (a light scheme for a section, a dark one for a badge) and give the user an escape hatch: a color picker with no default, where empty means "inherit from the scheme" and a chosen color overrides. Never add a "color type: scheme or custom" select; the empty picker is the switch.
-
-## 2. Common setting patterns
-
-Settings the user is used to from editing the rest of the theme.
-
-**Media.** Where an image can go, a video usually can too. Provide both an image picker and a video picker; when both are set, the video wins. No "image or video" select. Videos autoplay muted. Some places only make sense for one: an icon input takes an image; a full player takes a video.
-
-**Icons.** One text input labelled "Icon", taking a token from the Sugar icon library at https://app.sugarthe.me/icons (`check_circle`, `⭐️`, `1-circle`; find defaults with the MCP's `search_icons` and confirm them with `check_icons`, never from memory), rendered through the theme's icon snippet, plus an optional image picker that overrides it where uploads make sense. No icon-type selects and no "show icon" toggle; a blank token means no icon.
-
-**Font options.** The user sets a Heading, a Body and an optional Accent font in theme settings. A font select on a new file offers all three roles or none; a select that offers Heading and Body without Accent is a bug. Many texts don't need a select at all (body copy is body), so add one only where the choice is real. A custom-font escape hatch forces an extra download on every page that uses it; avoid it unless the user asks, and point them at the Page Styles section, which can override fonts for one template more cheaply.
-
-**Typography settings.** Beyond the font role: font weight, text size, line height and letter spacing. Font weight is always a slider from 100 to 900 in steps of 100. Text size and weight are the two the user reaches for; line height and letter spacing are niche. In the theme these mostly live on the Typography child block, but a section with section blocks can't use it, so put the ones that matter in the section or its blocks. Add them intelligently; printed on every instance, they bloat the template.
-
-**Text and icon vertical centering.** Text inside a container such as a badge sits low because its line height adds space below. If the text won't wrap in that context, set its line height to 1 to center it. Optical centering still varies by font and layout, so spot-check once it is built.
-
-**Margins.** Blocks have a top and bottom margin, `0px` top and `6px` bottom by default, on a `0` to `50` slider in `1px` steps. A new theme block must have them, or the user can't space it among the existing blocks without hassle. For section blocks a single gap setting at the section level is often better, since fine-tuning per block isn't needed. Your call by context.
-
-**Padding.** Sections expose top and bottom padding so the space between sections can be tuned; the theme's range is `0` to `100`, `1px` steps. On containers and badges, vertical and horizontal padding are useful and cheap; the component range is `0` to `60`.
-
-**Per-viewport values.** Sizes often differ by viewport, so the theme's blocks expose desktop and mobile values for things like text size. A mobile alignment setting is a select whose first option is "Same as desktop", the default. Layout can also change by viewport, though that is rarer. When cloning, stay true to the reference's behaviour on each viewport.
-
-**Starting values when cloning.** Start at the reference's values.
-
-**Anchor ID.** Sugar has blocks that scroll to or deep-link to a section or block. An Anchor ID setting is cheap on a section and worth adding on a block only when it is likely to be a scroll target, like the Offer blocks.
-
-**Custom Liquid.** A Custom Liquid input on a section is cheap and lets a future task adjust that one placement without editing the file. Almost never on a block: the scope it could target is tiny and it adds a setting for little benefit.
-
-# A reasonable, organized schema
-
-Organize the settings into headers so the user can find things. Beyond the patterns above, think about which other settings the context calls for. The file should be very editable on its own without feeling cluttered or complex.
-
-## Five or six settings per header, never a wall
-
-Every header holds **five or six settings at most**; the settings before the first header count as a group too. Twenty sliders under one "Settings" or "Style" header is the most common way a generated file looks generated: the user has to scroll past everything to find the one control they came for. Every Sugar file follows this, so a file that doesn't stands out next to them.
-
-- **Split by what the user is doing, not by setting type.** `Text` / `Rows` / `Icons` / `Row Separators` beats one `Global Settings`. A header's name says what its settings change; "Settings", "Style", "Options" or "Advanced" are not names.
-- **A desktop/mobile pair counts as two.** Keep the pair under the same header.
-- **Adding a setting to an existing file:** put it under the header whose name says what it does. If that header already holds six, add a new header rather than a seventh setting. This applies to shipped Sugar files you extend as much as to new ones.
-- **Splitting costs nothing.** Moving settings under new headers changes no setting ids, defaults or stored values, so it never breaks a template.
-- **A header whose settings all share a `visible_if` carries that condition itself,** or the editor shows the heading with nothing under it.
-- The only exception is a set that is meaningless split: one row of a size chart, the seven reaction toggles of a social post. Say so in the task summary.
-
-Before you hand off any section or block you created or added settings to, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` and fix what it reports. It checks the header groups and the platform rules below.
-
-Platform rules that fail silently or reject the upload:
-
-- Conditional visibility (`visible_if`) supports `==`, `!=`, `and` and `or`. It does not support `>=`, `<=` or parentheses, and an expression over 250 characters is rejected. A bad expression rejects the whole schema with no clear error. Product, collection, page, blog and article pickers can't be conditional at all.
-- A range setting allows at most 101 steps: `(max - min) / step` must be 101 or less. A 0 to 200 slider needs a step of 2.
-- A range value in a template must sit inside its setting's min and max and on its step, and every nested block type must be in its parent's allowlist. An invalid value doesn't error; the template silently breaks.
-
-# Styling next to Sugar's own CSS
-
-New CSS, in a new file or in a section's Custom Liquid, meets the theme's rules on the same elements. Each of these cost an earlier agent a broken first push:
-
-- **Empty elements are hidden.** The theme hides every empty `div` with `div:empty { display: none }`, which outranks a single class. A decorative element with no content (an overlay, a progress bar, a spacer) needs `display: block` in a rule with two classes, or it never shows.
-- **Blocks are wrapped.** Shopify wraps each nested theme block in its own `div.shopify-block`. A layout that expects the blocks as direct children (a grid built with `display: contents` rows, a `> .child` selector) has to account for that wrapper.
-- **Target a block by the end of its id.** A block's root carries `data-_sf` with a longer id than its key in the template JSON. Match the end: `[data-_sf$="__KEY"]`, never `[data-_sf="KEY"]`.
-- **Settings arrive as inline custom properties** on the block's root (`style="--bd-pv: 8px"`), which beat any stylesheet rule setting the same property. Override one with `!important`, or better, set the setting's value in the template. Keep `!important` off anything an animation moves: an `!important` declaration freezes it.
-- **Specificity ties go to the later sheet.** The theme's rules are often two or three classes deep; a new rule on one class loses silently. Repeat the class (`.my-thing.my-thing`) rather than reaching for `!important`, then check the computed style in the browser.
-- **Moving focus scrolls the page.** Call `focus({ preventScroll: true })` in any script that moves focus while the shopper is somewhere else on the page (a drawer, a sticky bar).
-- **A swipe row that snaps loses its first gutter.** The usual phone scroller runs to the screen edges with a negative side margin and gets the page gutter back as side padding (`margin: 0 -16px; padding: 0 16px`). With `scroll-snap-align: start` on the cards, the browser snaps the first card to the scroller's own edge on load: it scrolls the 16px of padding out of view, and the first card touches the screen edge while the last one keeps its gap. Give the scroller `scroll-padding-inline` equal to that padding. On load, without touching it, the first card's left edge must line up with the heading above it.
-- **A shadow needs room on the side it falls.** A card's shadow reaches past the card by its offset plus blur plus spread (`0 14px 30px -24px` reaches 20px below). Anything with `overflow` other than `visible` cuts it there, and a swipe row always does, on both axes. Give a scroller at least that much padding on the shadow's side; give a box that only hides overflow `overflow: clip` with `overflow-clip-margin` of that length instead, which works only with `clip`. Never pad the cards themselves: that widens the gap between them. Then start the pagination, progress bar or next block below the shadow's reach, not below the cards. The same goes for a grid or container whose next element sits closer than the shadow's reach.
-
-# Leveraging existing Sugar features
-
-To preserve the theme's functionality and speed, and to let the user customize a new component the way they do everywhere else, link new files to existing Sugar features where they fit: the pricing scripts, the slider and accordion engines, the icon token system, the color schemes and the typography variables. Some tasks need a different architecture; adopt existing features intelligently, not reflexively.
-
-# Speed
-
-Always consider the impact of new files on the store's speed. Choose the leanest architecture that still looks, feels and performs well. Concretely: static CSS in the component's own asset, no per-instance `<style>` or `<script>` that could be one shared thing, images lazy-loaded below the fold with the width they render at, and nothing that hides or moves visible content after the page first paints.
+Before you hand off any section or block you created or added settings to, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` and fix what it reports. It checks the header groups and the platform rules `AGENTS.md` lists (`visible_if` limits, range steps, allowlists).
 
 # Logging the file
 
-Once the file exists, log it in the project's `custom-sections-blocks.md`: what it does, what it was based on, what it depends on, where it is allowed, when to use it and any best practices. Future agents find it there instead of building it again.
-
-# High-converting Ecommerce principles
-
-Your training data on web design covers the whole internet, and only a small part of it is Ecommerce, let alone Ecommerce built for conversions.
-
-## Mobile first
-
-Most Ecommerce traffic is on mobile. Optimize for that viewport first: compact, legible, and a good overall experience. Then make desktop earn its extra space.
-
-## Deslopification
-
-Avoid the patterns that mark a design as generated:
-
-- Mono text accents (especially JetBrains Mono). Use only the user's fonts from the theme, and offer an Accent font if the task calls for one.
-- Excessive eyebrow text, especially with status chips. Eyebrows are useful; add them tastefully.
-- Hover effects on everything.
-- "Fingernail" callouts.
-- Text and components that clip outside their container and look sloppy.
-
-## Out of the box thinking
-
-A new file usually exists because no existing component satisfied the request, and the existing components already cover most top-converting Ecommerce designs. So to wow the user and, more importantly, to convert, create designs and layouts that are genuinely new: not for artistic expression or a good first impression, but because they sell.
+Once the file exists, add an entry to the *Store additions* section at the end of the theme's `AGENTS.md`, below the `<!-- STORE ADDITIONS` line, and push it with the task: the file, what it does, what it was based on, what it depends on, where it is allowed, when to use it and any best practices. Changes to shipped Sugar files go in the second list there, with what changed and why. Future agents, and Sidekick, find it there instead of building it again. Never edit `AGENTS.md` above that line.

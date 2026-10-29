@@ -17,7 +17,7 @@ The goal is always to complete the user's request, not to be afraid of significa
 ## Where to look
 
 - **Sugar's own sections and blocks** are listed in the plugin's catalog index, names and one-liners; the full docs for any component, including its settings and known issues, come from the Sugar Theme MCP.
-- **Files created by other agents in this theme**, and shipped files they changed, are logged in the project's `custom-sections-blocks.md`. Read it before deciding a component doesn't exist.
+- **Files created by other agents in this theme**, and shipped files they changed, are logged in the *Store additions* section of the theme's `AGENTS.md`, which you pulled at the start of the task. Read it before deciding a component doesn't exist.
 
 # Available Methods
 
@@ -67,7 +67,7 @@ New files are created inside the theme: sections (either using theme blocks or s
 
 **Sections with section blocks:** Sections with section blocks are particularly useful and have the most pros & benefits within this method. There is no Shopify limit on how many sections with section blocks can be in a theme (only the 25 section per template limit applies). While you can only have 50 section blocks per section, that is more than enough for virtually every task. They are extremely versatile and provide you (the agent) with complete freedom as you are not constrained by existing theme blocks. At the same time, they provide the user with a pleasant theme editor experience. The only cons to this method is the fact that new sections will show up in the theme editor as addable in the template — this means dozens of available sections could add clutter or confusion to both agents and humans. Additionally, sections with section blocks cannot be nested like theme blocks can. Regardless, it is a fantastic option for a lot of tasks.
 
-**Cons:** possible clashes with existing functionality, especially when scripts are involved or the file touches pricing, quantity, variants, subscriptions or similar. The file shows in the theme editor, and at volume that becomes clutter, though some users want exactly that. Agents suffer the same clutter differently: a theme full of files that seem to do the same thing, or have no clear purpose, gives future agents too many options when composing templates. For these reasons, name new files clearly and document them in the project's `custom-sections-blocks.md`. Follow `new-file-creation.md` for the rest.
+**Cons:** possible clashes with existing functionality, especially when scripts are involved or the file touches pricing, quantity, variants, subscriptions or similar. The file shows in the theme editor, and at volume that becomes clutter, though some users want exactly that. Agents suffer the same clutter differently: a theme full of files that seem to do the same thing, or have no clear purpose, gives future agents too many options when composing templates. For these reasons, name new files clearly and document them in the *Store additions* section of the theme's `AGENTS.md`. Follow `new-file-creation.md` for the rest.
 
 **Limitations:** the fewest of any method. Shopify's own limits apply: 300 theme blocks per theme and 50 section blocks per section.
 
@@ -87,7 +87,7 @@ The code inside a file that already exists in the theme is edited, to change its
 
 **Limitations:** the second fewest. Extending an existing file adds no theme blocks, but a comprehensive section is still bound by the 50 section blocks limit, which is hard to hit in practice.
 
-**Other considerations:** adding a new setting that is off by default is the best way to change a block's design or functionality without affecting the places it is already used. Changing a setting's type (a checkbox to a select, say) breaks the component everywhere it is already placed: the stored value is no longer valid, the component won't display, and the template may not even sync until it is amended. And when you significantly change a file, the Sugar docs that other agents read still describe the old one. That drift is why every significant change to an existing file is logged in `custom-sections-blocks.md`, just like a new file, so future agents know the new capabilities, don't edit the file again for the same reason, and the update-check skill knows what to preserve.
+**Other considerations:** adding a new setting that is off by default is the best way to change a block's design or functionality without affecting the places it is already used. Changing a setting's type (a checkbox to a select, say) breaks the component everywhere it is already placed: the stored value is no longer valid, the component won't display, and the template may not even sync until it is amended. And when you significantly change a file, the Sugar docs that other agents read still describe the old one. That drift is why every significant change to an existing file is logged in the *Store additions* section of the theme's `AGENTS.md`, just like a new file, so future agents know the new capabilities, don't edit the file again for the same reason, and the update-check skill knows what to preserve.
 
 ## Transparency & User Selection
 

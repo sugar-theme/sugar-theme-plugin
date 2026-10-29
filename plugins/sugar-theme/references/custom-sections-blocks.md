@@ -1,5 +1,5 @@
 <!--
-Custom sections & blocks log. Copy this file into the project folder as custom-sections-blocks.md.
+Custom sections & blocks log, for a theme whose Sugar release has no AGENTS.md yet. Copy this file into the project folder as custom-sections-blocks.md. On a theme that has AGENTS.md, log in its Store additions section instead; a theme update moves this file's entries there.
 Every skill that creates a section, block, snippet or layout (with the stylesheet or script it brings), or changes a shipped Sugar file, appends here at the end of the task. This is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it. Templates, config/ and locales/ files and store changes (products, discounts, pages) are page content and store data, not components: don't log them; name the templates a component is used on in its entry.
 
 How to use it:

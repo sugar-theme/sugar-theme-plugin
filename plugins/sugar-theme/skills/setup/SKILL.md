@@ -157,7 +157,7 @@ Say that the choice is theirs, that it is one line in AGENTS.md they can change 
 
 Write the files now, once, with every value known. Never write AGENTS.md with placeholders: if a value is missing because a step was skipped, leave that line out and write `Setup: incomplete, <what is missing>` in the Working Theme block so any skill that reads it sends the user back here. If the browsers still have to be checked in the next conversation (Step 6), write `Setup: browsers pending`; otherwise `Setup: complete`.
 
-Create `custom-sections-blocks.md` in the project folder from `${CLAUDE_PLUGIN_ROOT}/references/custom-sections-blocks.md`: copy the file as it is; its instructions and examples are inside comments. It is the log where every agent records the files it creates and the shipped Sugar files it changes. Creating it here means every other skill can assume it exists and just append.
+Custom files are logged in the theme, not here: the *Store additions* section at the end of the working theme's `AGENTS.md`, where Sidekick sees them too (the store-editing reference has the details). Pull `AGENTS.md` now. Only if the theme has none (a Sugar release from before it shipped one), create `custom-sections-blocks.md` in the project folder from `${CLAUDE_PLUGIN_ROOT}/references/custom-sections-blocks.md`, copied as it is; the next theme update moves its entries into the theme.
 
 Then the system prompt. Check the project folder for AGENTS.md and CLAUDE.md, and check the folders above it for a CLAUDE.md. Claude Code reads a CLAUDE.md instead of AGENTS.md whenever one exists in the folder or any parent, so:
 
@@ -187,7 +187,7 @@ Your task is to help the user design their Shopify store, which is built on the 
 
 ## Sugar Theme
 
-The Sugar Theme is a next-generation Shopify theme built on patterns and components from top Ecommerce brands. It is the first AI-powered Shopify theme, built so agents can work effectively inside the user's storefront. Its sections, blocks and features are listed in the plugin's catalog index; full docs for any component come from the Sugar Theme MCP.
+The Sugar Theme is a next-generation Shopify theme built on patterns and components from top Ecommerce brands. It is the first AI-powered Shopify theme, built so agents can work effectively inside the user's storefront. How it is built, and the conventions every new file follows, are in the theme's own `AGENTS.md` at the theme root (the same file Shopify's Sidekick reads); the store's design intent is in the theme's `DESIGN.md`. Pull and read both at the start of every task (the store-editing reference says how). Its sections, blocks and features are listed in the plugin's catalog index; full docs for any component come from the Sugar Theme MCP.
 
 ## Folder Constraints
 
@@ -221,13 +221,13 @@ Honour this exactly. `none` sends nothing beyond reports made on purpose. `summa
 
 ## Landing Pages
 
-The theme has a second page layout, `landing`: no header, footer, cart drawer or popups, and a fraction of the scripts, for pages the shopper reads and then clicks through from (ad, listicle, advertorial, pre-sell and lead pages). It can't hold anything that needs the cart: buy buttons, variant pickers, prices that change with quantity or variant, offers, subscriptions, upsells, bundle builders, gift pickers, sticky add-to-cart. Recommend it for every new page of that kind, with those limits spelled out; most users only learn it exists from you. Before adding anything to an existing page, check its template's `"layout"`: if it is `landing` and the request needs a cart feature, say so before building and offer the options in the plugin's landing-layout reference.
+The theme's `AGENTS.md` describes the `landing` layout and what it can't hold. Recommend it for every new page of that kind, with those limits spelled out; most users only learn it exists from you. Before adding anything to an existing page, check its template's `"layout"`: if it is `landing` and the request needs a cart feature, say so before building and offer the options in the plugin's landing-layout reference.
 
 ## Brand Settings
 
 Before building anything new, read the working theme's settings: color palette, color schemes, typography, corner rounding and buttons. New files bind to the theme's variables for these rather than copying their values, so a rebrand carries through and the new component follows whatever scheme it sits in. Choose a scheme by what its values do (light or dark, neutral or brand-tinted), never by its number, since users rearrange them.
 
-Do not snapshot these values into this project; they drift the moment the user touches the editor. A more advanced user with a consistent brand may keep a brand guide here by choice.
+Then read the theme's `DESIGN.md`: what each palette color and color scheme is for on this store, font rules, and the user's dos and don'ts. It is shared with Sidekick, so it is the one place brand decisions live. When the user states a lasting preference ("never bold our heading font", "palette_2 is only for cards"), record it there in their words, by setting name, never by hex value, and push it with the task. Do not snapshot setting values into this project or into `DESIGN.md`; they drift the moment the user touches the editor.
 
 ## Review Links
 
@@ -243,7 +243,7 @@ You may edit any theme on the user's store, including the live one, within the W
 
 ## Logging
 
-Every new section, block, snippet or layout you create (with the stylesheet or script it brings), and every shipped Sugar file you change, gets an entry in `custom-sections-blocks.md` at the end of the task. Append; never rewrite earlier entries. The log is a catalog of reusable components, so a later build or clone reuses one instead of rebuilding it, and the update-check skill reads its changes table to know what a theme update would overwrite. Don't log templates, `config/` or `locales/` files, or store changes (products, discounts, pages): those are page content and store data, not components. Name the templates a component is used on in its entry instead.
+Every new section, block, snippet or layout you create (with the stylesheet or script it brings), and every shipped Sugar file you change, gets an entry in the *Store additions* section at the end of the theme's `AGENTS.md`, pushed at the end of the task. Append below the `<!-- STORE ADDITIONS` line; never rewrite earlier entries and never edit anything above that line, which theme updates replace. The log is a catalog of reusable components, so a later build, clone or Sidekick request reuses one instead of rebuilding it, and the update-check skill reads its changes table to know what a theme update would overwrite. Don't log templates, `config/` or `locales/` files, or store changes (products, discounts, pages): those are page content and store data, not components. Name the templates a component is used on in its entry instead.
 
 ## Thorough Agent Testing & Verification
 

@@ -29,7 +29,7 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 Thoroughly analyze the user's request, their existing design components, their styling, their brand, their target audience and, most importantly, their product. Think about the different ways their goal, idea or concept can be materialized.
 
-Read the working theme's brand settings before proposing anything: the new file will bind to the theme's typography, color schemes, corners and buttons, so every option should be imagined in the user's type and colors, not generic ones. Read the project's `custom-sections-blocks.md` too, in case an earlier agent already built something close.
+Read the working theme's brand settings before proposing anything: the new file will bind to the theme's typography, color schemes, corners and buttons, so every option should be imagined in the user's type and colors, not generic ones. Read the theme's `DESIGN.md` for what this store's colors and fonts are for, and the *Store additions* section of the theme's `AGENTS.md`, in case an earlier agent or Sidekick already built something close.
 
 **Variations & brand new design directions**
 Because this skill is usually invoked in an exploratory prompt or phase, offer the user multiple options for what can be created. Present them with the AskUserQuestion tool (or your agent's equivalent), saying clearly what each section or component would look like and why it is a good fit for the goal. Also, because this skill is usually invoked when the theme's existing files and features don't "scratch their itch" you must create something that is starkly different from what's available, that feels fresh, new, exciting and fits their request.
@@ -46,7 +46,7 @@ Say which images or other assets the build needs and why before building, and of
 
 Once the user has decided on a concept, build the new files on their theme. Read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md` first and follow it: it covers choosing between section and theme blocks, the settings the user expects to find, the theme features to reuse, performance, and the design habits that make a file look generated rather than designed. Every file you create or add settings to passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify; it catches a header holding more than six settings and the schema mistakes that break an upload.
 
-Ask the user for the name and category the new section or block should show in the theme editor, since those are what they will see. When the build is done, log every new section, block or snippet in the project's `custom-sections-blocks.md` with what it does, what it depends on and when to use it, so future agents find it instead of building it again.
+Ask the user for the name and category the new section or block should show in the theme editor, since those are what they will see. When the build is done, log every new section, block or snippet in the *Store additions* section of the theme's `AGENTS.md` with what it does, what it depends on and when to use it, so future agents find it instead of building it again.
 
 # Step 3: Verification
 

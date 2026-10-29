@@ -53,7 +53,12 @@ The script sends fingerprints and line-1 stamps, never the files. A changed file
 - `plan.json`: the build the theme came from and the latest, then each file's fate. `replace` (untouched, behind), `add` (new in Sugar), `protectedReplaced` (changed, but protected: always replaced whole, never merged, because merging them line by line is how they quietly stop working), `merge` (changed by the user and by Sugar), `keep` (changed by the user, unchanged by Sugar since: nothing to do), `own` (the user's own files), `retired` (untouched files Sugar no longer ships; left in place), and `changes`, newest first.
 - `merged/`: each merge file already merged three ways, Liquid, JS and CSS with git's merge (conflicts marked `<<<<<<< yours` / `>>>>>>> sugar`), JSON key by key. `merge-report.json` says which merged cleanly, which conflict and which need a hand merge. `base/` and `latest/` hold the two originals.
 
-Read the project's `custom-sections-blocks.md` as well. Its changes table says which shipped files an agent edited and why, which is what you need to merge them without losing the reason.
+Read the *Store additions* section of the theme's `AGENTS.md` as well (and, in a project an older plugin set up, its `custom-sections-blocks.md` until that has been moved). Its changes table says which shipped files an agent or Sidekick edited and why, which is what you need to merge them without losing the reason.
+
+Two files at the theme root follow their own rules, whatever the plan says:
+
+- **`AGENTS.md`:** replace everything above the `<!-- STORE ADDITIONS` line with the latest release's text, and keep everything from that line down exactly as the store has it. If the theme has no `AGENTS.md` yet, add the latest one and move the project's `custom-sections-blocks.md` entries below its line (then rename the project file to `custom-sections-blocks.migrated.md`).
+- **`DESIGN.md`:** the store's own design intent. Never replace or merge it. If the theme has none, add the release's starter.
 
 # Step 3: Report
 

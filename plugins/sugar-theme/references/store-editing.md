@@ -48,10 +48,23 @@ Download only the files the task needs. `--only` takes a path or a glob and can 
 ```bash
 shopify theme pull --store STORE.myshopify.com --theme THEME_ID \
   --path "SCRATCH" \
+  --only AGENTS.md --only DESIGN.md \
   --only templates/product.json --only sections/custom-columns.liquid
 ```
 
 Pull the JSON template you are editing and every file you plan to change or read. A block or section file you intend to place in a template does not need pulling unless you will edit it.
+
+### The theme's two guide files
+
+Every pull includes `AGENTS.md` and `DESIGN.md` from the theme root (Shopify CLI 4.8.4 or newer moves them; setup installs the latest). Read both before working.
+
+- **`AGENTS.md`** is how this store's Sugar release is built: the conventions every new or changed file follows, the traps, and links to each component's docs. It matches the release the store runs, so where it and a plugin reference disagree, it wins. Shopify's Sidekick reads the same file, which is why both agents' work comes out alike.
+- **Its *Store additions* section**, below the `<!-- STORE ADDITIONS` line at the end, lists this store's own sections and blocks and the shipped Sugar files that were changed, by you, another conversation or Sidekick. Read it before deciding something doesn't exist; add to it when you create or change a file, and push it with the task. Never edit anything above that line: theme updates replace that part.
+- **`DESIGN.md`** is the store's design intent: what each palette color and color scheme is for, font rules, dos and don'ts. Read it before design work; record a lasting preference the user states there, by setting name, never by hex value. It belongs to the store; theme updates never touch it.
+
+**A theme from before Sugar shipped `AGENTS.md`** has neither file (the pull brings nothing back for them). Use the plugin's copy, `${CLAUDE_PLUGIN_ROOT}/references/theme-AGENTS.md`, for the conventions, keep logging in the project's `custom-sections-blocks.md`, and suggest a theme update (the update-check skill), which adds both files and moves the log into the theme.
+
+**An older project log:** if the project folder still has a `custom-sections-blocks.md` with entries and the theme's `AGENTS.md` has the *Store additions* line, offer once, with the AskUserQuestion tool: "You have N custom sections and blocks logged in this project. Move them into your theme's AGENTS.md so Sidekick sees them too?" On a yes, append them below the line in the same two lists, push `AGENTS.md`, and rename the project file to `custom-sections-blocks.migrated.md`. On a no, leave it and add `Log move: declined` to the Working Theme block of the project's AGENTS.md, so no later conversation asks again.
 
 ## Edit
 

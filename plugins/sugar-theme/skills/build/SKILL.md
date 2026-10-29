@@ -29,7 +29,7 @@ Files are read from and written to the store as described in `${CLAUDE_PLUGIN_RO
 
 Thoroughly analyze the user's request, their existing design components, their styling, their brand, their target audience and, most importantly, their product. Think about the different ways their goal, idea or concept can be materialized.
 
-Ground the options in what the theme can do. Read the plugin's catalog index to see which Sugar sections and blocks exist, and the project's `custom-sections-blocks.md` for files other agents have built in this theme. Read the working theme's brand settings so every option is proposed in the user's typography and colors, not generic ones.
+Ground the options in what the theme can do. Read the plugin's catalog index to see which Sugar sections and blocks exist, and the *Store additions* section of the theme's `AGENTS.md` for files other agents (or Sidekick) have built in this theme. Read the working theme's brand settings so every option is proposed in the user's typography and colors, not generic ones.
 
 Because this skill is usually invoked in an exploratory prompt or phase, offer the user multiple options for what can be created. Present them with the AskUserQuestion tool (or your agent's equivalent), saying clearly what each section or component would look like and why it is a good fit for the goal.
 
@@ -47,7 +47,7 @@ The user may want different variations built so they can judge visually what sat
 
 **Before starting, make sure you know exactly which template and, where relevant, which product you are building on.** The theme itself comes from AGENTS.md. If the user has not named the template or product, and nothing in the project says which to use, ask. Do not assume. If the working theme is the live theme, say so before you change it.
 
-Once the user has picked a method from your suggestions, build inside the target theme and template. If the method creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the project's `custom-sections-blocks.md` when you are done. Before you write a new section or block, or add settings to an existing one, read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md`; its schema rules apply to both, and every file you touched passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify.
+Once the user has picked a method from your suggestions, build inside the target theme and template. If the method creates new sections, blocks or snippets, or changes shipped Sugar files, log them in the *Store additions* section of the theme's `AGENTS.md` when you are done. Before you write a new section or block, or add settings to an existing one, read `${CLAUDE_PLUGIN_ROOT}/references/new-file-creation.md`; its schema rules apply to both, and every file you touched passes `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` before you verify.
 
 # Step 4: Verification
 
