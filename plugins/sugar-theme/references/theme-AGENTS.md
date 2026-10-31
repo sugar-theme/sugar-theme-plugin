@@ -67,7 +67,7 @@ Work down this list and stop at the first that does the job:
 - Never change a setting's type or remove an option value: stored values stop being valid and the component stops rendering where it is already placed.
 - Record the change under *Store additions*, with what and why, so a theme update merges Sugar's fixes into it instead of replacing it.
 
-A new section belongs to the Template group only (`"enabled_on": { "groups": ["template"] }`) unless it genuinely belongs in the Header, Footer or Email Popups group, and to the template types it makes sense on (product-only sections only on product templates). Keep settings that affect every block (colors, positions, text sizes, behavior) on the section, and the content that varies (text, images, video) on the blocks.
+A new section is offered only on the template types it makes sense on (`"enabled_on": { "templates": ["page"] }`, product-only sections only on product templates) unless it genuinely belongs in the Header, Footer or Email Popups group. Never write `"enabled_on": { "groups": ["template"] }`: Shopify accepts only `header`, `footer`, `aside` or `custom.<name>` there and rejects the section on upload. Keep settings that affect every block (colors, positions, text sizes, behavior) on the section, and the content that varies (text, images, video) on the blocks.
 
 Name files and components plainly by what they do. Put a new section or block in an existing editor category if one fits (`"category"` goes inside the `presets` entry, never at the top of the schema, or the upload is rejected).
 
