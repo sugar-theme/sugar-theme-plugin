@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.12
+
+- **New sections upload on the first try.** The agent's guide used to show a way of limiting a new section to page templates that Shopify refuses, so the section failed to upload and the page that used it then failed too. The agent now limits a new section to the page types it belongs on, which Shopify accepts.
+- **To do:** nothing.
+
 ## 1.3.11
 
 - **Your custom sections and blocks are now listed in your theme, where Shopify's Sidekick can see them too.** Sugar themes now carry two guide files that Sidekick and this agent both read: `AGENTS.md`, how Sugar is built (with a section at the end listing your store's own sections, blocks and changed files), and `DESIGN.md`, what your colors, color schemes and fonts are for. The agent reads both at the start of every task and keeps the list current, so Claude and Sidekick build the same way and never redo each other's work.
