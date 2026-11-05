@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.13
+
+- **New templates no longer get deleted before they upload.** The agent's guide told it to re-pull its files right before pushing, which removed a newly downloaded template because the theme didn't have it yet. The agent now re-pulls only files the theme already has.
+- **To do:** nothing.
+
 ## 1.3.12
 
 - **New sections upload on the first try.** The agent's guide used to show a way of limiting a new section to page templates that Shopify refuses, so the section failed to upload and the page that used it then failed too. The agent now limits a new section to the page types it belongs on, which Shopify accepts.
