@@ -10,6 +10,9 @@
 //   - a visible_if using >, <, >=, <= or parentheses, or longer than 250 characters
 //   - a range with more than 101 steps
 //   - a "category" at the top level of the schema instead of inside a preset
+//
+// A template or other non-.liquid file is reported as NOT CHECKED, never as OK: count
+// each section's and block's blocks against the max_blocks in its schema yourself.
 
 const fs = require("fs");
 
@@ -56,7 +59,14 @@ function groups(settings) {
   return out;
 }
 
+const NO_SCHEMA = "no {% schema %} tag, nothing checked";
+const NOT_CHECKED =
+  "NOT CHECKED: this script reads section and block schemas only, never templates. " +
+  "Check each section's and block's block count against the max_blocks in its schema " +
+  "(50 when none is set), plus its allowed block types and range values";
+
 function check(file) {
+  if (!file.endsWith(".liquid")) return NOT_CHECKED;
   const problems = [];
   let schema;
   try {
@@ -64,7 +74,7 @@ function check(file) {
   } catch (e) {
     return [`schema is not valid JSON: ${e.message}`];
   }
-  if (!schema) return [];
+  if (!schema) return NO_SCHEMA;
 
   if ("category" in schema) problems.push('"category" belongs inside a preset, not at the top level');
 
@@ -110,7 +120,9 @@ if (!files.length) {
 let failed = 0;
 for (const f of files) {
   const problems = check(f);
-  if (problems.length) {
+  if (problems === NO_SCHEMA || problems === NOT_CHECKED) {
+    console.log(`${f}: ${problems}`);
+  } else if (problems.length) {
     failed++;
     for (const p of problems) console.log(`${f}: ${p}`);
   } else {

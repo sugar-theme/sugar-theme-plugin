@@ -19,7 +19,7 @@ This reference only adds what you do with the plugin's tools on top of it.
 
 # Check the schema
 
-Before you hand off any section or block you created or added settings to, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` and fix what it reports. It checks the header groups and the platform rules `AGENTS.md` lists (`visible_if` limits, range steps, allowlists).
+Before you hand off any section or block you created or added settings to, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/schema-check.js FILE...` and fix what it reports. It checks the header groups and the schema rules `AGENTS.md` lists (`visible_if` limits, range steps, a misplaced `category`). It does not read templates: before pushing one, check that each section and block holds no more blocks than its schema's `max_blocks` (50 when none is set), only block types it allows, and range values inside their `min`/`max`.
 
 # Logging the file
 
