@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.14
+
+- **The schema check no longer says "OK" for a template.** It only checks the settings inside section and block files, but given a template it used to print "OK", so a template with too many blocks passed the check and then failed to upload. It now says "NOT CHECKED" for a template, and the guide tells the agent to count each section's blocks against its limit before pushing.
+- **To do:** nothing.
+
 ## 1.3.13
 
 - **New templates no longer get deleted before they upload.** The agent's guide told it to re-pull its files right before pushing, which removed a newly downloaded template because the theme didn't have it yet. The agent now re-pulls only files the theme already has.
