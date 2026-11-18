@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.16
+
+- **Ask why the preview lags or freezes while you type.** The agent now knows how the theme editor's preview updates: which text shows as you type, which reloads its section first, and the setting that sends an update again when it got stuck (**Theme settings → Theme Editor → Retry stalled preview updates**). When the slow text is in a section the agent built, it offers to fix it.
+- **To do:** nothing. Typing that shows instantly and the retry setting come with Sugar Theme 2.3.17; on an older theme, ask the agent to check for theme updates.
+
 ## 1.3.15
 
 - **Text in sections and blocks the agent builds now updates in the preview as you type.** The theme editor can show each letter of a heading, paragraph or label the moment you type it, but only when the section is written a certain way. Written any other way, every keystroke reloads the whole section, which is slow on a long page and can freeze the preview. The agent now writes new sections and blocks the instant way, and keeps it when it changes an existing one.
