@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.17
+
+- **The agent's list of what Sugar has is current again.** The list it checks to answer "does Sugar have this?" was last refreshed at theme 2.0.0. It now matches Sugar 2.3.17 and knows the 15 sections, 4 blocks and 2 guides added since, such as Hotspots, Before & After Slider, Expert Reviews, Stacked Cards, Story Cards, Floating Cart, Offer Pills, Spin Wheel, Grid Promo and Personalization. Descriptions of existing sections and blocks are refreshed too.
+- **To do:** nothing. If the agent suggests a section your theme doesn't have yet, it comes with a theme update; ask the agent to check for theme updates.
+
 ## 1.3.16
 
 - **Ask why the preview lags or freezes while you type.** The agent now knows how the theme editor's preview updates: which text shows as you type, which reloads its section first, and the setting that sends an update again when it got stuck (**Theme settings → Theme Editor → Retry stalled preview updates**). When the slow text is in a section the agent built, it offers to fix it.
