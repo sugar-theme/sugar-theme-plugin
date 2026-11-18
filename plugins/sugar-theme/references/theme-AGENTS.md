@@ -94,8 +94,8 @@ Merchants learn these patterns once and expect them everywhere. Use them in ever
 - **Anchor ID** on sections and on blocks a merchant would scroll to (Offers, FAQ, comparison tables, wrappers), not on every block.
 - **A placeholder in an existing text setting often beats a new setting.** Sugar's text settings already understand bracket placeholders, and a new one costs no stored setting on any page and no extra control in the editor. Use the families that exist before inventing one, and list the placeholders a setting accepts in its `info` text, which is how merchants find them:
   - **Live values**, filled by Liquid and kept current by the pricing scripts: `[price]`, `[compare_price]`, `[amount]`, `[amount_rounded]`, `[percentage]`, `[quantity]`, `[price_each]`, `[unit_price]`, `[plan_name]`, `[savings]`, `[date]`, `[country]`, `[currency]` and others (each setting's `info` lists its own). Render price placeholders through `snippets/price-placeholders.liquid` (and `price-spot` for a spot that must refresh) so they follow the selected variant, tier and currency.
-  - **Text formatting:** `[br]` a line break, `[mbr]` and `[dbr]` a break on mobile or desktop only, `[sup]…[/sup]` superscript (footnote marks).
-  - **Placeholders a child block fills:** a Heading or Text prints an Inline Icon, Inline Date, Inline Countdown, Inline Location or Rotating Text child where `[icon_1]`, `[icon_2]`…, `[date]`, `[countdown]`, `[location]` or `[rotate]` is typed.
+  - **Text formatting:** `[br]` a line break, `[mbr]` and `[dbr]` a break on mobile or desktop only, `[sup]…[/sup]` superscript (footnote marks), `[700]…[/700]` the weight of just those words (any hundred 100–900; bold inside takes it too; in every setting that takes `[sup]`).
+  - **Placeholders a child block fills:** a Heading, Text or Heading + Text prints an Inline Icon, Inline Date, Inline Countdown, Inline Location or Rotating Text child where `[icon_1]`, `[icon_2]`…, `[date]`, `[countdown]`, `[location]` or `[rotate]` is typed.
   - **Tags that change structure**, read from a name rather than a setting: in menus, a link named `[button] Shop now` becomes a button, and `[tiles]`, `[rows]` and `[stack]` set a mega menu's layout.
 
   Reach for one when the choice is occasional and lives naturally inside text the merchant already types. Use a real setting when it changes how the whole component behaves, or when a merchant would never discover a placeholder.
@@ -158,6 +158,18 @@ Merchants learn these patterns once and expect them everywhere. Use them in ever
 - **Read everything, then write everything.** An engine serving several instances measures all of them before changing any; a read after another instance's write forces a full layout each time. Never write to `<html>` or `<body>` per frame, and only when the value changed.
 - **Nothing hides or moves visible content after the first paint.** Lay out the state the script will leave on the server, so the page doesn't jump when the script runs.
 - **Theme editor re-renders:** a section can be rebuilt many times while the merchant edits. Clean up observers, timers and listeners, and make start-up idempotent.
+
+### Print copy settings directly
+
+A `text`, `inline_richtext` or `richtext` setting printed as `{{ block.settings.x }}` updates in the theme editor as the merchant types, with no section reload. Printed through a variable, another filter or a snippet parameter, every keystroke reloads the whole section, which is slow on a long page and sometimes never answers. Print copy the direct way wherever the text is static after render.
+
+- **`richtext` and `inline_richtext`:** print the setting bare, anywhere in the markup.
+- **`text` and `textarea`:** the bare output (or `| escape`) must be the only thing inside an element whose opening tag has no Liquid in it: `<span class="x__label">{{ block.settings.label }}</span>`. Liquid in the tag (`class="{{ … }}"`, `href="{{ … }}"`), a sibling, or a tag between the element and the output reloads the section. Give the text its own plain inner element when the outer one needs Liquid.
+- **Copy that needs processing** (placeholders): process into a variable, then print the setting itself whenever processing left it unchanged: `{% if processed == block.settings.text %}{{ block.settings.text }}{% else %}{{ processed }}{% endif %}`. For `text` settings put the whole element in both branches. The HTML is the same either way.
+- **Keep the element in the editor when the copy is blank:** `{% if text != blank or request.design_mode %}`, so typing into an emptied field updates in place too. The theme hides an empty `div`, `p` and `h1`–`h6`; give any other tag an `:empty` rule.
+- **A snippet stays direct** when it receives the object (`render 'card', block: block`) and prints `{{ block.settings.x }}` itself.
+- **Not where a script owns the text** (button labels that change state, prices, counters, rotating or typed text, anything read from `innerHTML` and written back): the in-place update and the script would overwrite each other.
+- Only the printed text updates in place. Anything else derived from the setting (an `aria-label`, a class that depends on it being empty, a placeholder typed into plain text) catches up when the merchant leaves the field, which reloads the section once.
 
 ---
 
