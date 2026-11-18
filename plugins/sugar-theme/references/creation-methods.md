@@ -81,7 +81,7 @@ The code inside a file that already exists in the theme is edited, to change its
 
 **Pros:** existing code is tweaked rather than written from scratch, so most of its functionality and design survive and iteration is fast. Changes that are meant to affect the store's look everywhere are achieved exactly this way.
 
-**Cons:** if the file is used elsewhere in the theme, it changes there too. Depending on the context that is the point, and matches the request. New settings added to the file's schema add to the template size everywhere the file is used, which matters only for a heavily used block. And a shipped Sugar file that has been edited is a file a theme update has to merge instead of replace, so every such edit must be logged (below).
+**Cons:** if the file is used elsewhere in the theme, it changes there too. Depending on the context that is the point, and matches the request. New settings added to the file's schema add to the template size everywhere the file is used, which matters only for a heavily used block. And a shipped Sugar file that has been edited is a file a theme update has to merge instead of replace, so every such edit must be logged (below). Routing a block's copy through a new variable or filter makes the theme editor reload the section on every keystroke instead of updating the text as the merchant types; keep the direct print (new-file-creation reference).
 
 **Release stamp:** leave line 1 of the edited file alone. It names the Sugar release the file started from, which is what lets a later update merge Sugar's fixes into the user's edited copy.
 
