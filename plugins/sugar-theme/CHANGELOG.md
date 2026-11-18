@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.15
+
+- **Text in sections and blocks the agent builds now updates in the preview as you type.** The theme editor can show each letter of a heading, paragraph or label the moment you type it, but only when the section is written a certain way. Written any other way, every keystroke reloads the whole section, which is slow on a long page and can freeze the preview. The agent now writes new sections and blocks the instant way, and keeps it when it changes an existing one.
+- **To do:** nothing. A section or block the agent built before keeps working as it did; if typing in one feels slow, ask the agent to make its text update as you type.
+
 ## 1.3.14
 
 - **The schema check no longer says "OK" for a template.** It only checks the settings inside section and block files, but given a template it used to print "OK", so a template with too many blocks passed the check and then failed to upload. It now says "NOT CHECKED" for a template, and the guide tells the agent to count each section's blocks against its limit before pushing.
