@@ -9,6 +9,7 @@
 //     shown itself, so the editor prints a heading with nothing under it
 //   - a visible_if using >, <, >=, <= or parentheses, or longer than 250 characters
 //   - a range with more than 101 steps
+//   - a url setting whose default is not "/", "/collections" or "/collections/all"
 //   - a "category" at the top level of the schema instead of inside a preset
 //
 // A template or other non-.liquid file is reported as NOT CHECKED, never as OK: count
@@ -18,6 +19,7 @@ const fs = require("fs");
 
 const CAP = 6;
 const NOT_SETTINGS = new Set(["header", "paragraph"]);
+const URL_DEFAULTS = new Set(["/", "/collections", "/collections/all"]);
 
 function schemaOf(file) {
   const src = fs.readFileSync(file, "utf8");
@@ -106,6 +108,13 @@ function check(file) {
       }
       if (s.type === "range" && s.step && (s.max - s.min) / s.step > 101) {
         problems.push(`${scope} "${s.id}" range has ${(s.max - s.min) / s.step} steps (max 101)`);
+      }
+      if (s.type === "url" && "default" in s && !URL_DEFAULTS.has(s.default)) {
+        problems.push(
+          `${scope} "${s.id}" url default ${JSON.stringify(s.default)} is refused on upload ` +
+            `(only "/", "/collections" or "/collections/all"): remove the default and put the link ` +
+            `in the preset's settings or the template's saved settings`
+        );
       }
     }
   }
