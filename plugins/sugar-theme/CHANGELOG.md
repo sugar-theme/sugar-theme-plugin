@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.18
+
+- **A link setting's default that Shopify refuses is caught before upload.** When the agent builds a section or block, Shopify only accepts `/`, `/collections` or `/collections/all` as the default of a link setting. Anything else, such as `#reviews` or a product link, made the whole file fail to upload. The agent's schema check now catches it and puts the link in the preset instead.
+- **To do:** nothing.
+
 ## 1.3.17
 
 - **The agent's list of what Sugar has is current again.** The list it checks to answer "does Sugar have this?" was last refreshed at theme 2.0.0. It now matches Sugar 2.3.17 and knows the 15 sections, 4 blocks and 2 guides added since, such as Hotspots, Before & After Slider, Expert Reviews, Stacked Cards, Story Cards, Floating Cart, Offer Pills, Spin Wheel, Grid Promo and Personalization. Descriptions of existing sections and blocks are refreshed too.
