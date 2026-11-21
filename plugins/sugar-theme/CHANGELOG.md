@@ -2,6 +2,11 @@
 
 Newest first. Each entry says what changed for you, and what to do, if anything.
 
+## 1.3.19
+
+- **A section limited to a group Shopify doesn't have is caught before upload.** Shopify only accepts `header`, `footer`, `aside` or `custom.<name>` as a section's group, and only one of "enabled on" or "disabled on". A `template` group made Shopify refuse the section and every template using it. The agent's schema check now catches it and limits the section by template type instead.
+- **To do:** nothing.
+
 ## 1.3.18
 
 - **A link setting's default that Shopify refuses is caught before upload.** When the agent builds a section or block, Shopify only accepts `/`, `/collections` or `/collections/all` as the default of a link setting. Anything else, such as `#reviews` or a product link, made the whole file fail to upload. The agent's schema check now catches it and puts the link in the preset instead.
