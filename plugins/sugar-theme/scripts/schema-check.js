@@ -10,6 +10,8 @@
 //   - a visible_if using >, <, >=, <= or parentheses, or longer than 250 characters
 //   - a range with more than 101 steps
 //   - a url setting whose default is not "/", "/collections" or "/collections/all"
+//   - an enabled_on/disabled_on group other than header, footer, aside, custom.<name>
+//     or "*", or a section carrying both enabled_on and disabled_on
 //   - a "category" at the top level of the schema instead of inside a preset
 //
 // A template or other non-.liquid file is reported as NOT CHECKED, never as OK: count
@@ -20,6 +22,7 @@ const fs = require("fs");
 const CAP = 6;
 const NOT_SETTINGS = new Set(["header", "paragraph"]);
 const URL_DEFAULTS = new Set(["/", "/collections", "/collections/all"]);
+const GROUPS = new Set(["header", "footer", "aside", "*"]);
 
 function schemaOf(file) {
   const src = fs.readFileSync(file, "utf8");
@@ -79,6 +82,24 @@ function check(file) {
   if (!schema) return NO_SCHEMA;
 
   if ("category" in schema) problems.push('"category" belongs inside a preset, not at the top level');
+
+  if ("enabled_on" in schema && "disabled_on" in schema) {
+    problems.push(
+      '"enabled_on" and "disabled_on" are both set and the upload is refused (only one is allowed): ' +
+        'keep one, e.g. "enabled_on": {"templates": ["page"]} to limit where the section is offered'
+    );
+  }
+  for (const key of ["enabled_on", "disabled_on"]) {
+    for (const g of (schema[key] && schema[key].groups) || []) {
+      if (!GROUPS.has(g) && !/^custom\.[\w-]+$/.test(g)) {
+        problems.push(
+          `"${key}" group ${JSON.stringify(g)} is refused on upload, and so is every template using ` +
+            `this section (groups are only header, footer, aside or custom.<name>): to limit where ` +
+            `the section is offered use "enabled_on": {"templates": ["page"]}, or leave "groups" out`
+        );
+      }
+    }
+  }
 
   const scopes = [["settings", schema.settings]];
   for (const b of schema.blocks || []) if (b.settings) scopes.push([`blocks[${b.type}]`, b.settings]);
